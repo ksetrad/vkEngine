@@ -7,7 +7,7 @@
 
 using namespace vk;
 
-Instance::Instance ()
+Instance::Instance ( GLFWwindow * window )
 {
         /// Инофрмация по приложению
         VkApplicationInfo appInfo { };
@@ -65,15 +65,19 @@ Instance::Instance ()
 
 #ifdef VULKAN_DEBUG
         /// Инициализируем слои проверки
-        if ( validationLayers->initialize( &instance ) != VK_SUCCESS )
+        if ( validationLayers->initialize ( & instance ) != VK_SUCCESS )
         {
                 throw vulkan_exception( "failed to set up debug messenger!" );
         }
 #endif
+        /// Создаем поверхность отрисовки
+        surface = new Surface ( this , window );
 }
 
 Instance::~Instance ()
 {
+        /// Разрушаем поверхность отрисовки
+        delete surface;
 #ifdef VULKAN_DEBUG
         /// Уничтожаем слои проверки
         delete validationLayers;
@@ -83,8 +87,14 @@ Instance::~Instance ()
 }
 
 VkInstance
-Instance::getInstance ()
+Instance::getInstance () const
 {
         return instance;
+}
+
+Surface *
+Instance::getSurface () const
+{
+        return surface;
 }
 

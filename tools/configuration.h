@@ -19,11 +19,24 @@ class Configuration
 
                 std::vector < std::string > validationLayers;
 
-                std::vector < const char * >
-                getValidationLayersArr ()
+                std::vector < std::string > deviceExtension;
+
+                [[nodiscard]] std::vector < const char * >
+                getValidationLayersArr () const
                 {
                         std::vector < const char * > result;
                         for ( const auto & str: validationLayers )
+                        {
+                                result.push_back ( str.c_str () );
+                        }
+                        return result;
+                }
+
+                [[nodiscard]] std::vector < const char * >
+                getDeviceExtensions () const
+                {
+                        std::vector < const char * > result;
+                        for ( const auto & str: deviceExtension )
                         {
                                 result.push_back ( str.c_str () );
                         }

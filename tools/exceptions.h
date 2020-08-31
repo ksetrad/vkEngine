@@ -9,6 +9,8 @@
 
 #include "tools/exception.h"
 
+#define verify( statement , msg ) ((!statement)? throw tools::Exception(__LINE__, __FILE__,std::string("VULKAN_EXCEPTION: ") + msg):0)
+
 /// Шаблоны готовых исключений
 #define vulkan_exception( msg ) (tools::Exception(__LINE__, __FILE__,std::string("VULKAN_EXCEPTION: ") + msg))
 

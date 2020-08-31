@@ -15,6 +15,7 @@
 
 #include "tools/exceptions.h"
 #include "validationLayers.h"
+#include "surface.h"
 
 #ifndef TOOLS_VK_INSTANCE_H
 #define TOOLS_VK_INSTANCE_H
@@ -24,7 +25,9 @@ namespace vk
         {
         public:
             /// Конструктор
-            Instance ();
+            /// \param window Окно вывода
+            explicit
+            Instance (GLFWwindow * window);
 
             /// Деструктор
             ~Instance ();
@@ -32,7 +35,10 @@ namespace vk
             /// Получить указатель на экземпляр Vulkan
             /// \return Указатель
             VkInstance
-            getInstance ();
+            getInstance () const;
+
+            Surface *
+            getSurface () const;
 
         private:
             /// Экземпляр Vulkan
@@ -44,6 +50,8 @@ namespace vk
             ValidationLayers * validationLayers;
 
 #endif
+            /// Поверхность отрисовки
+            Surface* surface;
         };
 }
 #endif //TOOLS_VK_INSTANCE_H

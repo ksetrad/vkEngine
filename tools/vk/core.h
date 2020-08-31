@@ -14,12 +14,22 @@ namespace vk
     class Core
         {
         public:
-            Core();
-            ~Core();
+            Core ();
+
+            ~Core ();
+
         private:
-                Instance* instance;
-                LogicalDevice* logicalDevice;
-                PhysicalDevice* physicalDevice;
+            /// Окно
+            GLFWwindow * window;
+
+            /// Экземпляр Vulkan
+            Instance * instance;
+            
+            /// Логическое устройство
+            LogicalDevice * logicalDevice;
+
+            ///Физическое устройство
+            PhysicalDevice * physicalDevice;
         };
 }
 #endif //TOOLS_VK_CORE_H

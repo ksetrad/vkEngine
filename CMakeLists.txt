@@ -23,4 +23,4 @@ target_include_directories(caravaner2 PUBLIC ${GLM_INCLUDE_DIR} ${Vulkan_INCLUDE
 
 target_link_libraries(caravaner2 glfw glm ${Vulkan_LIBRARY})
 
-#add_compile_definitions(VULKAN_DEBUG)
+add_compile_definitions(VULKAN_DEBUG)
