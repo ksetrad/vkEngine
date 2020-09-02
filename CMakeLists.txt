@@ -15,6 +15,8 @@ add_executable(caravaner2 main.cpp
         $<TARGET_OBJECTS:vulkan_tools>
         )
 
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/logs)
+
 include_directories(${project_dir})
 
 include(${project_dir}/tools/CMakeLists.txt)

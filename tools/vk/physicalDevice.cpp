@@ -47,7 +47,8 @@ PhysicalDevice::findDevice ()
                 Logger::message ( Logger::info , Logger::Alias ( "FULL" ) , "find GPU " , deviceProperties.deviceName );
                 /// Проверяем запрошенные параметры GPU
                 if ( deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU
-                     && deviceFeatures.geometryShader && checkExtensionSupport ( devices[ i ] ) )
+                     && deviceFeatures.geometryShader && checkExtensionSupport ( devices[ i ] ) &&
+                     instance->getSurface ()->getSwapChainDetails ( devices[ i ] ).isComplete () )
                 {
                         return devices[ i ];
                 }
@@ -79,7 +80,8 @@ PhysicalDevice::findQueueIndices ()
                         indices.presentFamily = i;
                 }
                 /// Если все индексы установлены - выходим из цикла
-                if (indices.isComplete()) {
+                if ( indices.isComplete () )
+                {
                         break;
                 }
                 i++;

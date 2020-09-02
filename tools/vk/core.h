@@ -8,6 +8,7 @@
 #include "instance.h"
 #include "logicalDevice.h"
 #include "physicalDevice.h"
+#include "swapChain.h"
 
 namespace vk
 {
@@ -28,8 +29,11 @@ namespace vk
             /// Логическое устройство
             LogicalDevice * logicalDevice;
 
-            ///Физическое устройство
+            /// Физическое устройство
             PhysicalDevice * physicalDevice;
+
+            /// Цепочка смены кадров
+            SwapChain* swapChain;
         };
 }
 #endif //TOOLS_VK_CORE_H

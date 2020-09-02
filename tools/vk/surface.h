@@ -15,8 +15,26 @@ namespace vk
     /// Поверхность отображения
     class Surface
         {
-
         public:
+            /// Параметры поверхности отрисовки
+            struct Details {
+                    /// Параметры поверхности отрисовки
+                    VkSurfaceCapabilitiesKHR capabilities;
+                    /// Поддерживаемые поверхностиью форматы пикселя и
+                    /// связанные с ними цветовые пространства (это позволяет иметь всегда одинаковое значение цвета
+                    /// на разных мониторах
+                    std::vector<VkSurfaceFormatKHR> formats;
+                    /// Поддерживаемые воперхностью режимы презентации изображения
+                    std::vector<VkPresentModeKHR> presentModes;
+
+                    /// Проверить что форматы и режимы представления присутствуют в данной структуре параметров
+                    /// \return Результат проверки
+                    [[nodiscard]] bool
+                    isComplete() const{
+                            return !formats.empty() && !presentModes.empty();
+                    }
+                };
+
             /// Конструктор
             /// \param instance Экземпляр Vulkan
             /// \param window Окно вывода
@@ -34,6 +52,17 @@ namespace vk
                     const VkPhysicalDevice & physicalDevice ,
                     const int & queueId
                          );
+
+            /// Проверить поддержку цепочки смены кадров
+            /// \param physicalDevice Физичесий интерфейс
+            /// \return Результат проверки
+            Details
+            getSwapChainDetails(const VkPhysicalDevice &physicalDevice);
+
+            /// Получить текущий дескриптор поверхности
+            /// \return Дескриптор
+            [[nodiscard]] const VkSurfaceKHR&
+            getSurface () const;
 
         private:
             /// Экземпляр Vulkan

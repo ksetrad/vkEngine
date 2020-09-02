@@ -31,11 +31,14 @@ Core::Core ()
         /// Конструируем логический интерфейс GPU
         logicalDevice = new LogicalDevice ( instance , physicalDevice );
 
-
+        /// Создаем цепочку смены кадров
+        swapChain = new SwapChain(instance,physicalDevice,logicalDevice);
 }
 
 Core::~Core ()
 {
+        /// Уничтожаем цепочку смены кадров
+        delete swapChain;
         /// Уничтожаем экземпляр логического устройства
         delete logicalDevice;
         /// Уничтожаем экземпляр физического устройство
