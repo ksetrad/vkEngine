@@ -6,6 +6,18 @@ set(vulkan_tools_src
         ${project_dir}/tools/vk/surface.cpp
         ${project_dir}/tools/vk/swapChain.cpp
         ${project_dir}/tools/vk/validationLayers.cpp
+        ${project_dir}/tools/vk/pipeLine.cpp
+        ${project_dir}/tools/vk/pipeLine/shaderModule.cpp
+        ${project_dir}/tools/vk/pipeLine/blending.cpp
+        ${project_dir}/tools/vk/pipeLine/multisampling.cpp
+        ${project_dir}/tools/vk/pipeLine/assemblyState.cpp
+        ${project_dir}/tools/vk/pipeLine/pipeLineLayout.cpp
+        ${project_dir}/tools/vk/pipeLine/descriptorSetLayout.cpp
+        ${project_dir}/tools/vk/pipeLine/viewportstate.cpp
+        ${project_dir}/tools/vk/pipeLine/rasterizationState.cpp
+        ${project_dir}/tools/vk/pipeLine/vertexinputinfo.cpp
+        ${project_dir}/tools/vk/units/descriptorSet.cpp
+        ${project_dir}/tools/vk/renderPass.cpp
         )
 
 add_library(vulkan_tools

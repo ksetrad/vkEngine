@@ -33,6 +33,7 @@ Core::Core ()
 
         /// Создаем цепочку смены кадров
         swapChain = new SwapChain(instance,physicalDevice,logicalDevice);
+
 }
 
 Core::~Core ()
@@ -47,5 +48,23 @@ Core::~Core ()
         delete instance;
         /// Разрушаем окно
         glfwDestroyWindow ( window );
+}
+
+LogicalDevice *
+Core::getLogicalDevice () const
+{
+        return logicalDevice;
+}
+
+SwapChain *
+Core::getSwapChain () const
+{
+        return swapChain;
+}
+
+GLFWwindow *
+Core::getWindow () const
+{
+        return window;
 }
 

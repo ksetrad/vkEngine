@@ -3,7 +3,7 @@
 //
 
 #include <tools/logger.h>
-#include "tools/vk/core.h"
+#include "engine/core.h"
 
 int
 main (
@@ -15,6 +15,7 @@ main (
         Logger::addComponent( "FULL", "FULL", Logger::info, true);
         Logger::setVerbosity(Logger::error);
 #endif
-        vk::Core core;
+        engine::Core core;
+        core.mainLoop();
         return 0;
 }

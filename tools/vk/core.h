@@ -19,6 +19,15 @@ namespace vk
 
             ~Core ();
 
+            LogicalDevice *
+            getLogicalDevice () const;
+
+            SwapChain *
+            getSwapChain () const;
+
+            GLFWwindow *
+            getWindow () const;
+
         private:
             /// Окно
             GLFWwindow * window;

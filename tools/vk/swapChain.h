@@ -46,6 +46,12 @@ namespace vk
             /// \return Размер
             VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 
+            const VkSurfaceFormatKHR &
+            getSurfaceFormat () const;
+
+            const VkExtent2D &
+            getExtent () const;
+
         private:
             /// Формат поверхности
             VkSurfaceFormatKHR surfaceFormat;

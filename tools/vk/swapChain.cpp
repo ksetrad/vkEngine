@@ -187,3 +187,15 @@ SwapChain::~SwapChain ()
         /// Разрушаем цепочку смены кадров
         vkDestroySwapchainKHR(logicalDevice->getDevice(), swapChain, nullptr);
 }
+
+const VkSurfaceFormatKHR &
+SwapChain::getSurfaceFormat () const
+{
+        return surfaceFormat;
+}
+
+const VkExtent2D &
+SwapChain::getExtent () const
+{
+        return extent;
+}
