@@ -3,11 +3,11 @@
 //
 #include <vector>
 #include <set>
-#include <tools/exceptions.h>
-#include <iostream>
-#include <tools/logger.h>
-#include <tools/configuration.h>
-#include "physicalDevice.h"
+
+#include "tools/exceptions.h"
+#include "tools/logger.h"
+#include "tools/configuration.h"
+#include "tools/vk/physicalDevice.h"
 
 using namespace vk;
 

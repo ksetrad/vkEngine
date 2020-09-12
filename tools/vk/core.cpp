@@ -68,3 +68,9 @@ Core::getWindow () const
         return window;
 }
 
+PhysicalDevice *
+Core::getPhysicalDevice () const
+{
+        return physicalDevice;
+}
+

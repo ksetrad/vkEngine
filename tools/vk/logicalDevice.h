@@ -30,7 +30,7 @@ namespace vk
             virtual ~LogicalDevice ();
 
         private:
-            /// Экземпляр логического интерфейса
+            /// Дескриптор логического интерфейса
             VkDevice device { VK_NULL_HANDLE };
 
             /// Указатель на экземпляр Vulkan

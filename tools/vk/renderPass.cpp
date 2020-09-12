@@ -3,16 +3,13 @@
 //
 
 #include "tools/vk/renderPass.h"
-#include "swapChain.h"
-#include "logicalDevice.h"
 
 using namespace vk;
 
 RenderPass::RenderPass (
-        LogicalDevice * device ,
-        SwapChain * swapChain
+        Core* core
                        )
-        : device ( device ) , swapChain ( swapChain )
+        : device ( core->getLogicalDevice() )
 {
 
 }

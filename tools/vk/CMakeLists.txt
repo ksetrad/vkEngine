@@ -4,9 +4,13 @@ set(vulkan_tools_src
         ${project_dir}/tools/vk/logicalDevice.cpp
         ${project_dir}/tools/vk/physicalDevice.cpp
         ${project_dir}/tools/vk/surface.cpp
+        ${project_dir}/tools/vk/commandPool.cpp
+        ${project_dir}/tools/vk/frameBuffer.cpp
+        ${project_dir}/tools/vk/bufferObject.cpp
         ${project_dir}/tools/vk/swapChain.cpp
         ${project_dir}/tools/vk/validationLayers.cpp
         ${project_dir}/tools/vk/pipeLine.cpp
+        ${project_dir}/tools/vk/uniformBufferSet.cpp
         ${project_dir}/tools/vk/pipeLine/shaderModule.cpp
         ${project_dir}/tools/vk/pipeLine/blending.cpp
         ${project_dir}/tools/vk/pipeLine/multisampling.cpp

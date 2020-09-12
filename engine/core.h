@@ -7,7 +7,9 @@
 
 #include <tools/vk/pipeLine.h>
 #include "tools/vk/core.h"
+#include "tools/vk/frameBuffer.h"
 #include "mainRenderPass.h"
+#include "commandPool.h"
 
 namespace engine
 {
@@ -26,6 +28,10 @@ namespace engine
             MainRenderPass* mainRenderPass;
 
             vk::PipeLine* mainPipeLine;
+
+            CommandPool* commandPool;
+
+            vk::FrameBuffer* frameBuffers;
         };
 }
 #endif //ENGINE_CORE_H

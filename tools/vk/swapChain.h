@@ -23,12 +23,12 @@ namespace vk
             /// \param logicalDevice Логический интерфейс
             SwapChain (
                     Instance * instance ,
-                    PhysicalDevice * physicalDevice,
-                    LogicalDevice* logicalDevice
+                    PhysicalDevice * physicalDevice ,
+                    LogicalDevice * logicalDevice
                       );
 
             /// Деструктор
-            ~SwapChain();
+            ~SwapChain ();
 
             /// Получить необходимый формат для цепочки смены кадров
             /// \param availableFormats Доступные форматы
@@ -39,18 +39,32 @@ namespace vk
             /// Получить необходимы режим представления кадров
             /// \param availablePresentModes Доступные режимы
             /// \return выбранный режим
-            VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+            VkPresentModeKHR
+            chooseSwapPresentMode ( const std::vector < VkPresentModeKHR > & availablePresentModes );
 
             /// Выбрать размер кадра для цепочки смены
             /// \param capabilities Возможности поверхности отображения
             /// \return Размер
-            VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+            VkExtent2D
+            chooseSwapExtent ( const VkSurfaceCapabilitiesKHR & capabilities );
 
+            /// Получить параметры поверхности вывода
+            /// \return параметры
+            [[nodiscard]]
             const VkSurfaceFormatKHR &
             getSurfaceFormat () const;
 
+            /// Получить размеры поверхности вывода
+            /// \return размеры (геометрические)
+            [[nodiscard]]
             const VkExtent2D &
             getExtent () const;
+
+            /// Получить массив интерфейсов изображений в цепочке кадров
+            /// \return Массив интерфейсов
+            [[nodiscard]]
+            const std::vector < VkImageView > &
+            getImagesView () const;
 
         private:
             /// Формат поверхности
@@ -63,10 +77,10 @@ namespace vk
             VkSwapchainKHR swapChain;
 
             /// Массив изображений цепочки
-            std::vector<VkImage> swapChainImages;
+            std::vector < VkImage > swapChainImages;
 
-            /// Мессив представлений изображений цепочки
-            std::vector<VkImageView> swapChainImagesView;
+            /// Мессив интерфейсов изображений цепочки
+            std::vector < VkImageView > swapChainImagesView;
 
             /// Дескриптор логического интерфейса
             LogicalDevice * logicalDevice;

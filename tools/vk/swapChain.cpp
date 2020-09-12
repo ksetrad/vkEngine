@@ -199,3 +199,9 @@ SwapChain::getExtent () const
 {
         return extent;
 }
+
+const std::vector < VkImageView > &
+SwapChain::getImagesView () const
+{
+        return swapChainImagesView;
+}

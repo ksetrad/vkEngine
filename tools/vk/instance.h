@@ -14,8 +14,8 @@
 #include <GLFW/glfw3native.h>
 
 #include "tools/exceptions.h"
-#include "validationLayers.h"
-#include "surface.h"
+#include "tools/vk/validationLayers.h"
+#include "tools/vk/surface.h"
 
 #ifndef TOOLS_VK_INSTANCE_H
 #define TOOLS_VK_INSTANCE_H

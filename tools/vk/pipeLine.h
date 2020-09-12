@@ -5,9 +5,9 @@
 #ifndef TOOLS_VK_PIPELINE_H
 #define TOOLS_VK_PIPELINE_H
 
-#include <tools/vk/pipeLine/assemblyState.h>
-#include <tools/vk/pipeLine/rasterizationState.h>
 #include "tools/vk/logicalDevice.h"
+#include "tools/vk/pipeLine/assemblyState.h"
+#include "tools/vk/pipeLine/rasterizationState.h"
 #include "tools/vk/pipeLine/shaderModule.h"
 #include "tools/vk/pipeLine/blending.h"
 #include "tools/vk/pipeLine/multisampling.h"
@@ -36,27 +36,40 @@ namespace vk
             /// Инициализация
             /// \param renderPass Проход рендеринга
             void
-            initialize (VkRenderPass renderPass);
+            initialize ( VkRenderPass const & renderPass );
 
+            /// Установить параметры смешивания цветов
+            /// \param blending параметры
             void
             setBlending ( const pipeline::Blending & blending );
 
+            /// Установить параметры макета дескрипторов конвеера
+            /// \param pipeLineLayout параметры
             void
             setPipeLineLayout ( const pipeline::PipeLineLayout * pipeLineLayout );
 
+            /// Установить параметры вывода вложений в конвеере
+            /// \param viewPortState параметры
             void
             setViewPortState ( const pipeline::ViewPortState * viewPortState );
 
+            /// Настроить мультисемплинг для конвеера
+            /// \param multisampling параметры
             void
             setMultisampling ( const pipeline::Multisampling & multisampling );
 
+            /// Установить параметры растеризации
+            /// \param rasterizationState параметры
             void
             setRasterizationState ( const pipeline::RasterizationState & rasterizationState );
 
+            /// Установить параметры формирования GPU примитивов
+            /// \param assemblyState параметры
             void
             setAssemblyState ( const pipeline::AssemblyState & assemblyState );
 
         private:
+            /// Дескриптор конвеера
             VkPipeline pipeLine;
 
             /// Интерфейс логического устройства
@@ -80,6 +93,7 @@ namespace vk
             /// Растеризатор
             pipeline::RasterizationState rasterizationState {};
 
+            /// Параметры входных вершин конвеера
             pipeline::VertexInputInfo vertexInfo{};
 
             /// Свойства сборки из вершин (точки/линии/треугольники)

@@ -17,10 +17,6 @@ namespace engine
                     vk::LogicalDevice * device ,
                     vk::SwapChain * swapChain
                            );
-
-            void
-            install () override;
-
         };
 }
 #endif //ENGINE_MAINRENDERPASS_H

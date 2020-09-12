@@ -9,8 +9,11 @@
 
 using namespace engine;
 
-void
-MainRenderPass::install ()
+MainRenderPass::MainRenderPass (
+        vk::LogicalDevice * device ,
+        vk::SwapChain * swapChain
+                               )
+        : RenderPass ( device , swapChain )
 {
         VkAttachmentDescription colorAttachment { };
         colorAttachment.format = swapChain->getSurfaceFormat().format;
@@ -52,12 +55,4 @@ MainRenderPass::install ()
         {
                 throw vulkan_exception ( "failed to create render pass!" );
         }
-}
-
-MainRenderPass::MainRenderPass (
-        vk::LogicalDevice * device ,
-        vk::SwapChain * swapChain
-                               )
-        : RenderPass ( device , swapChain )
-{
 }

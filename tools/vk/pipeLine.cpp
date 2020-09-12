@@ -2,7 +2,7 @@
 // Created by Владимир on 02.09.2020.
 //
 
-#include <tools/vk/pipeLine/vertexInputInfo.h>
+#include "tools/vk/pipeLine/vertexInputInfo.h"
 #include "tools/vk/pipeLine.h"
 
 using namespace vk;
@@ -20,7 +20,7 @@ PipeLine::setShaderStages ( std::vector < pipeline::ShaderModule * > new_stages 
 }
 
 void
-PipeLine::initialize ( VkRenderPass renderPass )
+PipeLine::initialize ( VkRenderPass const & renderPass )
 {
         std::vector < VkPipelineShaderStageCreateInfo > stagesInfo;
         /// Формируем массив структур описания шейдерных стадий

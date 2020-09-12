@@ -6,12 +6,13 @@
 #define TOOLS_VK_PHYSICALDEVICE_H
 
 #include <optional>
-
 #include <vulkan/vulkan.h>
+
 #include "tools/vk/instance.h"
 
 namespace vk
 {
+    /// Физический интерфейс GPU
     class PhysicalDevice
         {
         public:

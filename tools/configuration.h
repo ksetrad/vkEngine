@@ -11,16 +11,23 @@ class Configuration
     {
 
     public:
+        /// Конфигурации ядра
         struct CoreVulkan
             {
+                /// Название приложения
                 std::string appName;
 
+                /// Название движка
                 std::string engineName;
 
+                /// Массив Уровней валидации
                 std::vector < std::string > validationLayers;
 
+                /// Массив используемых расшираений
                 std::vector < std::string > deviceExtension;
 
+                /// Сформировать массив си-строк имен уровней валидации
+                /// \return Массив
                 [[nodiscard]] std::vector < const char * >
                 getValidationLayersArr () const
                 {
@@ -32,6 +39,8 @@ class Configuration
                         return result;
                 }
 
+                /// Сформировать массив си-строк имен расширений
+                /// \return Массив
                 [[nodiscard]] std::vector < const char * >
                 getDeviceExtensions () const
                 {
@@ -44,11 +53,15 @@ class Configuration
                 }
             };
 
+        /// Параметры дисплея вывода
         struct Display
             {
                 struct
+                /// Разрешение
                     {
+                        /// Ширина
                         int width;
+                        /// Высота
                         int height;
                     } resolution;
             };
@@ -56,29 +69,38 @@ class Configuration
 
         virtual ~Configuration ();
 
+        /// Параметры ядра
+        /// \return параметры ядра
         static const CoreVulkan &
         vulkan ();
 
+        /// Параметры дисплея
+        /// \return параметры дисплея
         static const Display &
         display ();
 
     private:
-
+        /// Конструктор()
         Configuration ();
 
+        /// Считать конфигурацию из файла
         void
         read ();
 
+        /// Записать конфигурацию в файл
         void
         write ();
 
+        /// Синглтон конфигурации
+        /// \return экземпляр
         static Configuration *
         instance ();
 
+        /// Конфигуарция ядра
         CoreVulkan m_vulkan;
 
+        /// Конфигурация дисплея
         Display m_display;
-
     };
 
 #endif //TOOLS_CONFIGURATION_H

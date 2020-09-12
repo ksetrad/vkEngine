@@ -12,6 +12,7 @@ set(project_dir ${CMAKE_SOURCE_DIR})
 add_executable(caravaner2 main.cpp
         ${project_dir}/engine/core.cpp
         ${project_dir}/engine/mainRenderPass.cpp
+        ${project_dir}/engine/commandPool.cpp
         $<TARGET_OBJECTS:configuration>
         $<TARGET_OBJECTS:logger>
         $<TARGET_OBJECTS:vulkan_tools>

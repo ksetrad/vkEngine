@@ -5,27 +5,41 @@
 #ifndef TOOLS_VK_CORE_H
 #define TOOLS_VK_CORE_H
 
-#include "instance.h"
-#include "logicalDevice.h"
-#include "physicalDevice.h"
-#include "swapChain.h"
+#include "tools/vk/instance.h"
+#include "tools/vk/logicalDevice.h"
+#include "tools/vk/physicalDevice.h"
+#include "tools/vk/swapChain.h"
 
 namespace vk
 {
+    /// Ядро Vulkan
     class Core
         {
         public:
+            /// Конструктор
             Core ();
 
+            /// Деструктор
             ~Core ();
 
-            LogicalDevice *
+            /// Получить логический интерфейс GPU
+            /// \return указатель на логический интерфейс
+            [[nodiscard]] LogicalDevice *
             getLogicalDevice () const;
 
-            SwapChain *
+            /// Получить физический интерфейс GPU
+            /// \return указатель на физический интерфейс
+            [[nodiscard]] PhysicalDevice *
+            getPhysicalDevice () const;
+
+            /// Получить цепочку смены кадров
+            /// \return указатель на цепочку смены кадров
+            [[nodiscard]] SwapChain *
             getSwapChain () const;
 
-            GLFWwindow *
+            /// Получить окно вывода
+            /// \return окно
+            [[nodiscard]] GLFWwindow *
             getWindow () const;
 
         private:
@@ -35,10 +49,10 @@ namespace vk
             /// Экземпляр Vulkan
             Instance * instance;
             
-            /// Логическое устройство
+            /// Логический интерфейс GPU
             LogicalDevice * logicalDevice;
 
-            /// Физическое устройство
+            /// Физический интерфейс GPU
             PhysicalDevice * physicalDevice;
 
             /// Цепочка смены кадров

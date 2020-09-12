@@ -2,7 +2,7 @@
 // Created by Владимир on 26.08.2020.
 //
 #include <set>
-#include <tools/configuration.h>
+#include "tools/configuration.h"
 
 #include "tools/vk/logicalDevice.h"
 

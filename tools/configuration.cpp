@@ -45,13 +45,12 @@ Configuration::read ()
                       i < node_validation_layers->size () ;
                       i++ )
                 {
-                        m_vulkan.validationLayers.push_back (
-                                root[ "Core" ][ "validation layers" ][ i ].value_or ( "" ) );
+                        m_vulkan.validationLayers.emplace_back(root[ "Core" ][ "validation layers" ][ i ].value_or ( "" ) );
                 }
         }
         else
         {
-                m_vulkan.validationLayers.push_back ( "VK_LAYER_LUNARG_standard_validation" );
+                m_vulkan.validationLayers.emplace_back("VK_LAYER_LUNARG_standard_validation" );
         }
 
         auto node_device_extension = root[ "Core" ][ "device extension" ].as_array ();
@@ -61,13 +60,12 @@ Configuration::read ()
                       i < node_device_extension->size () ;
                       i++ )
                 {
-                        m_vulkan.deviceExtension.push_back (
-                                root[ "Core" ][ "device extension" ][ i ].value_or ( "" ) );
+                        m_vulkan.deviceExtension.emplace_back(root[ "Core" ][ "device extension" ][ i ].value_or ( "" ) );
                 }
         }
         else
         {
-                m_vulkan.deviceExtension.push_back ( VK_KHR_SWAPCHAIN_EXTENSION_NAME );
+                m_vulkan.deviceExtension.emplace_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME );
         }
 }
 

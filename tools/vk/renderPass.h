@@ -8,34 +8,36 @@
 #include <map>
 #include <vector>
 #include <vulkan/vulkan.h>
+
+#include "tools/vk/core.h"
+
 namespace vk
 {
-    class LogicalDevice;
-    class SwapChain;
-
+    /// Проход рендеринга
     class RenderPass
         {
         public:
+            /// Конструктор
+            /// \param core ядро Vulkan
+            explicit
             RenderPass (
-                    vk::LogicalDevice * device ,
-                    vk::SwapChain * swapChain
+                    Core * core
                        );
 
             virtual ~RenderPass ();
 
-            virtual
-            void
-            install () = 0;
-
-            const VkRenderPass &
+            /// Получить дескриптор прохода рендеринга
+            /// \return Дескриптор
+            [[nodiscard]] const VkRenderPass &
             getRenderPass () const;
 
         protected:
-            VkRenderPass renderPass;
+            /// Дескриптор
+            VkRenderPass renderPass { VK_NULL_HANDLE };
 
+            /// Логический интерфейс GPU
             LogicalDevice * device;
-
-            SwapChain * swapChain;
         };
 }
+
 #endif //TOOLS_VK_RENDERPASS_H
