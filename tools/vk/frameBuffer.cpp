@@ -10,7 +10,7 @@ FrameBuffer::FrameBuffer (
         Core * core ,
         RenderPass * renderPass
                          )
-        : logicalDevice ( logicalDevice )
+        : logicalDevice ( core->getLogicalDevice() )
 {
         swapChainFramebuffers.resize ( core->getSwapChain ()->getImagesView ().size () );
         for ( size_t i = 0 ;
@@ -44,5 +44,11 @@ FrameBuffer::~FrameBuffer ()
         {
                 vkDestroyFramebuffer ( logicalDevice->getDevice () , framebuffer , nullptr );
         }
+}
+
+const std::vector < VkFramebuffer > &
+FrameBuffer::getFrameBuffers () const
+{
+        return swapChainFramebuffers;
 }
 

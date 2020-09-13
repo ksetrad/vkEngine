@@ -9,7 +9,6 @@ using namespace vk::pipeline;
 
 DescriptorSetLayout::DescriptorSetLayout ( LogicalDevice * device )
 {
-        VkDescriptorSetLayoutBinding uboLayoutBinding{};
         uboLayoutBinding.binding = 0;
         uboLayoutBinding.descriptorCount = 1;
         uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;

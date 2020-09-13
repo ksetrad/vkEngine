@@ -34,10 +34,16 @@ Core::Core ()
         /// Создаем цепочку смены кадров
         swapChain = new SwapChain(instance,physicalDevice,logicalDevice);
 
+        /// Получаем дескрипторы очередей
+        graphicsQueue = new Queue(logicalDevice,physicalDevice,Queue::GRAPHIC);
+        presentationQueue = new Queue(logicalDevice,physicalDevice,Queue::PRESENTATION);
 }
 
 Core::~Core ()
 {
+        /// Удаляем объекты оболочек очередей
+        delete presentationQueue;
+        delete graphicsQueue;
         /// Уничтожаем цепочку смены кадров
         delete swapChain;
         /// Уничтожаем экземпляр логического устройства
@@ -72,5 +78,17 @@ PhysicalDevice *
 Core::getPhysicalDevice () const
 {
         return physicalDevice;
+}
+
+Queue *
+Core::getGraphicsQueue () const
+{
+        return graphicsQueue;
+}
+
+Queue *
+Core::getPresentationQueue () const
+{
+        return presentationQueue;
 }
 

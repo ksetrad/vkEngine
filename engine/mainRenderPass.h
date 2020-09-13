@@ -14,8 +14,7 @@ namespace engine
         {
         public:
             MainRenderPass (
-                    vk::LogicalDevice * device ,
-                    vk::SwapChain * swapChain
+                    vk::Core* core
                            );
         };
 }

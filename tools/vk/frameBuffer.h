@@ -23,6 +23,9 @@ namespace vk
 
             virtual ~FrameBuffer ();
 
+            const std::vector < VkFramebuffer > &
+            getFrameBuffers () const;
+
         private:
             /// Логический интерфейс GPU
             LogicalDevice * logicalDevice;

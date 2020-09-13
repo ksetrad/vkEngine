@@ -28,6 +28,9 @@ namespace vk
                 const VkPipelineLayout &
                 getLayout () const;
 
+                const DescriptorSetLayout &
+                getDescriptorSetLayout () const;
+
             private:
                 LogicalDevice * logicalDevice;
                 pipeline::DescriptorSetLayout descriptorSetLayout;

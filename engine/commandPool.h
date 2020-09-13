@@ -6,8 +6,10 @@
 #define ENGINE_COMMANDPOOL_H
 
 
-#include "tools/vk/commandPool.h"
+#include <tools/vk/pipeLine.h>
+#include "tools/vk/commandsPool.h"
 #include "tools/vk/core.h"
+#include "environment.h"
 
 namespace engine
 {
@@ -15,8 +17,26 @@ namespace engine
             : public vk::CommandPool
         {
         public:
-            explicit
-            CommandPool ( vk::Core * core );
+
+            CommandPool (
+                    vk::Core * core ,
+                    vk::PipeLine * pipeLine ,
+                    Environment * environment
+                        );
+
+            void
+            setCommandBufferContent ( const VkCommandBuffer & commandBuffer, const VkDescriptorSet * descriptorSet ) override;
+
+        private:
+            void
+            bindBuffer (
+                    const vk::BufferObject & buffer ,
+                    VkCommandBuffer const & commandBuffer
+                       );
+
+            vk::PipeLine * pipeLine;
+
+            Environment * environment;
         };
 }
 #endif //ENGINE_COMMANDPOOL_H

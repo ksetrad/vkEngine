@@ -8,8 +8,10 @@
 #include <tools/vk/pipeLine.h>
 #include "tools/vk/core.h"
 #include "tools/vk/frameBuffer.h"
+#include "tools/vk/uniformBufferSet.h"
 #include "mainRenderPass.h"
 #include "commandPool.h"
+#include "modelFactory.h"
 
 namespace engine
 {
@@ -21,17 +23,26 @@ namespace engine
             virtual ~Core ();
 
             void
-            mainLoop();
+            mainLoop ();
+
         private:
-            vk::Core* core;
+            vk::Core * core;
 
-            MainRenderPass* mainRenderPass;
+            MainRenderPass * mainRenderPass;
 
-            vk::PipeLine* mainPipeLine;
+            vk::PipeLine * mainPipeLine;
 
-            CommandPool* commandPool;
+            CommandPool * commandPool;
+            vk::DescriptorsPool * descriptorsPool;
 
-            vk::FrameBuffer* frameBuffers;
+            vk::FrameBuffer * frameBuffers;
+
+            ModelFactory * modelFactory;
+
+            Environment* environment;
+
+            /// Набор глобальных буферов
+            vk::UniformBufferSet * bufferSet;
         };
 }
 #endif //ENGINE_CORE_H

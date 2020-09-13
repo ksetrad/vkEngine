@@ -68,6 +68,14 @@ namespace vk
             void
             setAssemblyState ( const pipeline::AssemblyState & assemblyState );
 
+            /// Получить дескриптор
+            /// \return дескриптор
+            [[nodiscard]] const VkPipeline &
+            getPipeLine () const;
+
+            const pipeline::PipeLineLayout *
+            getLayout () const;
+
         private:
             /// Дескриптор конвеера
             VkPipeline pipeLine;

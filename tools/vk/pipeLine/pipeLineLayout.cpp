@@ -34,6 +34,12 @@ PipeLineLayout::getLayout () const
 
 PipeLineLayout::~PipeLineLayout ()
 {
-        vkDestroyPipelineLayout ( logicalDevice->getDevice () , layout , nullptr );
         vkDestroyDescriptorSetLayout ( logicalDevice->getDevice () , *descriptorSetLayout.getLayout () , nullptr );
+        vkDestroyPipelineLayout ( logicalDevice->getDevice () , layout , nullptr );
+}
+
+const DescriptorSetLayout &
+PipeLineLayout::getDescriptorSetLayout () const
+{
+        return descriptorSetLayout;
 }

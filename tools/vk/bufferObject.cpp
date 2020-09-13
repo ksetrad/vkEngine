@@ -8,31 +8,37 @@ using namespace vk;
 
 void
 BufferObject::allocate (
-        int size ,
-        void * data
+        unsigned int allocate_size ,
+        const void * data ,
+        const int & count
                        )
 {
+        /// Сохраняем размер буфера
+        m_size = allocate_size;
+        /// Сохраняем количество элементов в буфере
+        m_count = count;
         /// Формируем когерентный буфер в оперативке
-        createBuffer ( core, size , VK_BUFFER_USAGE_TRANSFER_SRC_BIT ,
+        createBuffer ( core , m_size , VK_BUFFER_USAGE_TRANSFER_SRC_BIT ,
                        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT , stagingBuffer ,
                        stagingBufferMemory );
 
         /// Заполняем его данными
         void * staging_data;
-        vkMapMemory ( core->getLogicalDevice()->getDevice() , stagingBufferMemory , 0 , size , 0 , & staging_data );
-        memcpy ( staging_data , data , size );
+        vkMapMemory ( core->getLogicalDevice ()->getDevice () , stagingBufferMemory , 0 , m_size , 0 , & staging_data );
+        memcpy ( staging_data , data , m_size );
         vkUnmapMemory ( core->getLogicalDevice()->getDevice() , stagingBufferMemory );
 
         switch ( type )
         {
                 /// Формируем буферы на устройстве
                 case INDEX:
-                        createBuffer ( core, size ,
+                        createBuffer ( core , m_size ,
                                        VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT ,
                                        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT , buffer , bufferMemory );
                         break;
                 case VERTEX:
-                        createBuffer ( core, size , VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT ,
+                        createBuffer ( core , m_size ,
+                                       VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT ,
                                        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT , buffer , bufferMemory );
                         break;
         }
@@ -116,3 +122,40 @@ BufferObject::findMemoryType (
         throw vulkan_exception("failed to find suitable memory type!");
 }
 
+const VkBuffer &
+BufferObject::getBuffer () const
+{
+        return buffer;
+}
+
+const VkBuffer &
+BufferObject::getStagingBuffer () const
+{
+        return stagingBuffer;
+}
+
+const int&
+BufferObject::size () const
+{
+        return m_size;
+}
+
+BufferObject::~BufferObject ()
+{
+        vkDestroyBuffer ( core->getLogicalDevice()->getDevice() , stagingBuffer , nullptr );
+        vkFreeMemory ( core->getLogicalDevice()->getDevice() , stagingBufferMemory , nullptr );
+        vkDestroyBuffer ( core->getLogicalDevice()->getDevice() , buffer , nullptr );
+        vkFreeMemory ( core->getLogicalDevice()->getDevice() , bufferMemory , nullptr );
+}
+
+const BufferObject::Type&
+BufferObject::getType () const
+{
+        return type;
+}
+
+const int&
+BufferObject::count () const
+{
+        return m_count;
+}

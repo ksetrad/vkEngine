@@ -57,13 +57,20 @@ class Configuration
         struct Display
             {
                 struct
-                /// Разрешение
+                        /// Разрешение
                     {
                         /// Ширина
                         int width;
                         /// Высота
                         int height;
                     } resolution;
+            };
+
+        /// Конфигурации движка
+        struct Engine
+            {
+                /// Путь к директории моделей
+                std::string modelDirPath;
             };
 
 
@@ -78,6 +85,11 @@ class Configuration
         /// \return параметры дисплея
         static const Display &
         display ();
+
+        /// Параметры движка
+        /// \return параметры движка
+        static const Engine &
+        engine ();
 
     private:
         /// Конструктор()
@@ -101,6 +113,9 @@ class Configuration
 
         /// Конфигурация дисплея
         Display m_display;
+
+        /// Конфигурация движка
+        Engine m_engine;
     };
 
 #endif //TOOLS_CONFIGURATION_H

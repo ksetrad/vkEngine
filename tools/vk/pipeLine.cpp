@@ -104,6 +104,18 @@ PipeLine::setAssemblyState ( const pipeline::AssemblyState & assemblyState )
 
 PipeLine::~PipeLine ()
 {
-        vkDestroyPipeline ( device->getDevice () , pipeLine , nullptr );
         delete layout;
+        vkDestroyPipeline ( device->getDevice () , pipeLine , nullptr );
+}
+
+const VkPipeline &
+PipeLine::getPipeLine () const
+{
+        return pipeLine;
+}
+
+const pipeline::PipeLineLayout *
+PipeLine::getLayout () const
+{
+        return layout;
 }

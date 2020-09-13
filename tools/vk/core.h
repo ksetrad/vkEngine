@@ -9,6 +9,7 @@
 #include "tools/vk/logicalDevice.h"
 #include "tools/vk/physicalDevice.h"
 #include "tools/vk/swapChain.h"
+#include "queue.h"
 
 namespace vk
 {
@@ -42,6 +43,16 @@ namespace vk
             [[nodiscard]] GLFWwindow *
             getWindow () const;
 
+            /// Получить очередь графических операций
+            /// \return очередь
+            [[nodiscard]] Queue *
+            getGraphicsQueue () const;
+
+            /// Получить очередь операций представления
+            /// \return очередь
+            [[nodiscard]] Queue *
+            getPresentationQueue () const;
+
         private:
             /// Окно
             GLFWwindow * window;
@@ -57,6 +68,13 @@ namespace vk
 
             /// Цепочка смены кадров
             SwapChain* swapChain;
+
+            /// Очередь графических операций
+            Queue * graphicsQueue;
+
+            /// Очередь операций представления изображения на экране
+            Queue * presentationQueue;
+
         };
 }
 #endif //TOOLS_VK_CORE_H

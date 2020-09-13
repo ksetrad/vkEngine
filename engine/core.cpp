@@ -2,6 +2,8 @@
 // Created by Владимир on 09.09.2020.
 //
 
+#include <engine/common/uniform.h>
+#include <tools/vk/uniformBufferSet.h>
 #include "core.h"
 
 using namespace engine;
@@ -9,9 +11,10 @@ using namespace vk::pipeline;
 
 Core::Core ()
         : core ( new vk::Core () ) ,
-          mainRenderPass ( new MainRenderPass ( core->getLogicalDevice () , core->getSwapChain () ) ) ,
-          mainPipeLine ( new vk::PipeLine ( core->getLogicalDevice () ) ) , commandPool ( new CommandPool ( core ) )
+          mainRenderPass ( new MainRenderPass ( core ) ) ,
+          mainPipeLine ( new vk::PipeLine ( core->getLogicalDevice () ) )
 {
+        /// Формируем конвеер
         std::vector < ShaderModule * > stages;
         stages.emplace_back (
                 new ShaderModule ( "./shaders/shader.vert.spv" , core->getLogicalDevice () , ShaderModule::Vertex ) );
@@ -27,13 +30,31 @@ Core::Core ()
 
         mainPipeLine->initialize ( mainRenderPass->getRenderPass () );
 
-        frameBuffers = new vk::FrameBuffer ( core->getLogicalDevice () , mainRenderPass , core->getSwapChain () );
+        bufferSet = new vk::UniformBufferSet(core, sizeof(engine::Uniform));
+        /// Формируем кадровые буферы
+        frameBuffers = new vk::FrameBuffer ( core , mainRenderPass );
+        /// Формируем окружение
+        environment = new Environment();
+        /// Создаем командный пул
+        commandPool = new CommandPool ( core , mainPipeLine , environment );
+        /// Инициализируем пул дескрипторов
+        descriptorsPool = new vk::DescriptorsPool ( core );
+        descriptorsPool->createDescritorSets(bufferSet->getBuffers(),mainPipeLine->getLayout(),sizeof(engine::Uniform));
+        /// Инициаилизируем фабрику моделей
+        modelFactory = new ModelFactory ( core , commandPool );
+        /// Заполняем окружение
+        environment->models.emplace_back ( modelFactory->openModel ( "4.corobj" ) );
+        commandPool->createCommandBuffer ( core->getSwapChain () , mainRenderPass , frameBuffers , descriptorsPool );
 }
 
 Core::~Core ()
 {
+        delete bufferSet;
+        delete environment;
+        delete modelFactory;
         delete frameBuffers;
         delete mainPipeLine;
+        delete descriptorsPool;
         delete mainRenderPass;
         delete commandPool;
         delete core;

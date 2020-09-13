@@ -31,13 +31,17 @@ namespace vk
                     Core * core
                          );
 
+            virtual ~BufferObject ();
+
             /// Выделение памяти
             /// \param size размер
             /// \param data блок данных
+            /// \param count количество идентичных элементов в буфере
             void
             allocate (
-                    int size ,
-                    void * data
+                    unsigned int size ,
+                    const void * data ,
+                    const int & count
                      );
 
 
@@ -58,6 +62,31 @@ namespace vk
                     VkBuffer & buffer ,
                     VkDeviceMemory & bufferMemory
                          );
+
+            /// Получить дескриптор буфера GPU
+            /// \return дескриптор
+            [[nodiscard]] const VkBuffer &
+            getBuffer () const;
+
+            /// Получить дескриптор staging-буфера
+            /// \return дескриптор
+            [[nodiscard]] const VkBuffer &
+            getStagingBuffer () const;
+
+            /// Получить размер буфера ( в байтах)
+            /// \return размер буфера
+            [[nodiscard]] const int&
+            size () const;
+
+            /// Получить тип буфера
+            /// \return тип
+            [[nodiscard]] const Type&
+            getType () const;
+
+            /// Получить количество идентичных элементов в буфере
+            /// \return количество
+            [[nodiscard]] const int&
+            count () const;
 
         private:
             /// Получить тип памяти
@@ -90,6 +119,12 @@ namespace vk
 
             /// Память когерентного буфер
             VkDeviceMemory stagingBufferMemory { VK_NULL_HANDLE };
+
+            /// Размер буфера ( в байтах )
+            int m_size;
+
+            /// Количество элементов в буфере
+            int m_count;
         };
 }
 #endif //TOOLS_VK_BUFFEROBJECT_H

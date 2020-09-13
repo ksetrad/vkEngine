@@ -26,6 +26,9 @@ namespace vk
             private:
                 /// Структура параметров макета
                 VkDescriptorSetLayout layout;
+
+                /// Привязка макета дескрипторов
+                VkDescriptorSetLayoutBinding uboLayoutBinding{};
             };
     }
 }

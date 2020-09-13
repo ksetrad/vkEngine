@@ -39,3 +39,9 @@ UniformBufferSet::~UniformBufferSet ()
                 vkFreeMemory ( device->getDevice () , buffersMemmory[ i ] , nullptr );
         }
 }
+
+const std::vector < VkBuffer > &
+UniformBufferSet::getBuffers () const
+{
+        return buffers;
+}

@@ -13,6 +13,9 @@ add_executable(caravaner2 main.cpp
         ${project_dir}/engine/core.cpp
         ${project_dir}/engine/mainRenderPass.cpp
         ${project_dir}/engine/commandPool.cpp
+        ${project_dir}/engine/data/model.cpp
+        ${project_dir}/engine/modelFactory.cpp
+        ${project_dir}/engine/environment.cpp
         $<TARGET_OBJECTS:configuration>
         $<TARGET_OBJECTS:logger>
         $<TARGET_OBJECTS:vulkan_tools>

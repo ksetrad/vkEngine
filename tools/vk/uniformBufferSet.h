@@ -24,6 +24,9 @@ namespace vk
 
             ~UniformBufferSet ();
 
+            const std::vector < VkBuffer > &
+            getBuffers () const;
+
         private:
             /// Логический интерфейс GPU
             LogicalDevice * device;
