@@ -24,6 +24,8 @@ set(vulkan_tools_src
         ${project_dir}/tools/vk/pipeLine/vertexinputinfo.cpp
         ${project_dir}/tools/vk/units/descriptorSet.cpp
         ${project_dir}/tools/vk/renderPass.cpp
+        ${project_dir}/tools/vk/synchronization/semaphore.cpp
+        ${project_dir}/tools/vk/synchronization/fence.cpp
         )
 
 add_library(vulkan_tools

@@ -30,33 +30,62 @@ Core::Core ()
 
         mainPipeLine->initialize ( mainRenderPass->getRenderPass () );
 
-        bufferSet = new vk::UniformBufferSet(core, sizeof(engine::Uniform));
+        bufferSet = new vk::UniformBufferSet ( core , sizeof ( engine::Uniform ) );
         /// Формируем кадровые буферы
         frameBuffers = new vk::FrameBuffer ( core , mainRenderPass );
         /// Формируем окружение
-        environment = new Environment();
+        environment = new Environment ();
         /// Создаем командный пул
         commandPool = new CommandPool ( core , mainPipeLine , environment );
         /// Инициализируем пул дескрипторов
         descriptorsPool = new vk::DescriptorsPool ( core );
-        descriptorsPool->createDescritorSets(bufferSet->getBuffers(),mainPipeLine->getLayout(),sizeof(engine::Uniform));
+        descriptorsPool->createDescritorSets ( bufferSet->getBuffers () , mainPipeLine->getLayout () ,
+                                               sizeof ( engine::Uniform ) );
         /// Инициаилизируем фабрику моделей
         modelFactory = new ModelFactory ( core , commandPool );
         /// Заполняем окружение
         environment->models.emplace_back ( modelFactory->openModel ( "4.corobj" ) );
         commandPool->createCommandBuffer ( core->getSwapChain () , mainRenderPass , frameBuffers , descriptorsPool );
+
+        /// Инициализируем объекты синхронизации
+        renderFinishedSemaphores.resize ( frame_number );
+        imageAvailableSemaphores.resize ( frame_number );
+        inFlightFences.resize ( frame_number );
+        for ( int i = 0 ;
+              i < frame_number ;
+              i++ )
+        {
+                renderFinishedSemaphores[ i ] = new vk::Semaphore ( core );
+                imageAvailableSemaphores[ i ] = new vk::Semaphore ( core );
+                inFlightFences[ i ] = new vk::Fence ( core );
+        }
+        /// Размер выбирается равным числу кадров в цепочке, значенияя не устанаавливаются
+        imagesInFlight.resize ( core->getSwapChain ()->getImagesView ().size () , nullptr );
 }
 
 Core::~Core ()
 {
+        delete frameBuffers;
+        delete commandPool;
         delete bufferSet;
         delete environment;
         delete modelFactory;
-        delete frameBuffers;
+
         delete mainPipeLine;
         delete descriptorsPool;
         delete mainRenderPass;
-        delete commandPool;
+
+        for ( int i = 0 ;
+              i < frame_number ;
+              i++ )
+        {
+                delete renderFinishedSemaphores[ i ];
+                delete imageAvailableSemaphores[ i ];
+                delete inFlightFences[ i ];
+        }
+        renderFinishedSemaphores.clear ();
+        imageAvailableSemaphores.clear ();
+        inFlightFences.clear ();
         delete core;
 }
 
@@ -66,6 +95,96 @@ Core::mainLoop ()
         while ( !glfwWindowShouldClose ( core->getWindow () ) )
         {
                 glfwPollEvents ();
+                /// Дожидаемся пока все команды относящиеся к кадру currentFrameId не будут выполнены
+                inFlightFences[ currentFrameId ]->wait ();
+
+                /// Определяем индекс следующего изображения для рендеринга
+                auto index = getImage ( imageAvailableSemaphores[ currentFrameId ] );
+
+                /// Обновляем uniform буфер для текущих проходов рендеринга
+                /// TODO updateUniform
+
+                /// Ждем освобождения изображения если для кадра с индексом установлен забор
+                if ( imagesInFlight[ index ] != nullptr )
+                {
+                        imagesInFlight[ index ]->wait ();
+                }
+
+                /// Используем для данного изображения забор от нашего кадра
+                imagesInFlight[index] = inFlightFences[currentFrameId];
+
+
+                VkSubmitInfo submitInfo{};
+                submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+                /// Этот семофор мы ждет
+                VkSemaphore waitSemaphores[] = {imageAvailableSemaphores[currentFrameId]->getSemaphore()};
+                /// Это стадия на которой мы ждем
+                VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+                submitInfo.waitSemaphoreCount = 1;
+                submitInfo.pWaitSemaphores = waitSemaphores;
+                submitInfo.pWaitDstStageMask = waitStages;
+
+                submitInfo.commandBufferCount = 1;
+                submitInfo.pCommandBuffers = &commandPool->getCommandBuffers()[index];
+                /// Этот семофор сообщает о заврешении стадии
+                VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrameId]->getSemaphore()};
+                submitInfo.signalSemaphoreCount = 1;
+                submitInfo.pSignalSemaphores = signalSemaphores;
+
+                /// Переводим забор в несигнальное состояние
+                vkResetFences(core->getLogicalDevice()->getDevice(), 1, &inFlightFences[currentFrameId]->getFence());
+
+                /// Теперь выполняем в барьер мы запишем сигнал о завершении этапа
+                if (vkQueueSubmit(core->getGraphicsQueue()->getQueue(), 1, &submitInfo, inFlightFences[currentFrameId]->getFence()) != VK_SUCCESS) {
+                        throw std::runtime_error("failed to submit draw command buffer!");
+                }
+
+                VkPresentInfoKHR presentInfo{};
+                presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+
+                presentInfo.waitSemaphoreCount = 1;
+                presentInfo.pWaitSemaphores = signalSemaphores;
+
+                VkSwapchainKHR swapChains[] = {core->getSwapChain()->getSwapChain()};
+                presentInfo.swapchainCount = 1;
+                presentInfo.pSwapchains = swapChains;
+
+                presentInfo.pImageIndices = &index;
+
+                VkResult result = vkQueuePresentKHR(core->getPresentationQueue()->getQueue(), &presentInfo);
+
+//                if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
+//                        framebufferResized = false;
+//                        recreateSwapChain();
+//                } else if (result != VK_SUCCESS) {
+//                        throw std::runtime_error("failed to present swap chain image!");
+//                }
+
+                currentFrameId = (currentFrameId + 1) % frame_number;
+
         }
+}
+
+uint32_t
+Core::getImage ( vk::Semaphore * pWaitSemaphore )
+{
+        /// Индекс изображения в цепочке подкачки которое подует использовано для рендеринга
+        uint32_t imageIndex;
+        /// Функция получиния индекса в цепочке подкачки, семафор в данном случае сообщает когда можно начать рисовать на изображении
+        VkResult result = vkAcquireNextImageKHR ( core->getLogicalDevice ()->getDevice () ,
+                                                  core->getSwapChain ()->getSwapChain () , UINT64_MAX ,
+                                                  pWaitSemaphore->getSemaphore () , VK_NULL_HANDLE , & imageIndex );
+        if ( result == VK_ERROR_OUT_OF_DATE_KHR )
+        {
+                /// Если поверхность изменилась (ресайз) то нужно перестроить все начиная с цепочки подкачки
+                ///TODO recreateSwapChain();
+                throw std::runtime_error ( "swap chain recize!" );
+        }
+        else if ( result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR )
+        {
+                throw vulkan_exception( "failed to acquire swap chain image!" );
+        }
+        return imageIndex;
 }
 

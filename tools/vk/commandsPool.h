@@ -41,6 +41,9 @@ namespace vk
             void
             createCommandBuffer (SwapChain*swapChain, RenderPass* renderPass, FrameBuffer* frameBuffer, DescriptorsPool * pool );
 
+            const std::vector < VkCommandBuffer > &
+            getCommandBuffers () const;
+
         protected:
             std::vector < VkCommandBuffer > commandBuffers;
 

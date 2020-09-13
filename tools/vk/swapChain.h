@@ -66,6 +66,9 @@ namespace vk
             const std::vector < VkImageView > &
             getImagesView () const;
 
+            VkSwapchainKHR const &
+            getSwapChain () const;
+
         private:
             /// Формат поверхности
             VkSurfaceFormatKHR surfaceFormat;

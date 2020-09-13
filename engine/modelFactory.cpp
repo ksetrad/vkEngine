@@ -38,7 +38,7 @@ ModelFactory::openModel ( const std::string & path )
                         vertexes.resize ( vertSize );
                         indices.resize ( indSize );
                         stream.read ( reinterpret_cast<char *>(vertexes.data ()) , vertSize * sizeof ( vk::Vertex ) );
-                        stream.read ( reinterpret_cast<char *>(indices.data ()) , indSize * sizeof ( uint32_t ) );
+                        stream.read ( reinterpret_cast<char *>(indices.data ()) , indSize * sizeof ( unsigned int) );
                 }
         }
         auto model = new Model ( core , vertexes , indices );

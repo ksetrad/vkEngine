@@ -205,3 +205,9 @@ SwapChain::getImagesView () const
 {
         return swapChainImagesView;
 }
+
+VkSwapchainKHR const &
+SwapChain::getSwapChain () const
+{
+        return swapChain;
+}

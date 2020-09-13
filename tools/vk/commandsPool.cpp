@@ -25,6 +25,7 @@ CommandPool::CommandPool ( Core * core )
 
 CommandPool::~CommandPool ()
 {
+        vkFreeCommandBuffers(core->getLogicalDevice ()->getDevice (), commandPool, static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
         vkDestroyCommandPool ( core->getLogicalDevice ()->getDevice () , commandPool , nullptr );
 }
 
@@ -132,5 +133,11 @@ CommandPool::createCommandBuffer (
                         throw vulkan_exception( "failed to record command buffer!" );
                 }
         }
+}
+
+const std::vector < VkCommandBuffer > &
+CommandPool::getCommandBuffers () const
+{
+        return commandBuffers;
 }
 

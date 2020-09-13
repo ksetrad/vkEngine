@@ -18,7 +18,7 @@ namespace vk
             glm::vec3 p;
 
             /// Текстурная координата
-            glm::vec3 t;
+            glm::vec2 t;
 
             /// Нормаль
             glm::vec3 n;
