@@ -7,20 +7,9 @@
 
 using namespace vk;
 
-Core::Core ()
+Core::Core ( GLFWwindow * window )
+        : window ( window )
 {
-        /// Инициализируем GLFW
-        glfwInit ();
-        /// Отключаем поддержку OpenGL (GLFW разработана для OpenGL)
-        glfwWindowHint ( GLFW_CLIENT_API , GLFW_NO_API );
-        /// Отключчаем возможность изменения размера окна
-        glfwWindowHint ( GLFW_RESIZABLE , GLFW_FALSE );
-        /// Инициализируем GLFW
-        glfwInit ();
-        /// Создаем окно
-        window = glfwCreateWindow ( Configuration::display ().resolution.width ,
-                                    Configuration::display ().resolution.height ,
-                                    Configuration::vulkan ().appName.c_str () , nullptr , nullptr );
 
         /// Конструируем экземпляр Vulkan
         instance = new Instance ( window );
@@ -32,11 +21,11 @@ Core::Core ()
         logicalDevice = new LogicalDevice ( instance , physicalDevice );
 
         /// Создаем цепочку смены кадров
-        swapChain = new SwapChain(instance,physicalDevice,logicalDevice);
+        swapChain = new SwapChain ( instance , physicalDevice , logicalDevice );
 
         /// Получаем дескрипторы очередей
-        graphicsQueue = new Queue(logicalDevice,physicalDevice,Queue::GRAPHIC);
-        presentationQueue = new Queue(logicalDevice,physicalDevice,Queue::PRESENTATION);
+        graphicsQueue = new Queue ( logicalDevice , physicalDevice , Queue::GRAPHIC );
+        presentationQueue = new Queue ( logicalDevice , physicalDevice , Queue::PRESENTATION );
 }
 
 Core::~Core ()

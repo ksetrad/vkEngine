@@ -5,13 +5,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <engine/common/uniform.h>
 #include <tools/vk/uniformBufferSet.h>
+#include <tools/configuration.h>
+#include <iostream>
 #include "core.h"
 
 using namespace engine;
 using namespace vk::pipeline;
 
 Core::Core ()
-        : core ( new vk::Core () ) ,
+        : glfw::Handler ( Configuration::display ().resolution.width , Configuration::display ().resolution.height ,
+                          Configuration::vulkan ().appName ) ,
+          core ( new vk::Core ( m_window ) ) ,
           mainRenderPass ( new MainRenderPass ( core ) ) ,
           mainPipeLine ( new vk::PipeLine ( core->getLogicalDevice () ) )
 {
@@ -110,60 +114,63 @@ Core::mainLoop ()
                 {
                         imagesInFlight[ index ]->wait ();
                 }
-                updateUniform(index);
+                updateUniform ( index );
 
                 /// Используем для данного изображения забор от нашего кадра
-                imagesInFlight[index] = inFlightFences[currentFrameId];
+                imagesInFlight[ index ] = inFlightFences[ currentFrameId ];
 
 
-                VkSubmitInfo submitInfo{};
+                VkSubmitInfo submitInfo { };
                 submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 
                 /// Этот семофор мы ждет
-                VkSemaphore waitSemaphores[] = {imageAvailableSemaphores[currentFrameId]->getSemaphore()};
+                VkSemaphore waitSemaphores[] = { imageAvailableSemaphores[ currentFrameId ]->getSemaphore () };
                 /// Это стадия на которой мы ждем
-                VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+                VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
                 submitInfo.waitSemaphoreCount = 1;
                 submitInfo.pWaitSemaphores = waitSemaphores;
                 submitInfo.pWaitDstStageMask = waitStages;
 
                 submitInfo.commandBufferCount = 1;
-                submitInfo.pCommandBuffers = &commandPool->getCommandBuffers()[index];
+                submitInfo.pCommandBuffers = & commandPool->getCommandBuffers ()[ index ];
                 /// Этот семофор сообщает о заврешении стадии
-                VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrameId]->getSemaphore()};
+                VkSemaphore signalSemaphores[] = { renderFinishedSemaphores[ currentFrameId ]->getSemaphore () };
                 submitInfo.signalSemaphoreCount = 1;
                 submitInfo.pSignalSemaphores = signalSemaphores;
 
                 /// Переводим забор в несигнальное состояние
-                vkResetFences(core->getLogicalDevice()->getDevice(), 1, &inFlightFences[currentFrameId]->getFence());
+                vkResetFences ( core->getLogicalDevice ()->getDevice () , 1 ,
+                                & inFlightFences[ currentFrameId ]->getFence () );
 
                 /// Теперь выполняем в барьер мы запишем сигнал о завершении этапа
-                if (vkQueueSubmit(core->getGraphicsQueue()->getQueue(), 1, &submitInfo, inFlightFences[currentFrameId]->getFence()) != VK_SUCCESS) {
-                        throw std::runtime_error("failed to submit draw command buffer!");
+                if ( vkQueueSubmit ( core->getGraphicsQueue ()->getQueue () , 1 , & submitInfo ,
+                                     inFlightFences[ currentFrameId ]->getFence () ) != VK_SUCCESS )
+                {
+                        throw std::runtime_error ( "failed to submit draw command buffer!" );
                 }
 
-                VkPresentInfoKHR presentInfo{};
+                VkPresentInfoKHR presentInfo { };
                 presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 
                 presentInfo.waitSemaphoreCount = 1;
                 presentInfo.pWaitSemaphores = signalSemaphores;
 
-                VkSwapchainKHR swapChains[] = {core->getSwapChain()->getSwapChain()};
+                VkSwapchainKHR swapChains[] = { core->getSwapChain ()->getSwapChain () };
                 presentInfo.swapchainCount = 1;
                 presentInfo.pSwapchains = swapChains;
 
-                presentInfo.pImageIndices = &index;
+                presentInfo.pImageIndices = & index;
 
-                VkResult result = vkQueuePresentKHR(core->getPresentationQueue()->getQueue(), &presentInfo);
+                VkResult result = vkQueuePresentKHR ( core->getPresentationQueue ()->getQueue () , & presentInfo );
 
-//                if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
-//                        framebufferResized = false;
-//                        recreateSwapChain();
-//                } else if (result != VK_SUCCESS) {
-//                        throw std::runtime_error("failed to present swap chain image!");
-//                }
+                //                if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
+                //                        framebufferResized = false;
+                //                        recreateSwapChain();
+                //                } else if (result != VK_SUCCESS) {
+                //                        throw std::runtime_error("failed to present swap chain image!");
+                //                }
 
-                currentFrameId = (currentFrameId + 1) % frame_number;
+                currentFrameId = ( currentFrameId + 1 ) % frame_number;
 
         }
         /// Ждем выполнения
@@ -196,14 +203,57 @@ Core::getImage ( vk::Semaphore * pWaitSemaphore )
 void
 Core::updateUniform ( const int & id )
 {
-        Uniform m_ubo{};
-        auto transpose = glm::mat4(1);
-        transpose[3][2] = -2;
+        Uniform m_ubo { };
+        auto transpose = glm::mat4 ( 1 );
+        transpose[ 3 ][ 2 ] = -2;
         m_ubo.model = transpose;
-        m_ubo.view = glm::lookAt( glm::vec3( 2.0f, 2.0f, 2.0f), glm::vec3( 0.0f, 0.0f, 0.0f), glm::vec3( 0.0f, 0.0f, 1.0f));
-        m_ubo.proj = glm::perspective( glm::radians( 45.0f), core->getSwapChain()->getExtent().width / (float) core->getSwapChain()->getExtent().height, 0.1f, 10.0f);
-        m_ubo.proj[1][1] *= -1;
+        m_ubo.view = glm::lookAt ( glm::vec3 ( 2.0f , 2.0f , 2.0f ) , glm::vec3 ( 0.0f , 0.0f , 0.0f ) ,
+                                   glm::vec3 ( 0.0f , 0.0f , 1.0f ) );
+        m_ubo.proj = glm::perspective ( glm::radians ( 45.0f ) , core->getSwapChain ()->getExtent ().width /
+                                                                 ( float ) core->getSwapChain ()->getExtent ().height ,
+                                        0.1f , 10.0f );
+        m_ubo.proj[ 1 ][ 1 ] *= -1;
 
-        bufferSet->write(id,&m_ubo,sizeof(Uniform));
+        bufferSet->write ( id , & m_ubo , sizeof ( Uniform ) );
+}
+
+void
+Core::mouseMoveEvent ( const glfw::MouseEvent & event )
+{
+        std::cout << event.pos ().x << " " << event.pos ().y << std::endl;
+}
+
+void
+Core::mousePressEvent ( const glfw::MouseEvent & event )
+{
+        switch ( event.button())
+        {
+                case glfw::MouseEvent::MOUSE_LEFT_BUTTON:
+                        std::cout<<"Left pressed"<<std::endl;
+                        break;
+                case glfw::MouseEvent::MOUSE_RIGHT_BUTTON:
+                        std::cout<<"Right pressed"<<std::endl;
+                        break;
+                case glfw::MouseEvent::MOUSE_WHEEL:
+                        std::cout<<"Wheel pressed"<<std::endl;
+                        break;
+        }
+}
+
+void
+Core::mouseReleaseEvent ( const glfw::MouseEvent & event )
+{
+        switch ( event.button())
+        {
+                case glfw::MouseEvent::MOUSE_LEFT_BUTTON:
+                        std::cout<<"Left released"<<std::endl;
+                        break;
+                case glfw::MouseEvent::MOUSE_RIGHT_BUTTON:
+                        std::cout<<"Right released"<<std::endl;
+                        break;
+                case glfw::MouseEvent::MOUSE_WHEEL:
+                        std::cout<<"Wheel released"<<std::endl;
+                        break;
+        }
 }
 

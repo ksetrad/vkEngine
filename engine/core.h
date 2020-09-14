@@ -8,6 +8,7 @@
 #include <tools/vk/pipeLine.h>
 #include <tools/vk/synchronization/fence.h>
 #include <tools/vk/synchronization/semaphore.h>
+#include <tools/glfw/handler.h>
 #include "tools/vk/core.h"
 #include "tools/vk/frameBuffer.h"
 #include "tools/vk/uniformBufferSet.h"
@@ -17,7 +18,7 @@
 
 namespace engine
 {
-    class Core
+class Core : public glfw::Handler
         {
         public:
             Core ();
@@ -32,7 +33,18 @@ namespace engine
 
             void
             updateUniform ( const int & id );
-        private:
+
+    protected:
+        void
+        mouseMoveEvent ( const glfw::MouseEvent & event ) override;
+
+        void
+        mousePressEvent ( const glfw::MouseEvent & event ) override;
+
+        void
+        mouseReleaseEvent ( const glfw::MouseEvent & event ) override;
+
+    private:
             vk::Core * core;
 
             MainRenderPass * mainRenderPass;

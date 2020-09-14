@@ -19,6 +19,7 @@ add_executable(caravaner2 main.cpp
         $<TARGET_OBJECTS:configuration>
         $<TARGET_OBJECTS:logger>
         $<TARGET_OBJECTS:vulkan_tools>
+        $<TARGET_OBJECTS:glfw_tools>
         )
 
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/logs)

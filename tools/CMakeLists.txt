@@ -7,3 +7,4 @@ add_library(logger
         ${project_dir}/tools/logger.cpp)
 
 include(${project_dir}/tools/vk/CMakeLists.txt)
+include(${project_dir}/tools/glfw/CMakeLists.txt)

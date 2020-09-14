@@ -18,7 +18,9 @@ namespace vk
         {
         public:
             /// Конструктор
-            Core ();
+            /// \param window окно
+            explicit
+            Core (GLFWwindow * window);
 
             /// Деструктор
             ~Core ();
@@ -52,6 +54,7 @@ namespace vk
             /// \return очередь
             [[nodiscard]] Queue *
             getPresentationQueue () const;
+
 
         private:
             /// Окно
