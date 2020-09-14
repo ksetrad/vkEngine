@@ -42,7 +42,7 @@ CommandPool::bindBuffer (
         switch ( buffer.getType () )
         {
                 case vk::BufferObject::INDEX:
-                        vkCmdBindIndexBuffer ( commandBuffer , buffer.getBuffer () , 0 , VK_INDEX_TYPE_UINT16 );
+                        vkCmdBindIndexBuffer ( commandBuffer , buffer.getBuffer () , 0 , VK_INDEX_TYPE_UINT32 );
                         break;
                 case vk::BufferObject::VERTEX:
                 {

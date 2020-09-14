@@ -29,6 +29,9 @@ namespace engine
 
             uint32_t
             getImage(vk::Semaphore* pWaitSemaphore);
+
+            void
+            updateUniform ( const int & id );
         private:
             vk::Core * core;
 

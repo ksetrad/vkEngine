@@ -27,6 +27,12 @@ namespace vk
             const std::vector < VkBuffer > &
             getBuffers () const;
 
+            void
+            write (
+                    const int & id ,
+                    void * data ,
+                    int size
+                  );
         private:
             /// Логический интерфейс GPU
             LogicalDevice * device;

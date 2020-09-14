@@ -1,7 +1,8 @@
 //
 // Created by Владимир on 09.09.2020.
 //
-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <engine/common/uniform.h>
 #include <tools/vk/uniformBufferSet.h>
 #include "core.h"
@@ -109,6 +110,7 @@ Core::mainLoop ()
                 {
                         imagesInFlight[ index ]->wait ();
                 }
+                updateUniform(index);
 
                 /// Используем для данного изображения забор от нашего кадра
                 imagesInFlight[index] = inFlightFences[currentFrameId];
@@ -164,6 +166,9 @@ Core::mainLoop ()
                 currentFrameId = (currentFrameId + 1) % frame_number;
 
         }
+        /// Ждем выполнения
+        vkQueueWaitIdle ( core->getGraphicsQueue ()->getQueue () );
+
 }
 
 uint32_t
@@ -186,5 +191,19 @@ Core::getImage ( vk::Semaphore * pWaitSemaphore )
                 throw vulkan_exception( "failed to acquire swap chain image!" );
         }
         return imageIndex;
+}
+
+void
+Core::updateUniform ( const int & id )
+{
+        Uniform m_ubo{};
+        auto transpose = glm::mat4(1);
+        transpose[3][2] = -2;
+        m_ubo.model = transpose;
+        m_ubo.view = glm::lookAt( glm::vec3( 2.0f, 2.0f, 2.0f), glm::vec3( 0.0f, 0.0f, 0.0f), glm::vec3( 0.0f, 0.0f, 1.0f));
+        m_ubo.proj = glm::perspective( glm::radians( 45.0f), core->getSwapChain()->getExtent().width / (float) core->getSwapChain()->getExtent().height, 0.1f, 10.0f);
+        m_ubo.proj[1][1] *= -1;
+
+        bufferSet->write(id,&m_ubo,sizeof(Uniform));
 }
 

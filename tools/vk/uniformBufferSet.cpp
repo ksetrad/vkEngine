@@ -45,3 +45,17 @@ UniformBufferSet::getBuffers () const
 {
         return buffers;
 }
+
+void
+UniformBufferSet::write (
+        const int & id ,
+        void * data ,
+        int size
+                        )
+{
+        void * dst_data;
+
+        vkMapMemory ( device->getDevice () , buffersMemmory[ id ] , 0 , size , 0 , & dst_data );
+        memcpy ( dst_data , data , size );
+        vkUnmapMemory ( device->getDevice () , buffersMemmory[ id ] );
+}
