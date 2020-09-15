@@ -9,35 +9,34 @@
 
 namespace vk
 {
-    /// Логический интерфейс GPU
-    class LogicalDevice
-        {
-        public:
-            /// Конструктор
-            /// \param instance указатель на объект экземпляра Vulkan
-            /// \param physicalDevice указатель на объект физического интерфейса GPU
-            LogicalDevice (
-                    Instance * instance ,
-                    PhysicalDevice * physicalDevice
-                          );
+	/// Логический интерфейс GPU
+	class LogicalDevice
+	{
+		public:
+		/// Конструктор
+		/// \param instance указатель на объект экземпляра Vulkan
+		/// \param physicalDevice указатель на объект физического интерфейса GPU
+		LogicalDevice (
+		        Instance *instance,
+		        PhysicalDevice *physicalDevice );
 
-            /// Получить логический интерфейс
-            /// \return Интерфейс
-            [[nodiscard]] const VkDevice &
-            getDevice () const;
+		/// Получить логический интерфейс
+		/// \return Интерфейс
+		[[nodiscard]] const VkDevice &
+		getDevice () const;
 
-            /// Деструктор
-            virtual ~LogicalDevice ();
+		/// Деструктор
+		virtual ~LogicalDevice ();
 
-        private:
-            /// Дескриптор логического интерфейса
-            VkDevice device { VK_NULL_HANDLE };
+		private:
+		/// Дескриптор логического интерфейса
+		VkDevice device { VK_NULL_HANDLE };
 
-            /// Указатель на экземпляр Vulkan
-            Instance * instance;
+		/// Указатель на экземпляр Vulkan
+		Instance *instance;
 
-            /// Указатель на экземпляр интерфейса физического устройства
-            PhysicalDevice * physicalDevice;
-        };
-}
-#endif //TOOLS_VK_LOGICALDEVICE_H
+		/// Указатель на экземпляр интерфейса физического устройства
+		PhysicalDevice *physicalDevice;
+	};
+}// namespace vk
+#endif//TOOLS_VK_LOGICALDEVICE_H

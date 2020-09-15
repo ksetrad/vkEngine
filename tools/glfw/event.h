@@ -9,70 +9,63 @@
 
 namespace glfw
 {
-    struct Event
-        {
-            enum Mods
-                {
-                    NOMODE ,
-                    SHIFT ,
-                    CTRL ,
-                    ALT
-                };
+	struct Event {
+		enum Mods
+		{
+			NOMODE,
+			SHIFT,
+			CTRL,
+			ALT
+		};
 
-            explicit
-            Event(const Mods& m_mod);
+		explicit Event ( const Mods &m_mod );
 
-            Mods m_mod;
-        };
+		Mods m_mod;
+	};
 
-    class MouseEvent
-            : public Event
-        {
+	class MouseEvent : public Event
+	{
 
-        public:
+		public:
+		enum MouseButtons
+		{
+			NOBUTTON,
+			MOUSE_LEFT_BUTTON,
+			MOUSE_RIGHT_BUTTON,
+			MOUSE_WHEEL
+		};
 
-            enum MouseButtons
-                {
-                    NOBUTTON ,
-                    MOUSE_LEFT_BUTTON ,
-                    MOUSE_RIGHT_BUTTON ,
-                    MOUSE_WHEEL
-                };
+		MouseEvent (
+		        MouseButtons mButton,
+		        const glm::vec2 &mPos,
+		        const Mods &mMod );
 
-            MouseEvent (
-                    MouseButtons mButton ,
-                    const glm::vec2 & mPos,
-                    const Mods & mMod
-                       );
+		[[nodiscard]] const MouseButtons &
+		button () const
+		{
+			return m_button;
+		}
 
-            [[nodiscard]] const MouseButtons &
-            button () const
-            {
-                    return m_button;
-            }
+		[[nodiscard]] const glm::vec2 &
+		pos () const
+		{
+			return m_pos;
+		}
 
-            [[nodiscard]] const glm::vec2 &
-            pos () const
-            {
-                    return m_pos;
-            }
+		[[nodiscard]] const Mods &
+		mod () const
+		{
+			return m_mod;
+		}
 
-            [[nodiscard]] const Mods &
-            mod () const
-            {
-                    return m_mod;
-            }
+		private:
+		MouseButtons m_button;
 
-        private:
+		glm::vec2 m_pos;
+	};
 
-            MouseButtons m_button;
-
-            glm::vec2 m_pos;
-        };
-
-    class KeyEvent
-        {
-
-        };
-}
-#endif //TOOLS_GLFW_EVENT_H
+	class KeyEvent
+	{
+	};
+}// namespace glfw
+#endif//TOOLS_GLFW_EVENT_H

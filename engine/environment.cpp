@@ -8,8 +8,8 @@ using namespace engine;
 
 Environment::~Environment ()
 {
-        for ( const auto & model:models )
-        {
-                delete model;
-        }
+	for ( const auto &model : models )
+	{
+		delete model;
+	}
 }

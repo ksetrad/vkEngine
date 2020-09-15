@@ -8,114 +8,111 @@
 #include "tools/toml++/toml.hpp"
 
 class Configuration
-    {
+{
 
-    public:
-        /// Конфигурации ядра
-        struct CoreVulkan
-            {
-                /// Название приложения
-                std::string appName;
+	public:
+	/// Конфигурации ядра
+	struct CoreVulkan {
+		/// Название приложения
+		std::string appName;
 
-                /// Название движка
-                std::string engineName;
+		/// Название движка
+		std::string engineName;
 
-                /// Массив Уровней валидации
-                std::vector < std::string > validationLayers;
+		/// Массив Уровней валидации
+		std::vector< std::string > validationLayers;
 
-                /// Массив используемых расшираений
-                std::vector < std::string > deviceExtension;
+		/// Массив используемых расшираений
+		std::vector< std::string > deviceExtension;
 
-                /// Сформировать массив си-строк имен уровней валидации
-                /// \return Массив
-                [[nodiscard]] std::vector < const char * >
-                getValidationLayersArr () const
-                {
-                        std::vector < const char * > result;
-                        for ( const auto & str: validationLayers )
-                        {
-                                result.push_back ( str.c_str () );
-                        }
-                        return result;
-                }
+		/// Сформировать массив си-строк имен уровней валидации
+		/// \return Массив
+		[[nodiscard]] std::vector< const char * >
+		getValidationLayersArr () const
+		{
+			std::vector< const char * > result;
+			for ( const auto &str : validationLayers )
+			{
+				result.push_back ( str.c_str () );
+			}
+			return result;
+		}
 
-                /// Сформировать массив си-строк имен расширений
-                /// \return Массив
-                [[nodiscard]] std::vector < const char * >
-                getDeviceExtensions () const
-                {
-                        std::vector < const char * > result;
-                        for ( const auto & str: deviceExtension )
-                        {
-                                result.push_back ( str.c_str () );
-                        }
-                        return result;
-                }
-            };
+		/// Сформировать массив си-строк имен расширений
+		/// \return Массив
+		[[nodiscard]] std::vector< const char * >
+		getDeviceExtensions () const
+		{
+			std::vector< const char * > result;
+			for ( const auto &str : deviceExtension )
+			{
+				result.push_back ( str.c_str () );
+			}
+			return result;
+		}
+	};
 
-        /// Параметры дисплея вывода
-        struct Display
-            {
-                struct
-                        /// Разрешение
-                    {
-                        /// Ширина
-                        int width;
-                        /// Высота
-                        int height;
-                    } resolution;
-            };
+	/// Параметры дисплея вывода
+	struct Display {
+		struct
+		/// Разрешение
+		{
+			/// Ширина
+			int width;
+			/// Высота
+			int height;
+		} resolution;
+	};
 
-        /// Конфигурации движка
-        struct Engine
-            {
-                /// Путь к директории моделей
-                std::string modelDirPath;
-            };
+	/// Конфигурации движка
+	struct Engine {
+		/// Путь к директории моделей
+		std::string modelDirPath;
+	};
 
 
-        virtual ~Configuration ();
+	virtual ~Configuration ();
 
-        /// Параметры ядра
-        /// \return параметры ядра
-        static const CoreVulkan &
-        vulkan ();
+	/// Параметры ядра
+	/// \return параметры ядра
+	static const CoreVulkan &
+	vulkan ();
 
-        /// Параметры дисплея
-        /// \return параметры дисплея
-        static const Display &
-        display ();
+	/// Параметры дисплея
+	/// \return параметры дисплея
+	static const Display &
+	display ();
 
-        /// Параметры движка
-        /// \return параметры движка
-        static const Engine &
-        engine ();
+	/// Параметры движка
+	/// \return параметры движка
+	static const Engine &
+	engine ();
 
-    private:
-        /// Конструктор()
-        Configuration ();
+	private:
+	/// Конструктор()
+	Configuration ();
 
-        /// Считать конфигурацию из файла
-        void
-        read ();
+	/// Считать конфигурацию из файла
+	void
+	read ();
 
-        /// Записать конфигурацию в файл
-        void
-        write ();
+	/// Записать конфигурацию в файл
+	void
+	write ();
 
-        /// Синглтон конфигурации
-        /// \return экземпляр
-        static Configuration *
-        instance ();
+	/// Синглтон конфигурации
+	/// \return экземпляр
+	static Configuration *
+	instance ();
 
-        /// Конфигуарция ядра
-        CoreVulkan m_vulkan;
+	/// Конфигуарция ядра
+	CoreVulkan m_vulkan;
 
-        /// Конфигурация дисплея
-        Display m_display;
+	/// Конфигурация дисплея
+	Display m_display;
 
-        /// Конфигурация движка
-        Engine m_engine;
-    };
+	/// Конфигурация движка
+	Engine m_engine;
+};
 
-#endif //TOOLS_CONFIGURATION_H
+#endif//TOOLS_CONFIGURATION_H

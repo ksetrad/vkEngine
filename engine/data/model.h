@@ -8,30 +8,28 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#include "tools/vk/common/vertex.h"
 #include "tools/vk/bufferObject.h"
+#include "tools/vk/common/vertex.h"
 
 namespace engine
 {
-    struct Model
-        {
-            /// Конструктор
-            /// \param core ядро
-            /// \param vertexes вершины
-            /// \param indices индексы
-            Model (
-                    vk::Core* core,
-                    const std::vector < vk::Vertex > & vertexes ,
-                    const std::vector < unsigned int >& indices
-                  );
+	struct Model {
+		/// Конструктор
+		/// \param core ядро
+		/// \param vertexes вершины
+		/// \param indices индексы
+		Model (
+		        vk::Core *core,
+		        const std::vector< vk::Vertex > &vertexes,
+		        const std::vector< unsigned int > &indices );
 
-            ~Model();
+		~Model ();
 
-            /// Вершинный буффер
-            vk::BufferObject vbo;
+		/// Вершинный буффер
+		vk::BufferObject vbo;
 
-            /// Индексный буффер
-            vk::BufferObject ibo;
-        };
-}
-#endif //ENGINE_DATA_MODEL_H
+		/// Индексный буффер
+		vk::BufferObject ibo;
+	};
+}// namespace engine
+#endif//ENGINE_DATA_MODEL_H

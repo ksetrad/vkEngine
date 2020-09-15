@@ -13,31 +13,29 @@
 
 namespace vk
 {
-    /// Проход рендеринга
-    class RenderPass
-        {
-        public:
-            /// Конструктор
-            /// \param core ядро Vulkan
-            explicit
-            RenderPass (
-                    Core * core
-                       );
+	/// Проход рендеринга
+	class RenderPass
+	{
+		public:
+		/// Конструктор
+		/// \param core ядро Vulkan
+		explicit RenderPass (
+		        Core *core );
 
-            virtual ~RenderPass ();
+		virtual ~RenderPass ();
 
-            /// Получить дескриптор прохода рендеринга
-            /// \return Дескриптор
-            [[nodiscard]] const VkRenderPass &
-            getRenderPass () const;
+		/// Получить дескриптор прохода рендеринга
+		/// \return Дескриптор
+		[[nodiscard]] const VkRenderPass &
+		getRenderPass () const;
 
-        protected:
-            /// Дескриптор
-            VkRenderPass renderPass { VK_NULL_HANDLE };
+		protected:
+		/// Дескриптор
+		VkRenderPass renderPass { VK_NULL_HANDLE };
 
-            /// Логический интерфейс GPU
-            LogicalDevice * device;
-        };
-}
+		/// Логический интерфейс GPU
+		LogicalDevice *device;
+	};
+}// namespace vk
 
-#endif //TOOLS_VK_RENDERPASS_H
+#endif//TOOLS_VK_RENDERPASS_H

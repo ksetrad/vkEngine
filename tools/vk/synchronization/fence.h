@@ -9,23 +9,23 @@
 
 namespace vk
 {
-    class Fence
-        {
-        public:
-            explicit
-            Fence ( Core * core );
+	class Fence
+	{
+		public:
+		explicit Fence ( Core *core );
 
-            virtual ~Fence ();
+		virtual ~Fence ();
 
-            VkFence const &
-            getFence () const;
+		VkFence const &
+		getFence () const;
 
-            void
-            wait();
-        private:
-            VkFence fence { VK_NULL_HANDLE };
+		void
+		wait ();
 
-            LogicalDevice * device;
-        };
-}
-#endif //TOOLS_VK_SYNCHRONIZATION_FENCE_H
+		private:
+		VkFence fence { VK_NULL_HANDLE };
+
+		LogicalDevice *device;
+	};
+}// namespace vk
+#endif//TOOLS_VK_SYNCHRONIZATION_FENCE_H

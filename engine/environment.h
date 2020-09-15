@@ -5,16 +5,15 @@
 #ifndef ENGINE_ENVIRONMENT_H
 #define ENGINE_ENVIRONMENT_H
 
-#include <vector>
 #include "engine/data/model.h"
+#include <vector>
 
 namespace engine
 {
-    struct Environment
-        {
-            virtual ~Environment ();
+	struct Environment {
+		virtual ~Environment ();
 
-            std::vector < Model* > models;
-        };
-}
-#endif //ENGINE_ENVIRONMENT_H
+		std::vector< Model * > models;
+	};
+}// namespace engine
+#endif//ENGINE_ENVIRONMENT_H

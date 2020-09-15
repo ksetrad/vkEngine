@@ -9,15 +9,15 @@
 
 #include "tools/exception.h"
 
-#define verify( statement , msg ) ((!statement)? throw tools::Exception(__LINE__, __FILE__,std::string("VULKAN_EXCEPTION: ") + msg):0)
+#define verify( statement, msg ) ( ( !statement ) ? throw tools::Exception ( __LINE__, __FILE__, std::string ( "VULKAN_EXCEPTION: " ) + msg ) : 0 )
 
 /// Шаблоны готовых исключений
-#define vulkan_exception( msg ) (tools::Exception(__LINE__, __FILE__,std::string("VULKAN_EXCEPTION: ") + msg))
+#define vulkan_exception( msg ) ( tools::Exception ( __LINE__, __FILE__, std::string ( "VULKAN_EXCEPTION: " ) + msg ) )
 
-#define file_not_found_exception( name ) (tools::Exception(__LINE__, __FILE__,std::string("File not found: ") + name))
+#define file_not_found_exception( name ) ( tools::Exception ( __LINE__, __FILE__, std::string ( "File not found: " ) + name ) )
 
-#define glfw_exception( msg ) (tools::Exception(__LINE__, __FILE__,std::string("GLFW_EXCEPTION: ") + msg))
+#define glfw_exception( msg ) ( tools::Exception ( __LINE__, __FILE__, std::string ( "GLFW_EXCEPTION: " ) + msg ) )
 
-#define window_exception( msg ) (tools::Exception(__LINE__, __FILE__,std::string("WINDOW_EXCEPTION:") + msg))
+#define window_exception( msg ) ( tools::Exception ( __LINE__, __FILE__, std::string ( "WINDOW_EXCEPTION:" ) + msg ) )
 
-#endif //TOOLS_EXCEPTIONS_H
+#endif//TOOLS_EXCEPTIONS_H

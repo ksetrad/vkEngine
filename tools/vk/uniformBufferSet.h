@@ -5,44 +5,42 @@
 #ifndef TOOLS_VK_UNIFORMBUFFERSET_H
 #define TOOLS_VK_UNIFORMBUFFERSET_H
 
-#include <vulkan/vulkan.h>
 #include "core.h"
+#include <vulkan/vulkan.h>
 
 namespace vk
 {
-    /// Буффер глобальных объектов
-    class UniformBufferSet
-        {
-        public:
-            /// Буффер глобальных объектов
-            /// \param core ядро Vulkan
-            /// \param size размер буфера
-            UniformBufferSet (
-                    Core * core ,
-                    const size_t & size
-                             );
+	/// Буффер глобальных объектов
+	class UniformBufferSet
+	{
+		public:
+		/// Буффер глобальных объектов
+		/// \param core ядро Vulkan
+		/// \param size размер буфера
+		UniformBufferSet (
+		        Core *core,
+		        const size_t &size );
 
-            ~UniformBufferSet ();
+		~UniformBufferSet ();
 
-            const std::vector < VkBuffer > &
-            getBuffers () const;
+		const std::vector< VkBuffer > &
+		getBuffers () const;
 
-            void
-            write (
-                    const int & id ,
-                    void * data ,
-                    int size
-                  );
-        private:
-            /// Логический интерфейс GPU
-            LogicalDevice * device;
+		void
+		write (
+		        const int &id,
+		        void *data,
+		        int size );
 
-            /// Массив объектов буффера
-            std::vector < VkBuffer > buffers;
+		private:
+		/// Логический интерфейс GPU
+		LogicalDevice *device;
 
-            /// Массивы буфферной памяти
-            std::vector < VkDeviceMemory > buffersMemmory;
+		/// Массив объектов буффера
+		std::vector< VkBuffer > buffers;
 
-        };
-}
-#endif //TOOLS_VK_UNIFORMBUFFERSET_H
+		/// Массивы буфферной памяти
+		std::vector< VkDeviceMemory > buffersMemmory;
+	};
+}// namespace vk
+#endif//TOOLS_VK_UNIFORMBUFFERSET_H

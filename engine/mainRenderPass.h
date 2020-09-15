@@ -9,13 +9,11 @@
 
 namespace engine
 {
-    class MainRenderPass
-            : public vk::RenderPass
-        {
-        public:
-            MainRenderPass (
-                    vk::Core* core
-                           );
-        };
-}
-#endif //ENGINE_MAINRENDERPASS_H
+	class MainRenderPass : public vk::RenderPass
+	{
+		public:
+		MainRenderPass (
+		        vk::Core *core );
+	};
+}// namespace engine
+#endif//ENGINE_MAINRENDERPASS_H

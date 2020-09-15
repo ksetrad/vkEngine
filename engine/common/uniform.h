@@ -9,11 +9,10 @@
 
 namespace engine
 {
-    struct Uniform
-        {
-           alignas(16) glm::mat4 model;
-           alignas(16) glm::mat4 view;
-           alignas(16) glm::mat4 proj;
-        };
-}
-#endif //ENGINE_COMMON_UNIFORM_H
+	struct Uniform {
+		alignas ( 16 ) glm::mat4 model;
+		alignas ( 16 ) glm::mat4 view;
+		alignas ( 16 ) glm::mat4 proj;
+	};
+}// namespace engine
+#endif//ENGINE_COMMON_UNIFORM_H

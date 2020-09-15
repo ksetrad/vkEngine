@@ -5,80 +5,83 @@
 #ifndef ENGINE_CORE_H
 #define ENGINE_CORE_H
 
-#include <tools/vk/pipeLine.h>
-#include <tools/vk/synchronization/fence.h>
-#include <tools/vk/synchronization/semaphore.h>
-#include <tools/glfw/handler.h>
+#include "commandPool.h"
+#include "engine/common/uniform.h"
+#include "mainRenderPass.h"
+#include "modelFactory.h"
 #include "tools/vk/core.h"
 #include "tools/vk/frameBuffer.h"
 #include "tools/vk/uniformBufferSet.h"
-#include "mainRenderPass.h"
-#include "commandPool.h"
-#include "modelFactory.h"
+#include <tools/glfw/handler.h>
+#include <tools/vk/pipeLine.h>
+#include <tools/vk/synchronization/fence.h>
+#include <tools/vk/synchronization/semaphore.h>
 
 namespace engine
 {
-class Core : public glfw::Handler
-        {
-        public:
-            Core ();
+	class Core : public glfw::Handler
+	{
+		public:
+		Core ();
 
-            virtual ~Core ();
+		virtual ~Core ();
 
-            void
-            mainLoop ();
+		void
+		mainLoop ();
 
-            uint32_t
-            getImage(vk::Semaphore* pWaitSemaphore);
+		uint32_t
+		getImage ( vk::Semaphore *pWaitSemaphore );
 
-            void
-            updateUniform ( const int & id );
+		void
+		updateUniform ( const int &id );
 
-    protected:
-        void
-        mouseMoveEvent ( const glfw::MouseEvent & event ) override;
+		protected:
+		void
+		mouseMoveEvent ( const glfw::MouseEvent &event ) override;
 
-        void
-        mousePressEvent ( const glfw::MouseEvent & event ) override;
+		void
+		mousePressEvent ( const glfw::MouseEvent &event ) override;
 
-        void
-        mouseReleaseEvent ( const glfw::MouseEvent & event ) override;
+		void
+		mouseReleaseEvent ( const glfw::MouseEvent &event ) override;
 
-    private:
-            vk::Core * core;
+		private:
+		vk::Core *core;
 
-            MainRenderPass * mainRenderPass;
+		MainRenderPass *mainRenderPass;
 
-            vk::PipeLine * mainPipeLine;
+		vk::PipeLine *mainPipeLine;
 
-            CommandPool * commandPool;
+		CommandPool *commandPool;
 
-            vk::DescriptorsPool * descriptorsPool;
+		vk::DescriptorsPool *descriptorsPool;
 
-            vk::FrameBuffer * frameBuffers;
+		vk::FrameBuffer *frameBuffers;
 
-            ModelFactory * modelFactory;
+		ModelFactory *modelFactory;
 
-            Environment * environment;
+		Environment *environment;
 
-            /// Набор глобальных буферов
-            vk::UniformBufferSet * bufferSet;
+		/// Набор глобальных буферов
+		vk::UniformBufferSet *bufferSet;
 
-            /// Заборы кадров буферизации
-            std::vector < vk::Fence * > inFlightFences;
-            /// Указатели на заборы кадров буферизации для используемых в данных момент изображений цепочки
-            std::vector < vk::Fence * > imagesInFlight;
+		/// Заборы кадров буферизации
+		std::vector< vk::Fence * > inFlightFences;
+		/// Указатели на заборы кадров буферизации для используемых в данных момент изображений цепочки
+		std::vector< vk::Fence * > imagesInFlight;
 
-            /// Семафоры
-            std::vector < vk::Semaphore * > renderFinishedSemaphores;
+		/// Семафоры
+		std::vector< vk::Semaphore * > renderFinishedSemaphores;
+		std::vector< vk::Semaphore * > imageAvailableSemaphores;
 
-            std::vector < vk::Semaphore * > imageAvailableSemaphores;
+		/// Максимальное число кадров в полете
+		int frame_number { 3 };
 
-            /// Максимальное число кадров в полете
-            int frame_number { 3 };
+		/// Номер текущего кадра
+		int currentFrameId { 0 };
 
-            /// Номер текущего кадра
-            int currentFrameId { 0 };
-        };
-}
-#endif //ENGINE_CORE_H
+		/// Uniforms
+		engine::Uniform uniform;
+	};
+}// namespace engine
+#endif//ENGINE_CORE_H

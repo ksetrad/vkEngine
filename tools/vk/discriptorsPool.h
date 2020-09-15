@@ -9,30 +9,28 @@
 #include "pipeLine.h"
 namespace vk
 {
-    class DescriptorsPool
-        {
-        public:
-            explicit
-            DescriptorsPool ( vk::Core * core );
+	class DescriptorsPool
+	{
+		public:
+		explicit DescriptorsPool ( vk::Core *core );
 
-            virtual ~DescriptorsPool ();
+		virtual ~DescriptorsPool ();
 
-            void
-            createDescritorSets (
-                    const std::vector < VkBuffer > & ubo_vector ,
-                    const pipeline::PipeLineLayout * layout ,
-                    const int & size
-                                );
+		void
+		createDescritorSets (
+		        const std::vector< VkBuffer > &ubo_vector,
+		        const pipeline::PipeLineLayout *layout,
+		        const int &size );
 
-            const std::vector < VkDescriptorSet > &
-            getDescriptorSets () const;
+		const std::vector< VkDescriptorSet > &
+		getDescriptorSets () const;
 
-        private:
-            Core * core;
+		private:
+		Core *core;
 
-            VkDescriptorPool descriptorPool;
+		VkDescriptorPool descriptorPool;
 
-            std::vector < VkDescriptorSet > descriptorSets;
-        };
-}
-#endif //TOOLS_VK_DISCRIPTORSPOOL_H
+		std::vector< VkDescriptorSet > descriptorSets;
+	};
+}// namespace vk
+#endif//TOOLS_VK_DISCRIPTORSPOOL_H

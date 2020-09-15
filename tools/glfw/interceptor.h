@@ -10,36 +10,31 @@
 
 namespace glfw
 {
-    class Handler;
-    class Interceptor
-        {
-        public:
-            static
-            void
-            mouseButtonCallBack (
-                    GLFWwindow * window ,
-                    int button ,
-                    int action ,
-                    int mods
-                                );
+	class Handler;
+	class Interceptor
+	{
+		public:
+		static void
+		mouseButtonCallBack (
+		        GLFWwindow *window,
+		        int button,
+		        int action,
+		        int mods );
 
-            static
-            void
-            mouseMove (
-                    GLFWwindow * window ,
-                    double xpos ,
-                    double ypos
-                               );
+		static void
+		mouseMove (
+		        GLFWwindow *window,
+		        double xpos,
+		        double ypos );
 
-            static
-            Interceptor* instance();
+		static Interceptor *
+		instance ();
 
-            static
-            void
-            initialize ( Handler * handler );
+		static void
+		initialize ( Handler *handler );
 
-        private:
-            Handler * handler;
-        };
-}
-#endif //TOOLS_GLFW_INTERCEPTOR_H
+		private:
+		Handler *handler;
+	};
+}// namespace glfw
+#endif//TOOLS_GLFW_INTERCEPTOR_H

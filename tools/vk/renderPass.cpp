@@ -7,20 +7,18 @@
 using namespace vk;
 
 RenderPass::RenderPass (
-        Core* core
-                       )
-        : device ( core->getLogicalDevice() )
+        Core *core ) :
+    device ( core->getLogicalDevice () )
 {
-
 }
 
 RenderPass::~RenderPass ()
 {
-        vkDestroyRenderPass ( device->getDevice() , renderPass , nullptr );
+	vkDestroyRenderPass ( device->getDevice (), renderPass, nullptr );
 }
 
 const VkRenderPass &
 RenderPass::getRenderPass () const
 {
-        return renderPass;
+	return renderPass;
 }

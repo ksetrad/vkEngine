@@ -5,38 +5,38 @@
 #ifndef TOOLS_VK_PIPELINE_PIPELINELAYOUT_H
 #define TOOLS_VK_PIPELINE_PIPELINELAYOUT_H
 
-#include <vulkan/vulkan.h>
 #include <tools/vk/pipeLine/descriptorSetLayout.h>
+#include <vulkan/vulkan.h>
 
 namespace vk
 {
-    class LogicalDevice;
-    namespace pipeline
-    {
-        /// Макет конвеера
-        class PipeLineLayout
-            {
-            public:
-                /// Конструктор логическок устройство
-                /// \param logicalDevice указатель
-                PipeLineLayout ( LogicalDevice * logicalDevice );
+	class LogicalDevice;
+	namespace pipeline
+	{
+		/// Макет конвеера
+		class PipeLineLayout
+		{
+			public:
+			/// Конструктор логическок устройство
+			/// \param logicalDevice указатель
+			PipeLineLayout ( LogicalDevice *logicalDevice );
 
-                virtual ~PipeLineLayout ();
+			virtual ~PipeLineLayout ();
 
-                /// Получить макет
-                /// \return макет
-                const VkPipelineLayout &
-                getLayout () const;
+			/// Получить макет
+			/// \return макет
+			const VkPipelineLayout &
+			getLayout () const;
 
-                const DescriptorSetLayout &
-                getDescriptorSetLayout () const;
+			const DescriptorSetLayout &
+			getDescriptorSetLayout () const;
 
-            private:
-                LogicalDevice * logicalDevice;
-                pipeline::DescriptorSetLayout descriptorSetLayout;
-                /// Макет конвеера
-                VkPipelineLayout layout;
-            };
-    }
-}
-#endif //TOOLS_VK_PIPELINE_PIPELINELAYOUT_H
+			private:
+			LogicalDevice *logicalDevice;
+			pipeline::DescriptorSetLayout descriptorSetLayout;
+			/// Макет конвеера
+			VkPipelineLayout layout;
+		};
+	}// namespace pipeline
+}// namespace vk
+#endif//TOOLS_VK_PIPELINE_PIPELINELAYOUT_H

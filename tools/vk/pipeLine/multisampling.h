@@ -7,23 +7,23 @@
 #include <vulkan/vulkan.h>
 namespace vk::pipeline
 {
-    /// Анти-алиазинг
-    class Multisampling
-        {
-        public:
-            explicit
-            /// Конструктор
-            /// \param isEnable признак включения
-            Multisampling ( const bool & isEnable );
+	/// Анти-алиазинг
+	class Multisampling
+	{
+		public:
+		explicit
+		        /// Конструктор
+		        /// \param isEnable признак включения
+		        Multisampling ( const bool &isEnable );
 
-            /// Получить указатель на структуру
-            /// \return указатель
-            VkPipelineMultisampleStateCreateInfo *
-            getInfo ();
+		/// Получить указатель на структуру
+		/// \return указатель
+		VkPipelineMultisampleStateCreateInfo *
+		getInfo ();
 
-        private:
-            /// Структура параметров
-            VkPipelineMultisampleStateCreateInfo createInfo{};
-        };
-}
-#endif //TOOLS_VK_PIPELINE_MULTISAMPLING_H
+		private:
+		/// Структура параметров
+		VkPipelineMultisampleStateCreateInfo createInfo {};
+	};
+}// namespace vk::pipeline
+#endif//TOOLS_VK_PIPELINE_MULTISAMPLING_H
