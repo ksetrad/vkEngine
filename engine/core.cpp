@@ -1,11 +1,15 @@
 //
 // Created by Владимир on 09.09.2020.
 //
+#include <iostream>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <engine/common/uniform.h>
-#include <tools/vk/uniformBufferSet.h>
-#include "core.h"
+
+#include "tools/vk/uniformBufferSet.h"
+
+#include "engine/core.h"
+#include "engine/common/uniform.h"
 
 using namespace engine;
 using namespace vk::pipeline;
@@ -45,7 +49,7 @@ Core::Core ()
         /// Инициаилизируем фабрику моделей
         modelFactory = new ModelFactory ( core , commandPool );
         /// Заполняем окружение
-        environment->models.emplace_back ( modelFactory->openModel ( "4.corobj" ) );
+        environment->models.emplace_back ( modelFactory->openModel ( "cube.corobj" ) );
         commandPool->createCommandBuffer ( core->getSwapChain () , mainRenderPass , frameBuffers , descriptorsPool );
 
         /// Инициализируем объекты синхронизации
@@ -93,6 +97,8 @@ Core::~Core ()
 void
 Core::mainLoop ()
 {
+        auto lastTime = glfwGetTime();
+        int nbFrames = 0;
         while ( !glfwWindowShouldClose ( core->getWindow () ) )
         {
                 glfwPollEvents ();
@@ -164,7 +170,13 @@ Core::mainLoop ()
 //                }
 
                 currentFrameId = (currentFrameId + 1) % frame_number;
-
+                double currentTime = glfwGetTime();
+                nbFrames++;
+                if(currentTime-lastTime > 1.){
+                    std::cout << nbFrames << std::endl;
+                    lastTime = currentTime;
+                    nbFrames = 0;
+                }
         }
         /// Ждем выполнения
         vkQueueWaitIdle ( core->getGraphicsQueue ()->getQueue () );

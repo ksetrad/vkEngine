@@ -5,7 +5,7 @@
 #ifndef ENGINE_MAINRENDERPASS_H
 #define ENGINE_MAINRENDERPASS_H
 
-#include "tools/vk/renderpass.h"
+#include "tools/vk/renderPass.h"
 
 namespace engine
 {
@@ -13,6 +13,7 @@ namespace engine
             : public vk::RenderPass
         {
         public:
+            explicit
             MainRenderPass (
                     vk::Core* core
                            );

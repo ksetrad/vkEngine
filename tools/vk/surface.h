@@ -7,8 +7,8 @@
 
 #include <vulkan/vulkan.h>
 
-#include <GLFW/glfw3.h>
-
+#include <tools/glfw-3.3.2/include/GLFW/glfw3.h>
+#include <tools/glfw-3.3.2/include/GLFW/glfw3native.h>
 namespace vk
 {
     class Instance;

@@ -21,7 +21,7 @@ set(vulkan_tools_src
         ${project_dir}/tools/vk/pipeLine/descriptorSetLayout.cpp
         ${project_dir}/tools/vk/pipeLine/viewportstate.cpp
         ${project_dir}/tools/vk/pipeLine/rasterizationState.cpp
-        ${project_dir}/tools/vk/pipeLine/vertexinputinfo.cpp
+        ${project_dir}/tools/vk/pipeLine/vertexInputInfo.cpp
         ${project_dir}/tools/vk/units/descriptorSet.cpp
         ${project_dir}/tools/vk/renderPass.cpp
         ${project_dir}/tools/vk/synchronization/semaphore.cpp

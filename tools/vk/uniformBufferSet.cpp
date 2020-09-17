@@ -4,7 +4,7 @@
 
 #include "uniformBufferSet.h"
 #include "bufferObject.h"
-
+#include <cstring>
 using namespace vk;
 
 UniformBufferSet::UniformBufferSet (
