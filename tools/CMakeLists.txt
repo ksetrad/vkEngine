@@ -8,3 +8,7 @@ add_library(logger
 
 include(${project_dir}/tools/vk/CMakeLists.txt)
 include(${project_dir}/tools/glfw/CMakeLists.txt)
+
+if(UNIX)
+    add_subdirectory(${project_dir}/tools/glfw-3.3.2/)
+endif()

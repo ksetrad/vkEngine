@@ -3,6 +3,7 @@
 //
 
 #include "tools/vk/bufferObject.h"
+#include <cstring>
 
 using namespace vk;
 
