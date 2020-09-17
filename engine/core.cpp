@@ -214,13 +214,19 @@ void
 Core::updateUniform ( const int &id )
 {
 	Uniform m_ubo {};
-	auto transpose = glm::mat4 ( 1 );
-	transpose[ 3 ][ 2 ] = -2;
-	m_ubo.model = transpose;
-	m_ubo.view = glm::lookAt ( glm::vec3 ( 2.0f, 2.0f, 2.0f ), glm::vec3 ( 0.0f, 0.0f, 0.0f ),
-	                           glm::vec3 ( 0.0f, 0.0f, 1.0f ) );
+	m_ubo.model = glm::mat4 ( 1 );
+	m_ubo.view = camera.getView ();
+	//	glm::mat4 transpose(1);
+	//	transpose[ 3 ][ 1 ] = 2;
+	//    transpose[ 3 ][ 2 ] = -4;
+	//	m_ubo.model = transpose;
+	//	m_ubo.view = glm::mat4(1);
+	//    m_ubo.view = glm::rotate(m_ubo.view,static_cast<float>(-M_PI_2/6.f),glm::vec3{1,0,0});
+	//    m_ubo.view = glm::rotate(m_ubo.view,static_cast<float>(-M_PI_2/6.f),glm::vec3{0,1,0});
+	//	auto vecZZZ = m_ubo.view*glm::vec4{0,0,1,1};
+
 	m_ubo.proj = glm::perspective ( glm::radians ( 45.0f ), core->getSwapChain ()->getExtent ().width / ( float ) core->getSwapChain ()->getExtent ().height,
-	                                0.1f, 10.0f );
+	                                0.1f, 10000.0f );
 	m_ubo.proj[ 1 ][ 1 ] *= -1;
 
 	bufferSet->write ( id, &m_ubo, sizeof ( Uniform ) );
@@ -239,4 +245,14 @@ Core::mousePressEvent ( const glfw::MouseEvent &event )
 void
 Core::mouseReleaseEvent ( const glfw::MouseEvent &event )
 {
+}
+void
+Core::switchMouseEvent ( const glfw::MouseEvent &event, const StateType &state )
+{
+	currentState->switchMouseEvent ( event, state );
+}
+void
+Core::selectState ( const StateType &type )
+{
+	currentState = states.at ( type ).get ();
 }

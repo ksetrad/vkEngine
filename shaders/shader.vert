@@ -12,8 +12,12 @@ layout(location = 1) in vec2 texture;
 layout(location = 2) in vec3 normal;
 
 layout(location = 0) out vec3 fragColor;
+layout(location = 1) out vec3 fragNormal;
+layout(location = 2) out vec3 fragPos;
 
 void main() {
-    gl_Position = ubo.proj * ubo.view * ubo.model * vec4(position, 1.0);
+    gl_Position = ubo.proj *  ubo.model *ubo.view * vec4(position, 1.0);
     fragColor = vec3(1.0, 1.0, 1.0);
+    fragNormal = normal;
+    fragPos = fragPos;
 }
