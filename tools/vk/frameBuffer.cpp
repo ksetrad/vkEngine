@@ -7,19 +7,20 @@
 using namespace vk;
 
 FrameBuffer::FrameBuffer (
-        Core *core,
-        RenderPass *renderPass ) :
-    logicalDevice ( core->getLogicalDevice () )
+		Core *core,
+		RenderPass *renderPass
+) :
+		logicalDevice ( core->getLogicalDevice () )
 {
 	swapChainFramebuffers.resize ( core->getSwapChain ()->getImagesView ().size () );
-	for ( size_t i = 0;
-	      i < core->getSwapChain ()->getImagesView ().size ();
+	for ( size_t i = 0 ;
+	      i < core->getSwapChain ()->getImagesView ().size () ;
 	      i++ )
 	{
 		VkImageView attachments[] = {
-		        core->getSwapChain ()->getImagesView ()[ i ] };
+				core->getSwapChain ()->getImagesView ()[ i ] };
 
-		VkFramebufferCreateInfo framebufferInfo {};
+		VkFramebufferCreateInfo framebufferInfo { };
 		framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
 		framebufferInfo.renderPass = renderPass->getRenderPass ();
 		framebufferInfo.attachmentCount = 1;
@@ -44,7 +45,7 @@ FrameBuffer::~FrameBuffer ()
 	}
 }
 
-const std::vector< VkFramebuffer > &
+const std::vector < VkFramebuffer > &
 FrameBuffer::getFrameBuffers () const
 {
 	return swapChainFramebuffers;

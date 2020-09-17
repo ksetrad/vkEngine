@@ -10,10 +10,11 @@
 
 namespace engine
 {
-	struct Environment {
+	struct Environment
+	{
 		virtual ~Environment ();
 
-		std::vector< Model * > models;
+		std::vector < Model * > models;
 	};
 }// namespace engine
 #endif//ENGINE_ENVIRONMENT_H

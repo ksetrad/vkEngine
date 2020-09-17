@@ -20,9 +20,10 @@
 using namespace glfw;
 
 Handler::Handler (
-        int width,
-        int height,
-        const std::string &title )
+		int width,
+		int height,
+		const std::string &title
+)
 {
 	/// Инициализируем GLFW
 	glfwInit ();
@@ -39,10 +40,11 @@ Handler::Handler (
 
 void
 Handler::mousePress (
-        GLFWwindow *window,
-        int button,
-        int action,
-        int mods )
+		GLFWwindow *window,
+		int button,
+		int action,
+		int mods
+)
 {
 	MouseEvent::MouseButtons button_type;
 	if ( button == GLFW_MOUSE_BUTTON_1 )
@@ -91,9 +93,10 @@ Handler::mousePress (
 
 void
 Handler::mouseMove (
-        GLFWwindow *window,
-        double xpos,
-        double ypos )
+		GLFWwindow *window,
+		double xpos,
+		double ypos
+)
 {
 	currentPos = { xpos, ypos };
 	mouseMoveEvent ( MouseEvent ( MouseEvent::NOBUTTON, currentPos, MouseEvent::NOMODE ) );

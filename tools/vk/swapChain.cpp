@@ -8,13 +8,14 @@
 using namespace vk;
 
 SwapChain::SwapChain (
-        Instance *instance,
-        PhysicalDevice *physicalDevice,
-        LogicalDevice *logicalDevice ) :
-    logicalDevice ( logicalDevice )
+		Instance *instance,
+		PhysicalDevice *physicalDevice,
+		LogicalDevice *logicalDevice
+) :
+		logicalDevice ( logicalDevice )
 {
 	Surface::Details details = instance->getSurface ()->getSwapChainDetails (
-	        physicalDevice->getPhysicalDevice () );
+			physicalDevice->getPhysicalDevice () );
 
 	/// Вычисляем параметры
 	surfaceFormat = chooseSwapSurfaceFormat ( details.formats );
@@ -29,7 +30,7 @@ SwapChain::SwapChain (
 		imageCount = details.capabilities.maxImageCount;
 	}
 
-	VkSwapchainCreateInfoKHR createInfo {};
+	VkSwapchainCreateInfoKHR createInfo { };
 	createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
 	/// Устанавливаем используемую поверхность отрисовки
 	createInfo.surface = instance->getSurface ()->getSurface ();
@@ -89,9 +90,11 @@ SwapChain::SwapChain (
 
 	/// Формируем массив для хранения представлений изображений цепочки смены кадров
 	swapChainImagesView.resize ( swapChainImages.size () );
-	for ( size_t i = 0; i < swapChainImages.size (); i++ )
+	for ( size_t i = 0 ;
+	      i < swapChainImages.size () ;
+	      i++ )
 	{
-		VkImageViewCreateInfo imageViewCreateInfo {};
+		VkImageViewCreateInfo imageViewCreateInfo { };
 		imageViewCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		/// Устанавливаем изображение для которого формируется представление
 		imageViewCreateInfo.image = swapChainImages[ i ];
@@ -118,7 +121,8 @@ SwapChain::SwapChain (
 		imageViewCreateInfo.subresourceRange.layerCount = 1;
 
 		/// Формируем представление изображения
-		if ( vkCreateImageView ( logicalDevice->getDevice (), &imageViewCreateInfo, nullptr, &swapChainImagesView[ i ] ) != VK_SUCCESS )
+		if ( vkCreateImageView ( logicalDevice->getDevice (), &imageViewCreateInfo, nullptr,
+		                         &swapChainImagesView[ i ] ) != VK_SUCCESS )
 		{
 			throw vulkan_exception ( "failed to create image views!" );
 		}
@@ -126,7 +130,7 @@ SwapChain::SwapChain (
 }
 
 VkSurfaceFormatKHR
-SwapChain::chooseSwapSurfaceFormat ( const std::vector< VkSurfaceFormatKHR > &availableFormats )
+SwapChain::chooseSwapSurfaceFormat ( const std::vector < VkSurfaceFormatKHR > &availableFormats )
 {
 
 	for ( const auto &availableFormat : availableFormats )
@@ -141,7 +145,7 @@ SwapChain::chooseSwapSurfaceFormat ( const std::vector< VkSurfaceFormatKHR > &av
 }
 
 VkPresentModeKHR
-SwapChain::chooseSwapPresentMode ( const std::vector< VkPresentModeKHR > &availablePresentModes )
+SwapChain::chooseSwapPresentMode ( const std::vector < VkPresentModeKHR > &availablePresentModes )
 {
 	for ( const auto &availablePresentMode : availablePresentModes )
 	{
@@ -164,8 +168,8 @@ SwapChain::chooseSwapExtent ( const VkSurfaceCapabilitiesKHR &capabilities )
 	else
 	{
 		VkExtent2D actualExtent = {
-		        static_cast< uint32_t > ( Configuration::display ().resolution.width ),
-		        static_cast< uint32_t > ( Configuration::display ().resolution.height ) };
+				static_cast< uint32_t > ( Configuration::display ().resolution.width ),
+				static_cast< uint32_t > ( Configuration::display ().resolution.height ) };
 
 		actualExtent.width = std::max ( capabilities.minImageExtent.width,
 		                                std::min ( capabilities.maxImageExtent.width, actualExtent.width ) );
@@ -200,7 +204,7 @@ SwapChain::getExtent () const
 	return extent;
 }
 
-const std::vector< VkImageView > &
+const std::vector < VkImageView > &
 SwapChain::getImagesView () const
 {
 	return swapChainImagesView;

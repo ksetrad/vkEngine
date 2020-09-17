@@ -8,12 +8,12 @@
 using namespace vk;
 
 PipeLine::PipeLine ( vk::LogicalDevice *device ) :
-    device ( device )
+		device ( device )
 {
 }
 
 void
-PipeLine::setShaderStages ( std::vector< pipeline::ShaderModule * > new_stages )
+PipeLine::setShaderStages ( std::vector < pipeline::ShaderModule * > new_stages )
 {
 	stages = std::move ( new_stages );
 }
@@ -21,14 +21,14 @@ PipeLine::setShaderStages ( std::vector< pipeline::ShaderModule * > new_stages )
 void
 PipeLine::initialize ( VkRenderPass const &renderPass )
 {
-	std::vector< VkPipelineShaderStageCreateInfo > stagesInfo;
+	std::vector < VkPipelineShaderStageCreateInfo > stagesInfo;
 	/// Формируем массив структур описания шейдерных стадий
 	for ( const auto &stage : stages )
 	{
 		stagesInfo.push_back ( stage->getShaderStage () );
 	}
 
-	VkGraphicsPipelineCreateInfo pipelineInfo {};
+	VkGraphicsPipelineCreateInfo pipelineInfo { };
 	pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
 	/// Количество шейдерных стадий в массиве
 	pipelineInfo.stageCount = stagesInfo.size ();

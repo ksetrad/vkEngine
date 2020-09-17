@@ -10,18 +10,21 @@
 
 namespace engine
 {
-    class ModelFactory
-        {
-        public:
+	class ModelFactory
+	{
+		public:
 
-            ModelFactory(vk::Core* core, vk::CommandPool* commandPool);
+			ModelFactory (
+					vk::Core *core,
+					vk::CommandPool *commandPool
+			);
 
-            Model*
-            openModel(const std::string & path);
+			Model *
+			openModel ( const std::string &path );
 
-        private:
-            vk::Core* core;
-            vk::CommandPool * commandPool;
-        };
+		private:
+			vk::Core *core;
+			vk::CommandPool *commandPool;
+	};
 }
 #endif //ENGINE_MODELFACTORY_H

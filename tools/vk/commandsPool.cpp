@@ -8,9 +8,9 @@
 using namespace vk;
 
 CommandPool::CommandPool ( Core *core ) :
-    core ( core )
+		core ( core )
 {
-	VkCommandPoolCreateInfo poolInfo {};
+	VkCommandPoolCreateInfo poolInfo { };
 	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	poolInfo.queueFamilyIndex = core->getPhysicalDevice ()->getIndices ().graphicsFamily.value ();
 	poolInfo.flags = 0;
@@ -25,7 +25,8 @@ CommandPool::CommandPool ( Core *core ) :
 
 CommandPool::~CommandPool ()
 {
-	vkFreeCommandBuffers ( core->getLogicalDevice ()->getDevice (), commandPool, static_cast< uint32_t > ( commandBuffers.size () ), commandBuffers.data () );
+	vkFreeCommandBuffers ( core->getLogicalDevice ()->getDevice (), commandPool,
+	                       static_cast< uint32_t > ( commandBuffers.size () ), commandBuffers.data () );
 	vkDestroyCommandPool ( core->getLogicalDevice ()->getDevice (), commandPool, nullptr );
 }
 
@@ -33,7 +34,7 @@ void
 CommandPool::cmdTransferBuffer ( const BufferObject &buffer )
 {
 	/// Инициализируем структуру создания нового командрого буфера
-	VkCommandBufferAllocateInfo allocInfo {};
+	VkCommandBufferAllocateInfo allocInfo { };
 	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	allocInfo.commandPool = commandPool;
@@ -44,7 +45,7 @@ CommandPool::cmdTransferBuffer ( const BufferObject &buffer )
 	vkAllocateCommandBuffers ( core->getLogicalDevice ()->getDevice (), &allocInfo, &commandBuffer );
 
 	/// Настраиваем командный буфер
-	VkCommandBufferBeginInfo beginInfo {};
+	VkCommandBufferBeginInfo beginInfo { };
 	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 	/// Сообщаем что буфер будет вызван только один раз
 	beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
@@ -52,14 +53,14 @@ CommandPool::cmdTransferBuffer ( const BufferObject &buffer )
 	/// Формируем команды в буфере
 	vkBeginCommandBuffer ( commandBuffer, &beginInfo );
 
-	VkBufferCopy copyRegion {};
+	VkBufferCopy copyRegion { };
 	copyRegion.size = buffer.size ();
 	vkCmdCopyBuffer ( commandBuffer, buffer.getStagingBuffer (), buffer.getBuffer (), 1, &copyRegion );
 
 	vkEndCommandBuffer ( commandBuffer );
 
 	/// Готовим информацию к отправке в очередь
-	VkSubmitInfo submitInfo {};
+	VkSubmitInfo submitInfo { };
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.commandBufferCount = 1;
 	submitInfo.pCommandBuffers = &commandBuffer;
@@ -75,16 +76,17 @@ CommandPool::cmdTransferBuffer ( const BufferObject &buffer )
 
 void
 CommandPool::createCommandBuffer (
-        SwapChain *swapChain,
-        RenderPass *renderPass,
-        FrameBuffer *frameBuffer,
-        DescriptorsPool *pool )
+		SwapChain *swapChain,
+		RenderPass *renderPass,
+		FrameBuffer *frameBuffer,
+		DescriptorsPool *pool
+)
 {
 	/// Инициализируем массив командных буферов
 	commandBuffers.resize ( core->getSwapChain ()->getImagesView ().size () );
 
 	/// Заполняем структуру для выделения памяти под командные буферы
-	VkCommandBufferAllocateInfo allocInfo {};
+	VkCommandBufferAllocateInfo allocInfo { };
 	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
 	allocInfo.commandPool = commandPool;
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
@@ -96,12 +98,12 @@ CommandPool::createCommandBuffer (
 	{
 		vulkan_exception ( "failed to allocate command buffers!" );
 	}
-	for ( size_t i = 0;
-	      i < commandBuffers.size ();
+	for ( size_t i = 0 ;
+	      i < commandBuffers.size () ;
 	      i++ )
 	{
 		/// Начинаем заполнять буфер
-		VkCommandBufferBeginInfo beginInfo {};
+		VkCommandBufferBeginInfo beginInfo { };
 		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
 		if ( vkBeginCommandBuffer ( commandBuffers[ i ], &beginInfo ) != VK_SUCCESS )
@@ -109,7 +111,7 @@ CommandPool::createCommandBuffer (
 			throw vulkan_exception ( "failed to begin recording command buffer!" );
 		}
 
-		VkRenderPassBeginInfo renderPassInfo {};
+		VkRenderPassBeginInfo renderPassInfo { };
 		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 		renderPassInfo.renderPass = renderPass->getRenderPass ();
 		/// Используемые буферы в проходе рендеринга
@@ -134,7 +136,7 @@ CommandPool::createCommandBuffer (
 	}
 }
 
-const std::vector< VkCommandBuffer > &
+const std::vector < VkCommandBuffer > &
 CommandPool::getCommandBuffers () const
 {
 	return commandBuffers;

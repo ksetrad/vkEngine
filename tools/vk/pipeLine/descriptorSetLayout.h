@@ -17,21 +17,21 @@ namespace vk
 		class DescriptorSetLayout
 		{
 			public:
-			/// Конструктор
-			/// \param device логическое устройство
-			DescriptorSetLayout ( LogicalDevice *device );
+				/// Конструктор
+				/// \param device логическое устройство
+				DescriptorSetLayout ( LogicalDevice *device );
 
-			/// Получить указатель на макет набора дескрипторов
-			/// \return указатель
-			const VkDescriptorSetLayout *
-			getLayout () const;
+				/// Получить указатель на макет набора дескрипторов
+				/// \return указатель
+				const VkDescriptorSetLayout *
+				getLayout () const;
 
 			private:
-			/// Структура параметров макета
-			VkDescriptorSetLayout layout;
+				/// Структура параметров макета
+				VkDescriptorSetLayout layout;
 
-			/// Привязка макета дескрипторов
-			VkDescriptorSetLayoutBinding uboLayoutBinding {};
+				/// Привязка макета дескрипторов
+				VkDescriptorSetLayoutBinding uboLayoutBinding { };
 		};
 	}// namespace pipeline
 }// namespace vk

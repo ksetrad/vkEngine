@@ -8,13 +8,13 @@
 using namespace vk;
 
 DescriptorsPool::DescriptorsPool ( vk::Core *core ) :
-    core ( core )
+		core ( core )
 {
-	VkDescriptorPoolSize poolSize {};
+	VkDescriptorPoolSize poolSize { };
 	poolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 	poolSize.descriptorCount = static_cast< uint32_t > ( core->getSwapChain ()->getImagesView ().size () );
 
-	VkDescriptorPoolCreateInfo poolInfo {};
+	VkDescriptorPoolCreateInfo poolInfo { };
 	poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	poolInfo.poolSizeCount = 1;
 	poolInfo.pPoolSizes = &poolSize;
@@ -34,13 +34,14 @@ DescriptorsPool::~DescriptorsPool ()
 
 void
 DescriptorsPool::createDescritorSets (
-        const std::vector< VkBuffer > &ubo_vector,
-        const pipeline::PipeLineLayout *layout,
-        const int &size )
+		const std::vector < VkBuffer > &ubo_vector,
+		const pipeline::PipeLineLayout *layout,
+		const int &size
+)
 {
-	std::vector< VkDescriptorSetLayout > layouts ( core->getSwapChain ()->getImagesView ().size (),
-	                                               *layout->getDescriptorSetLayout ().getLayout () );
-	VkDescriptorSetAllocateInfo allocInfo {};
+	std::vector < VkDescriptorSetLayout > layouts ( core->getSwapChain ()->getImagesView ().size (),
+	                                                *layout->getDescriptorSetLayout ().getLayout () );
+	VkDescriptorSetAllocateInfo allocInfo { };
 	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 	allocInfo.descriptorPool = descriptorPool;
 	allocInfo.descriptorSetCount = static_cast< uint32_t > ( core->getSwapChain ()->getImagesView ().size () );
@@ -54,16 +55,16 @@ DescriptorsPool::createDescritorSets (
 		throw vulkan_exception ( "failed to allocate descriptor sets!" );
 	}
 
-	for ( size_t i = 0;
-	      i < descriptorSets.size ();
+	for ( size_t i = 0 ;
+	      i < descriptorSets.size () ;
 	      i++ )
 	{
-		VkDescriptorBufferInfo bufferInfo {};
+		VkDescriptorBufferInfo bufferInfo { };
 		bufferInfo.buffer = ubo_vector[ i ];
 		bufferInfo.offset = 0;
 		bufferInfo.range = size;
 
-		VkWriteDescriptorSet descriptorWrite {};
+		VkWriteDescriptorSet descriptorWrite { };
 		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		descriptorWrite.dstSet = descriptorSets[ i ];
 		descriptorWrite.dstBinding = 0;
@@ -77,7 +78,7 @@ DescriptorsPool::createDescritorSets (
 	}
 }
 
-const std::vector< VkDescriptorSet > &
+const std::vector < VkDescriptorSet > &
 DescriptorsPool::getDescriptorSets () const
 {
 	return descriptorSets;

@@ -14,33 +14,35 @@ namespace vk
 	class UniformBufferSet
 	{
 		public:
-		/// Буффер глобальных объектов
-		/// \param core ядро Vulkan
-		/// \param size размер буфера
-		UniformBufferSet (
-		        Core *core,
-		        const size_t &size );
+			/// Буффер глобальных объектов
+			/// \param core ядро Vulkan
+			/// \param size размер буфера
+			UniformBufferSet (
+					Core *core,
+					const size_t &size
+			);
 
-		~UniformBufferSet ();
+			~UniformBufferSet ();
 
-		const std::vector< VkBuffer > &
-		getBuffers () const;
+			const std::vector < VkBuffer > &
+			getBuffers () const;
 
-		void
-		write (
-		        const int &id,
-		        void *data,
-		        int size );
+			void
+			write (
+					const int &id,
+					void *data,
+					int size
+			);
 
 		private:
-		/// Логический интерфейс GPU
-		LogicalDevice *device;
+			/// Логический интерфейс GPU
+			LogicalDevice *device;
 
-		/// Массив объектов буффера
-		std::vector< VkBuffer > buffers;
+			/// Массив объектов буффера
+			std::vector < VkBuffer > buffers;
 
-		/// Массивы буфферной памяти
-		std::vector< VkDeviceMemory > buffersMemmory;
+			/// Массивы буфферной памяти
+			std::vector < VkDeviceMemory > buffersMemmory;
 	};
 }// namespace vk
 #endif//TOOLS_VK_UNIFORMBUFFERSET_H

@@ -17,25 +17,25 @@ namespace vk
 		class PipeLineLayout
 		{
 			public:
-			/// Конструктор логическок устройство
-			/// \param logicalDevice указатель
-			PipeLineLayout ( LogicalDevice *logicalDevice );
+				/// Конструктор логическок устройство
+				/// \param logicalDevice указатель
+				PipeLineLayout ( LogicalDevice *logicalDevice );
 
-			virtual ~PipeLineLayout ();
+				virtual ~PipeLineLayout ();
 
-			/// Получить макет
-			/// \return макет
-			const VkPipelineLayout &
-			getLayout () const;
+				/// Получить макет
+				/// \return макет
+				const VkPipelineLayout &
+				getLayout () const;
 
-			const DescriptorSetLayout &
-			getDescriptorSetLayout () const;
+				const DescriptorSetLayout &
+				getDescriptorSetLayout () const;
 
 			private:
-			LogicalDevice *logicalDevice;
-			pipeline::DescriptorSetLayout descriptorSetLayout;
-			/// Макет конвеера
-			VkPipelineLayout layout;
+				LogicalDevice *logicalDevice;
+				pipeline::DescriptorSetLayout descriptorSetLayout;
+				/// Макет конвеера
+				VkPipelineLayout layout;
 		};
 	}// namespace pipeline
 }// namespace vk

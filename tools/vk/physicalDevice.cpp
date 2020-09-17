@@ -12,7 +12,7 @@
 using namespace vk;
 
 PhysicalDevice::PhysicalDevice ( Instance *instance ) :
-    instance ( instance )
+		instance ( instance )
 {
 	/// Выбираем подходящее графическое устройство
 	physicalDevice = findDevice ();
@@ -31,11 +31,11 @@ PhysicalDevice::findDevice ()
 	vkEnumeratePhysicalDevices ( instance->getInstance (), &deviceCount, nullptr );
 	verify ( ( deviceCount != 0 ), "device not found" );
 	/// Заполняем массив устройств
-	std::vector< VkPhysicalDevice > devices ( deviceCount );
+	std::vector < VkPhysicalDevice > devices ( deviceCount );
 	vkEnumeratePhysicalDevices ( instance->getInstance (), &deviceCount, devices.data () );
 	/// Ищем в списке устройств подходящее
-	for ( int i = 0;
-	      i < deviceCount;
+	for ( int i = 0 ;
+	      i < deviceCount ;
 	      i++ )
 	{
 		/// Получаем свойства устройства
@@ -46,7 +46,8 @@ PhysicalDevice::findDevice ()
 		vkGetPhysicalDeviceFeatures ( devices[ i ], &deviceFeatures );
 		Logger::message ( Logger::info, Logger::Alias ( "FULL" ), "find GPU ", deviceProperties.deviceName );
 		/// Проверяем запрошенные параметры GPU
-		if ( deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && deviceFeatures.geometryShader && checkExtensionSupport ( devices[ i ] ) &&
+		if ( deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && deviceFeatures.geometryShader &&
+		     checkExtensionSupport ( devices[ i ] ) &&
 		     instance->getSurface ()->getSwapChainDetails ( devices[ i ] ).isComplete () )
 		{
 			return devices[ i ];
@@ -62,7 +63,7 @@ PhysicalDevice::findQueueIndices ()
 	uint32_t queueFamilyCount = 0;
 	vkGetPhysicalDeviceQueueFamilyProperties ( physicalDevice, &queueFamilyCount, nullptr );
 
-	std::vector< VkQueueFamilyProperties > queueFamilies ( queueFamilyCount );
+	std::vector < VkQueueFamilyProperties > queueFamilies ( queueFamilyCount );
 	vkGetPhysicalDeviceQueueFamilyProperties ( physicalDevice, &queueFamilyCount, queueFamilies.data () );
 	/// Определяем индексы семейств очередей
 	int i = 0;
@@ -94,12 +95,12 @@ PhysicalDevice::checkExtensionSupport ( VkPhysicalDevice const &device )
 	uint32_t extensionCount;
 	vkEnumerateDeviceExtensionProperties ( device, nullptr, &extensionCount, nullptr );
 
-	std::vector< VkExtensionProperties > availableExtensions ( extensionCount );
+	std::vector < VkExtensionProperties > availableExtensions ( extensionCount );
 	vkEnumerateDeviceExtensionProperties ( device, nullptr, &extensionCount, availableExtensions.data () );
 
 	/// Формируем набор запрошенных расширений
-	std::set< std::string > requiredExtensions ( Configuration::vulkan ().deviceExtension.begin (),
-	                                             Configuration::vulkan ().deviceExtension.end () );
+	std::set < std::string > requiredExtensions ( Configuration::vulkan ().deviceExtension.begin (),
+	                                              Configuration::vulkan ().deviceExtension.end () );
 
 	/// Удаляем из набора найденые расширения
 	for ( const auto &extension : availableExtensions )

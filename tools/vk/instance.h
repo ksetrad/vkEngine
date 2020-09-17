@@ -18,39 +18,39 @@
 #include "tools/vk/validationLayers.h"
 
 #ifndef TOOLS_VK_INSTANCE_H
-	#define TOOLS_VK_INSTANCE_H
+#define TOOLS_VK_INSTANCE_H
 namespace vk
 {
 	class Instance
 	{
 		public:
-		/// Конструктор
-		/// \param window Окно вывода
-		explicit Instance ( GLFWwindow *window );
+			/// Конструктор
+			/// \param window Окно вывода
+			explicit Instance ( GLFWwindow *window );
 
-		/// Деструктор
-		~Instance ();
+			/// Деструктор
+			~Instance ();
 
-		/// Получить указатель на экземпляр Vulkan
-		/// \return Указатель
-		VkInstance
-		getInstance () const;
+			/// Получить указатель на экземпляр Vulkan
+			/// \return Указатель
+			VkInstance
+			getInstance () const;
 
-		Surface *
-		getSurface () const;
+			Surface *
+			getSurface () const;
 
 		private:
-		/// Экземпляр Vulkan
-		VkInstance instance;
+			/// Экземпляр Vulkan
+			VkInstance instance;
 
-	#ifdef VULKAN_DEBUG
+			#ifdef VULKAN_DEBUG
 
-		/// Слои проверки
-		ValidationLayers *validationLayers;
+			/// Слои проверки
+			ValidationLayers *validationLayers;
 
-	#endif
-		/// Поверхность отрисовки
-		Surface *surface;
+			#endif
+			/// Поверхность отрисовки
+			Surface *surface;
 	};
 }// namespace vk
 #endif//TOOLS_VK_INSTANCE_H

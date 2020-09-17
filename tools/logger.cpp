@@ -13,11 +13,11 @@
 #include "tools/exception.h"
 #include "tools/logger.h"
 
-std::unique_ptr< Logger > Logger::logger ( nullptr );
+std::unique_ptr < Logger > Logger::logger ( nullptr );
 
 Logger::Logger ( std::string path ) :
-    m_default_buffer ( nullptr ),
-    m_path ( std::move ( path ) )
+		m_default_buffer ( nullptr ),
+		m_path ( std::move ( path ) )
 {
 	/// Инициализируются текстовые расшифровки уровней информативности
 	m_levels.emplace ( info, "INFO" );
@@ -29,9 +29,9 @@ Logger::Logger ( std::string path ) :
 	auto current_time = std::chrono::system_clock::to_time_t ( std::chrono::system_clock::now () );
 	auto time = std::localtime ( &current_time );
 	std::stringstream fileName;
-	fileName << m_path + "/log" << time->tm_year + 1900 << '_' << time->tm_mon + 1 << '_' << time->tm_mday
-	         << '_'
-	         << time->tm_hour << '_' << time->tm_min << '_' << time->tm_sec << ".txt";
+	fileName<<m_path + "/log"<<time->tm_year + 1900<<'_'<<time->tm_mon + 1<<'_'<<time->tm_mday
+	        <<'_'
+	        <<time->tm_hour<<'_'<<time->tm_min<<'_'<<time->tm_sec<<".txt";
 	m_log_file.open ( fileName.str () );
 	m_default_buffer = m_log_file.rdbuf ();
 }
@@ -49,7 +49,7 @@ Logger::close ()
 	instance ()->m_log_file.close ();
 	/// Закрываются журналы компонентов (если такие имеются)
 	for (
-	        auto &component : instance ()->m_components )
+		auto &component : instance ()->m_components )
 	{
 		if ( component.second.first.personalLog )
 		{
@@ -60,17 +60,18 @@ Logger::close ()
 
 std::string
 Logger::buildTitle (
-        const Logger::Level &level )
+		const Logger::Level &level
+)
 {
 	/// Формируется заголовк сообщения [год-месяц-день хх:хх:хх] (уровень информативности сообщения) [идентификатор потока]
 	std::string title;
 	auto current_time = std::chrono::system_clock::to_time_t ( std::chrono::system_clock::now () );
 	auto time = std::localtime ( &current_time );
 	std::stringstream date;
-	date << '[' << time->tm_year + 1900 << '-' << time->tm_mon + 1 << '-' << time->tm_mday << '\040'
-	     << time->tm_hour
-	     << ':'
-	     << time->tm_min << ':' << time->tm_sec << ']' << '\040';
+	date<<'['<<time->tm_year + 1900<<'-'<<time->tm_mon + 1<<'-'<<time->tm_mday<<'\040'
+	    <<time->tm_hour
+	    <<':'
+	    <<time->tm_min<<':'<<time->tm_sec<<']'<<'\040';
 	title += ( date.str () + '(' + m_levels.at ( level ) + ')' + '\040' +
 	           getThreadIndex ( std::this_thread::get_id () ) ) +
 	         '\040';
@@ -82,13 +83,13 @@ Logger::getThreadIndex ( const std::thread::id &id )
 {
 	/// Каждому новому потоку, поялвяющемуся в логере присваивается следующий порядковый номер
 	static std::size_t nextIndex = 0;
-	static std::map< std::thread::id, std::string > ids;
+	static std::map < std::thread::id, std::string > ids;
 	if ( ids.find ( id ) == ids.end () )
 	{
 		std::stringstream strs;
-		strs << "[Thread#" << nextIndex++ << "]";
-		Logger::instance ()->m_log_file << " Add thread " << std::dec << nextIndex - 1;
-		Logger::instance ()->m_log_file << " as " << std::hex << id << std::dec << '\n';
+		strs<<"[Thread#"<<nextIndex++<<"]";
+		Logger::instance ()->m_log_file<<" Add thread "<<std::dec<<nextIndex - 1;
+		Logger::instance ()->m_log_file<<" as "<<std::hex<<id<<std::dec<<'\n';
 		Logger::instance ()->m_log_file.flush ();
 		ids[ id ] = strs.str ();
 	}
@@ -98,10 +99,11 @@ Logger::getThreadIndex ( const std::thread::id &id )
 
 void
 Logger::addComponent (
-        std::string name,
-        const std::string &alias,
-        const Level &verbosity,
-        const bool &personalLog )
+		std::string name,
+		const std::string &alias,
+		const Level &verbosity,
+		const bool &personalLog
+)
 {
 	/// Проверяется наличие модуля с данным псевдонимом в журнале
 	if ( instance ()->m_components.find ( Alias ( alias ) ) != instance ()->m_components.end () )
@@ -116,25 +118,25 @@ Logger::addComponent (
 		auto current_time = std::chrono::system_clock::to_time_t ( std::chrono::system_clock::now () );
 		auto time = std::localtime ( &current_time );
 		std::stringstream fileName;
-		fileName << instance ()->m_path + "/" << alias << time->tm_year + 1900 << '_' << time->tm_mon + 1 << '_'
-		         << time->tm_mday
-		         << '_'
-		         << time->tm_hour << '_' << time->tm_min << '_' << time->tm_sec << ".txt";
+		fileName<<instance ()->m_path + "/"<<alias<<time->tm_year + 1900<<'_'<<time->tm_mon + 1<<'_'
+		        <<time->tm_mday
+		        <<'_'
+		        <<time->tm_hour<<'_'<<time->tm_min<<'_'<<time->tm_sec<<".txt";
 		/// Модуль сохраняется в журнале, а также открывается файловый поток модуля
 		instance ()->m_components.emplace ( Alias ( alias ),
 		                                    std::make_pair (
-		                                            Component ( std::move ( name ), alias, verbosity,
-		                                                        personalLog ),
-		                                            std::ofstream ( fileName.str () ) ) );
+				                                    Component ( std::move ( name ), alias, verbosity,
+				                                                personalLog ),
+				                                    std::ofstream ( fileName.str () ) ) );
 	}
 	else
 	{
 		/// Компоненты без персонализации лог файла используют стандартный журнал
 		instance ()->m_components.emplace ( Alias ( alias ),
 		                                    std::make_pair (
-		                                            Component ( std::move ( name ), alias, verbosity,
-		                                                        personalLog ),
-		                                            std::ofstream () ) );
+				                                    Component ( std::move ( name ), alias, verbosity,
+				                                                personalLog ),
+				                                    std::ofstream () ) );
 	}
 }
 
@@ -156,7 +158,7 @@ Logger::checkDirContent ( const std::string &keyWord )
 	DIR *pDir;
 	dirent *entry;
 	pDir = opendir ( m_path.c_str () );
-	std::map< Date, std::string > candidates;
+	std::map < Date, std::string > candidates;
 	while ( ( entry = readdir ( pDir ) ) )
 	{
 		if ( strcmp ( entry->d_name, "." ) != 0 && strcmp ( entry->d_name, ".." ) != 0 )
@@ -187,14 +189,14 @@ Logger::setGlobalDirPath ( const std::string &path )
 {
 	/// ВНИМАНИЕ! Рекомендуется вызывать данный метод первым в программе
 	/// При установке новой директории хранения осуществляется формирование нового журнала.
-	logger = std::unique_ptr< Logger > ( new Logger ( path ) );
+	logger = std::unique_ptr < Logger > ( new Logger ( path ) );
 }
 
 void
 Logger::resetBufferToDefault ()
 {
 	/// Захват мьютекса
-	std::lock_guard< std::mutex > guard ( instance ()->mutex );
+	std::lock_guard < std::mutex > guard ( instance ()->mutex );
 	static_cast< std::ostream * > ( &instance ()->m_log_file )->rdbuf ( instance ()->m_default_buffer );
 }
 
@@ -281,7 +283,8 @@ Logger::Date::operator> ( const Logger::Date &rhs ) const
 }
 
 Logger::Date::Date (
-        const std::string &str )
+		const std::string &str
+)
 {
 	uint32_t first = str.find ( '_' );
 	year = std::stoi ( str.substr ( str.find ( '2' ), first ) );

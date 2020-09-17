@@ -8,10 +8,11 @@
 using namespace engine;
 
 ModelFactory::ModelFactory (
-        vk::Core *core,
-        vk::CommandPool *commandPool ) :
-    core ( core ),
-    commandPool ( commandPool )
+		vk::Core *core,
+		vk::CommandPool *commandPool
+) :
+		core ( core ),
+		commandPool ( commandPool )
 {
 }
 
@@ -22,8 +23,8 @@ ModelFactory::openModel ( const std::string &path )
 	std::ifstream stream = std::ifstream { folder + path, std::ios::binary };
 
 	//TODO учет ошибок загрузки stream.exceptions(std::ios_base::badbit);
-	std::vector< vk::Vertex > vertexes;
-	std::vector< unsigned int > indices;
+	std::vector < vk::Vertex > vertexes;
+	std::vector < unsigned int > indices;
 
 	uint64_t vertSize, indSize;
 	if ( stream.is_open () )

@@ -8,9 +8,10 @@
 using namespace vk;
 
 Surface::Surface (
-        Instance *instance,
-        GLFWwindow *window ) :
-    instance ( instance )
+		Instance *instance,
+		GLFWwindow *window
+) :
+		instance ( instance )
 {
 	/// Создаем поверхность отрисовки
 	if ( glfwCreateWindowSurface ( instance->getInstance (), window, nullptr, &surface ) != VK_SUCCESS )
@@ -26,8 +27,9 @@ Surface::~Surface ()
 
 bool
 Surface::checkPresent (
-        const VkPhysicalDevice &physicalDevice,
-        const int &queueId )
+		const VkPhysicalDevice &physicalDevice,
+		const int &queueId
+)
 {
 	VkBool32 presentSupport;
 	vkGetPhysicalDeviceSurfaceSupportKHR ( physicalDevice, queueId, surface, &presentSupport );
@@ -61,7 +63,8 @@ Surface::getSwapChainDetails ( const VkPhysicalDevice &physicalDevice )
 	if ( presentModeCount != 0 )
 	{
 		details.presentModes.resize ( presentModeCount );
-		vkGetPhysicalDeviceSurfacePresentModesKHR ( physicalDevice, surface, &presentModeCount, details.presentModes.data () );
+		vkGetPhysicalDeviceSurfacePresentModesKHR ( physicalDevice, surface, &presentModeCount,
+		                                            details.presentModes.data () );
 	}
 
 	/// Вернуть результаты

@@ -13,30 +13,31 @@ namespace vk::pipeline
 	class AssemblyState
 	{
 		public:
-		/// Типы примитивов
-		enum Types
-		{
-			/// Точки
-			POINTS,
-			/// Линии
-			LINES,
-			/// Треугольник
-			TRIANGLES
-		};
+			/// Типы примитивов
+			enum Types
+			{
+				/// Точки
+				POINTS,
+				/// Линии
+				LINES,
+				/// Треугольник
+				TRIANGLES
+			};
 
-		/// Конструктор
-		/// \param types тип преобразования вершин
-		explicit AssemblyState (
-		        const Types &types );
+			/// Конструктор
+			/// \param types тип преобразования вершин
+			explicit AssemblyState (
+					const Types &types
+			);
 
-		/// Получить указатель на структуру
-		/// \return указатель
-		VkPipelineInputAssemblyStateCreateInfo *
-		getInfo ();
+			/// Получить указатель на структуру
+			/// \return указатель
+			VkPipelineInputAssemblyStateCreateInfo *
+			getInfo ();
 
 		private:
-		/// Структура с инофрмацией о функционале
-		VkPipelineInputAssemblyStateCreateInfo createInfo;
+			/// Структура с инофрмацией о функционале
+			VkPipelineInputAssemblyStateCreateInfo createInfo;
 	};
 }// namespace vk::pipeline
 #endif//TOOLS_VK_PIPELINE_ASSEMBLYSTATE_H

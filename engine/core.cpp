@@ -13,18 +13,18 @@ using namespace engine;
 using namespace vk::pipeline;
 
 Core::Core () :
-    glfw::Handler ( Configuration::display ().resolution.width, Configuration::display ().resolution.height,
-                    Configuration::vulkan ().appName ),
-    core ( new vk::Core ( m_window ) ),
-    mainRenderPass ( new MainRenderPass ( core ) ),
-    mainPipeLine ( new vk::PipeLine ( core->getLogicalDevice () ) )
+		glfw::Handler ( Configuration::display ().resolution.width, Configuration::display ().resolution.height,
+		                Configuration::vulkan ().appName ),
+		core ( new vk::Core ( m_window ) ),
+		mainRenderPass ( new MainRenderPass ( core ) ),
+		mainPipeLine ( new vk::PipeLine ( core->getLogicalDevice () ) )
 {
 	/// Формируем конвеер
-	std::vector< ShaderModule * > stages;
+	std::vector < ShaderModule * > stages;
 	stages.emplace_back (
-	        new ShaderModule ( "./shaders/shader.vert.spv", core->getLogicalDevice (), ShaderModule::Vertex ) );
+			new ShaderModule ( "./shaders/shader.vert.spv", core->getLogicalDevice (), ShaderModule::Vertex ) );
 	stages.emplace_back (
-	        new ShaderModule ( "./shaders/shader.frag.spv", core->getLogicalDevice (), ShaderModule::Fragment ) );
+			new ShaderModule ( "./shaders/shader.frag.spv", core->getLogicalDevice (), ShaderModule::Fragment ) );
 	mainPipeLine->setShaderStages ( stages );
 	mainPipeLine->setAssemblyState ( AssemblyState ( AssemblyState::TRIANGLES ) );
 	mainPipeLine->setViewPortState ( new ViewPortState ( core->getSwapChain () ) );
@@ -56,8 +56,8 @@ Core::Core () :
 	renderFinishedSemaphores.resize ( frame_number );
 	imageAvailableSemaphores.resize ( frame_number );
 	inFlightFences.resize ( frame_number );
-	for ( int i = 0;
-	      i < frame_number;
+	for ( int i = 0 ;
+	      i < frame_number ;
 	      i++ )
 	{
 		renderFinishedSemaphores[ i ] = new vk::Semaphore ( core );
@@ -80,8 +80,8 @@ Core::~Core ()
 	delete descriptorsPool;
 	delete mainRenderPass;
 
-	for ( int i = 0;
-	      i < frame_number;
+	for ( int i = 0 ;
+	      i < frame_number ;
 	      i++ )
 	{
 		delete renderFinishedSemaphores[ i ];
@@ -122,7 +122,7 @@ Core::mainLoop ()
 		imagesInFlight[ index ] = inFlightFences[ currentFrameId ];
 
 
-		VkSubmitInfo submitInfo {};
+		VkSubmitInfo submitInfo { };
 		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 
 		/// Этот семофор мы ждет
@@ -151,7 +151,7 @@ Core::mainLoop ()
 			throw std::runtime_error ( "failed to submit draw command buffer!" );
 		}
 
-		VkPresentInfoKHR presentInfo {};
+		VkPresentInfoKHR presentInfo { };
 		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 
 		presentInfo.waitSemaphoreCount = 1;
@@ -213,7 +213,7 @@ Core::getImage ( vk::Semaphore *pWaitSemaphore )
 void
 Core::updateUniform ( const int &id )
 {
-	Uniform m_ubo {};
+	Uniform m_ubo { };
 	m_ubo.model = glm::mat4 ( 1 );
 	m_ubo.view = camera.getView ();
 	//	glm::mat4 transpose(1);
@@ -225,7 +225,8 @@ Core::updateUniform ( const int &id )
 	//    m_ubo.view = glm::rotate(m_ubo.view,static_cast<float>(-M_PI_2/6.f),glm::vec3{0,1,0});
 	//	auto vecZZZ = m_ubo.view*glm::vec4{0,0,1,1};
 
-	m_ubo.proj = glm::perspective ( glm::radians ( 45.0f ), core->getSwapChain ()->getExtent ().width / ( float ) core->getSwapChain ()->getExtent ().height,
+	m_ubo.proj = glm::perspective ( glm::radians ( 45.0f ), core->getSwapChain ()->getExtent ().width /
+	                                                        ( float ) core->getSwapChain ()->getExtent ().height,
 	                                0.1f, 10000.0f );
 	m_ubo.proj[ 1 ][ 1 ] *= -1;
 
@@ -246,11 +247,16 @@ void
 Core::mouseReleaseEvent ( const glfw::MouseEvent &event )
 {
 }
+
 void
-Core::switchMouseEvent ( const glfw::MouseEvent &event, const StateType &state )
+Core::switchMouseEvent (
+		const glfw::MouseEvent &event,
+		const StateType &state
+)
 {
 	currentState->switchMouseEvent ( event, state );
 }
+
 void
 Core::selectState ( const StateType &type )
 {

@@ -9,7 +9,7 @@
 Configuration *
 Configuration::instance ()
 {
-	static std::unique_ptr< Configuration > instance { nullptr };
+	static std::unique_ptr < Configuration > instance { nullptr };
 	if ( instance == nullptr )
 	{
 		instance.reset ( new Configuration () );
@@ -41,12 +41,12 @@ Configuration::read ()
 	auto node_validation_layers = root[ "Core" ][ "validation layers" ].as_array ();
 	if ( node_validation_layers != nullptr )
 	{
-		for ( int i = 0;
-		      i < node_validation_layers->size ();
+		for ( int i = 0 ;
+		      i < node_validation_layers->size () ;
 		      i++ )
 		{
 			m_vulkan.validationLayers.emplace_back (
-			        root[ "Core" ][ "validation layers" ][ i ].value_or ( "" ) );
+					root[ "Core" ][ "validation layers" ][ i ].value_or ( "" ) );
 		}
 	}
 	else
@@ -57,12 +57,12 @@ Configuration::read ()
 	auto node_device_extension = root[ "Core" ][ "device extension" ].as_array ();
 	if ( node_device_extension != nullptr )
 	{
-		for ( int i = 0;
-		      i < node_device_extension->size ();
+		for ( int i = 0 ;
+		      i < node_device_extension->size () ;
 		      i++ )
 		{
 			m_vulkan.deviceExtension.emplace_back (
-			        root[ "Core" ][ "device extension" ][ i ].value_or ( "" ) );
+					root[ "Core" ][ "device extension" ][ i ].value_or ( "" ) );
 		}
 	}
 	else
@@ -101,7 +101,7 @@ Configuration::write ()
 	core.insert ( "device extension", deviceExtension );
 	root.insert_or_assign ( "Core", core );
 	std::ofstream fout ( "./configuration.toml" );
-	fout << root << std::endl;
+	fout<<root<<std::endl;
 	fout.close ();
 }
 

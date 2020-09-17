@@ -15,42 +15,43 @@ namespace vk::pipeline
 	class ShaderModule
 	{
 		public:
-		/// Типы шейдерных модулей
-		enum Types
-		{
-			/// Вершинный
-			Vertex,
-			/// Геометрический
-			Geometry,
-			/// Фрагментный
-			Fragment
-		};
+			/// Типы шейдерных модулей
+			enum Types
+			{
+				/// Вершинный
+				Vertex,
+				/// Геометрический
+				Geometry,
+				/// Фрагментный
+				Fragment
+			};
 
-		/// Конструктор
-		/// \param filename имя файла
-		/// \param device логический интерфейс
-		/// \param type тип шейдера
-		explicit ShaderModule (
-		        const std::string &filename,
-		        LogicalDevice *device,
-		        const Types &type );
+			/// Конструктор
+			/// \param filename имя файла
+			/// \param device логический интерфейс
+			/// \param type тип шейдера
+			explicit ShaderModule (
+					const std::string &filename,
+					LogicalDevice *device,
+					const Types &type
+			);
 
-		/// Получить структуру описания шейдерной стадии
-		/// \return Дескриптор
-		[[nodiscard]] const VkPipelineShaderStageCreateInfo &
-		getShaderStage () const;
+			/// Получить структуру описания шейдерной стадии
+			/// \return Дескриптор
+			[[nodiscard]] const VkPipelineShaderStageCreateInfo &
+			getShaderStage () const;
 
-		virtual ~ShaderModule ();
+			virtual ~ShaderModule ();
 
 		private:
-		/// Шейдерный модуль
-		VkShaderModule shaderModule { VK_NULL_HANDLE };
+			/// Шейдерный модуль
+			VkShaderModule shaderModule { VK_NULL_HANDLE };
 
-		/// Описание шейдерной стадии
-		VkPipelineShaderStageCreateInfo shaderStage {};
+			/// Описание шейдерной стадии
+			VkPipelineShaderStageCreateInfo shaderStage { };
 
-		/// Указатель на логический интерфейс
-		LogicalDevice *device;
+			/// Указатель на логический интерфейс
+			LogicalDevice *device;
 	};
 }// namespace vk::pipeline
 #endif//TOOLS_VK_PIPELINE_SHADER_H

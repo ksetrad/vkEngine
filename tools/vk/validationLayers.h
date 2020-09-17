@@ -14,48 +14,49 @@ namespace vk
 	class ValidationLayers
 	{
 		public:
-		/// Конструктор
-		/// \param validationLayers массив слоев проверки
-		explicit ValidationLayers ( const std::vector< std::string > &validationLayers );
+			/// Конструктор
+			/// \param validationLayers массив слоев проверки
+			explicit ValidationLayers ( const std::vector < std::string > &validationLayers );
 
-		virtual ~ValidationLayers ();
+			virtual ~ValidationLayers ();
 
-		/// Получить слои проверки
-		[[nodiscard]] const std::vector< const char * > &
-		getValidationLayers () const;
+			/// Получить слои проверки
+			[[nodiscard]] const std::vector < const char * > &
+			getValidationLayers () const;
 
-		/// Параметры отладочных сообщений
-		static VkDebugUtilsMessengerCreateInfoEXT
-		constructDebugInfo ();
+			/// Параметры отладочных сообщений
+			static VkDebugUtilsMessengerCreateInfoEXT
+			constructDebugInfo ();
 
-		/// Инициализация уровней проверки
-		/// \param instance Vulkan
-		/// \return результат инициализации
-		VkResult
-		initialize ( VkInstance *instance );
+			/// Инициализация уровней проверки
+			/// \param instance Vulkan
+			/// \return результат инициализации
+			VkResult
+			initialize ( VkInstance *instance );
 
 		private:
-		/// Проверить наличие запрошенных слоев
-		/// \return Результат доступности слоев
-		bool
-		checkLayers ();
+			/// Проверить наличие запрошенных слоев
+			/// \return Результат доступности слоев
+			bool
+			checkLayers ();
 
-		/// массив слоев проверки
-		std::vector< const char * > validationLayers;
+			/// массив слоев проверки
+			std::vector < const char * > validationLayers;
 
-		/// Объект формирования отладочных сообщений
-		VkDebugUtilsMessengerEXT debugMessenger;
+			/// Объект формирования отладочных сообщений
+			VkDebugUtilsMessengerEXT debugMessenger;
 
-		/// Указатель на Vulkan
-		VkInstance *instance;
+			/// Указатель на Vulkan
+			VkInstance *instance;
 
-		/// Функция вывода отладочных сообщений
-		static VKAPI_ATTR VkBool32 VKAPI_CALL
-		debugCallback (
-		        VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-		        VkDebugUtilsMessageTypeFlagsEXT messageType,
-		        const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
-		        void *pUserData );
+			/// Функция вывода отладочных сообщений
+			static VKAPI_ATTR VkBool32 VKAPI_CALL
+			debugCallback (
+					VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+					VkDebugUtilsMessageTypeFlagsEXT messageType,
+					const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
+					void *pUserData
+			);
 	};
 }// namespace vk
 #endif//TOOLS_VULKAN_VALIDATIONLAYERS_H

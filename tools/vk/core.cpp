@@ -8,7 +8,7 @@
 using namespace vk;
 
 Core::Core ( GLFWwindow *window ) :
-    window ( window )
+		window ( window )
 {
 
 	/// Конструируем экземпляр Vulkan

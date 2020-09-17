@@ -7,8 +7,9 @@
 using namespace vk;
 
 RenderPass::RenderPass (
-        Core *core ) :
-    device ( core->getLogicalDevice () )
+		Core *core
+) :
+		device ( core->getLogicalDevice () )
 {
 }
 

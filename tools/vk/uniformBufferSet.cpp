@@ -8,30 +8,31 @@
 using namespace vk;
 
 UniformBufferSet::UniformBufferSet (
-        Core *core,
-        const size_t &size ) :
-    device ( core->getLogicalDevice () )
+		Core *core,
+		const size_t &size
+) :
+		device ( core->getLogicalDevice () )
 {
 	/// Число буфферов (и связанных с ними блоков памяти) равно число кадров в цепочке
 	buffers.resize ( core->getSwapChain ()->getImagesView ().size () );
 	buffersMemmory.resize ( core->getSwapChain ()->getImagesView ().size () );
 
 	/// Формируем буферы под каждый кадр
-	for ( size_t i = 0;
-	      i < buffers.size ();
+	for ( size_t i = 0 ;
+	      i < buffers.size () ;
 	      i++ )
 	{
 		BufferObject::createBuffer ( core, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
 		                             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-		                                     VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+		                             VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
 		                             buffers[ i ], buffersMemmory[ i ] );
 	}
 }
 
 UniformBufferSet::~UniformBufferSet ()
 {
-	for ( size_t i = 0;
-	      i < buffers.size ();
+	for ( size_t i = 0 ;
+	      i < buffers.size () ;
 	      i++ )
 	{
 		vkDestroyBuffer ( device->getDevice (), buffers[ i ], nullptr );
@@ -39,7 +40,7 @@ UniformBufferSet::~UniformBufferSet ()
 	}
 }
 
-const std::vector< VkBuffer > &
+const std::vector < VkBuffer > &
 UniformBufferSet::getBuffers () const
 {
 	return buffers;
@@ -47,9 +48,10 @@ UniformBufferSet::getBuffers () const
 
 void
 UniformBufferSet::write (
-        const int &id,
-        void *data,
-        int size )
+		const int &id,
+		void *data,
+		int size
+)
 {
 	void *dst_data;
 

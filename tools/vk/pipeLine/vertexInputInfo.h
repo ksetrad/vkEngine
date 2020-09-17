@@ -13,20 +13,20 @@ namespace vk::pipeline
 	class VertexInputInfo
 	{
 		public:
-		/// Конструктор
-		VertexInputInfo ();
+			/// Конструктор
+			VertexInputInfo ();
 
-		/// Получить параметры входных вершин
-		/// \return Указатель
-		VkPipelineVertexInputStateCreateInfo *
-		getInfo ();
+			/// Получить параметры входных вершин
+			/// \return Указатель
+			VkPipelineVertexInputStateCreateInfo *
+			getInfo ();
 
 		private:
-		VkPipelineVertexInputStateCreateInfo inputInfo {};
+			VkPipelineVertexInputStateCreateInfo inputInfo { };
 
-		VkVertexInputBindingDescription bindingDescription;
+			VkVertexInputBindingDescription bindingDescription;
 
-		std::array< VkVertexInputAttributeDescription, 3 > attributeDescriptions;
+			std::array < VkVertexInputAttributeDescription, 3 > attributeDescriptions;
 	};
 }// namespace vk::pipeline
 #endif//TOOLS_VK_PIPELINE_VERTEXINPUTINFO_H

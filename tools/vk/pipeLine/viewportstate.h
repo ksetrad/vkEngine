@@ -14,20 +14,20 @@ namespace vk::pipeline
 	class ViewPortState
 	{
 		public:
-		/// Конструктор
-		/// \param swapChain цепочка смены кадров
-		explicit ViewPortState ( SwapChain *swapChain );
+			/// Конструктор
+			/// \param swapChain цепочка смены кадров
+			explicit ViewPortState ( SwapChain *swapChain );
 
-		/// Получить указатель на структуру параметров
-		/// \return указатель
-		[[nodiscard]] const VkPipelineViewportStateCreateInfo *
-		getInfo () const;
+			/// Получить указатель на структуру параметров
+			/// \return указатель
+			[[nodiscard]] const VkPipelineViewportStateCreateInfo *
+			getInfo () const;
 
 		private:
-		VkViewport viewport {};
-		VkRect2D scissor {};
-		/// Структура параметров
-		VkPipelineViewportStateCreateInfo viewportStateCreateInfo {};
+			VkViewport viewport { };
+			VkRect2D scissor { };
+			/// Структура параметров
+			VkPipelineViewportStateCreateInfo viewportStateCreateInfo { };
 	};
 }// namespace vk::pipeline
 #endif//TOOLS_VK_PIPELINE_VIEWPORTSTATE_H

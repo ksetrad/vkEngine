@@ -9,10 +9,11 @@
 using namespace vk::pipeline;
 
 ShaderModule::ShaderModule (
-        const std::string &filename,
-        LogicalDevice *device,
-        const Types &type ) :
-    device ( device )
+		const std::string &filename,
+		LogicalDevice *device,
+		const Types &type
+) :
+		device ( device )
 {
 	/// Открываем файл шейдера
 	std::ifstream file ( filename, std::ios::ate | std::ios::binary );
@@ -24,7 +25,7 @@ ShaderModule::ShaderModule (
 
 	size_t fileSize = ( size_t ) file.tellg ();
 	/// Создаем буфер под файл
-	std::vector< char > buffer ( fileSize );
+	std::vector < char > buffer ( fileSize );
 
 	file.seekg ( 0 );
 	/// Считываем файл
@@ -34,7 +35,7 @@ ShaderModule::ShaderModule (
 	file.close ();
 
 	/// Заполняем структуру создания шейдерного модуля
-	VkShaderModuleCreateInfo createInfo {};
+	VkShaderModuleCreateInfo createInfo { };
 	createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 	createInfo.codeSize = buffer.size ();
 	createInfo.pCode = reinterpret_cast< const uint32_t * > ( buffer.data () );

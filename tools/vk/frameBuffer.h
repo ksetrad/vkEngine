@@ -13,24 +13,25 @@ namespace vk
 	class FrameBuffer
 	{
 		public:
-		/// Кадровый буфер
-		/// \param core ядро Vulkan
-		/// \param renderPass проход рендеринга
-		FrameBuffer (
-		        Core *core,
-		        RenderPass *renderPass );
+			/// Кадровый буфер
+			/// \param core ядро Vulkan
+			/// \param renderPass проход рендеринга
+			FrameBuffer (
+					Core *core,
+					RenderPass *renderPass
+			);
 
-		virtual ~FrameBuffer ();
+			virtual ~FrameBuffer ();
 
-		const std::vector< VkFramebuffer > &
-		getFrameBuffers () const;
+			const std::vector < VkFramebuffer > &
+			getFrameBuffers () const;
 
 		private:
-		/// Логический интерфейс GPU
-		LogicalDevice *logicalDevice;
+			/// Логический интерфейс GPU
+			LogicalDevice *logicalDevice;
 
-		/// Массив кадровых буферов (по элементу на каждый кадр цепочки смены кадров)
-		std::vector< VkFramebuffer > swapChainFramebuffers;
+			/// Массив кадровых буферов (по элементу на каждый кадр цепочки смены кадров)
+			std::vector < VkFramebuffer > swapChainFramebuffers;
 	};
 }// namespace vk
 #endif//TOOLS_VK_FRAMEBUFFER_H

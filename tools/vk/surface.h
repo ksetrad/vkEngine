@@ -13,64 +13,70 @@
 namespace vk
 {
 	class Instance;
+
 	/// Поверхность отображения
 	class Surface
 	{
 		public:
-		/// Параметры поверхности отрисовки
-		struct Details {
 			/// Параметры поверхности отрисовки
-			VkSurfaceCapabilitiesKHR capabilities;
-			/// Поддерживаемые поверхностиью форматы пикселя и
-			/// связанные с ними цветовые пространства (это позволяет иметь всегда одинаковое значение цвета
-			/// на разных мониторах
-			std::vector< VkSurfaceFormatKHR > formats;
-			/// Поддерживаемые воперхностью режимы презентации изображения
-			std::vector< VkPresentModeKHR > presentModes;
-
-			/// Проверить что форматы и режимы представления присутствуют в данной структуре параметров
-			/// \return Результат проверки
-			[[nodiscard]] bool
-			isComplete () const
+			struct Details
 			{
-				return !formats.empty () && !presentModes.empty ();
-			}
-		};
+				/// Параметры поверхности отрисовки
+				VkSurfaceCapabilitiesKHR capabilities;
+				/// Поддерживаемые поверхностиью форматы пикселя и
+				/// связанные с ними цветовые пространства (это позволяет иметь всегда одинаковое значение цвета
+				/// на разных мониторах
+				std::vector < VkSurfaceFormatKHR > formats;
+				/// Поддерживаемые воперхностью режимы презентации изображения
+				std::vector < VkPresentModeKHR > presentModes;
 
-		/// Конструктор
-		/// \param instance Экземпляр Vulkan
-		/// \param window Окно вывода
-		Surface ( Instance *instance, GLFWwindow *window );
+				/// Проверить что форматы и режимы представления присутствуют в данной структуре параметров
+				/// \return Результат проверки
+				[[nodiscard]] bool
+				isComplete () const
+				{
+					return !formats.empty () && !presentModes.empty ();
+				}
+			};
 
-		/// Деструктор
-		virtual ~Surface ();
+			/// Конструктор
+			/// \param instance Экземпляр Vulkan
+			/// \param window Окно вывода
+			Surface (
+					Instance *instance,
+					GLFWwindow *window
+			);
 
-		/// Проверить подходит ли очередь физического устройства для отправки команд отображения на данной поверхности
-		/// \param physicalDevice Физическое устройство
-		/// \param queueId идентификатор очереди
-		/// \return Результат проверки
-		bool
-		checkPresent (
-		        const VkPhysicalDevice &physicalDevice,
-		        const int &queueId );
+			/// Деструктор
+			virtual ~Surface ();
 
-		/// Проверить поддержку цепочки смены кадров
-		/// \param physicalDevice Физичесий интерфейс
-		/// \return Результат проверки
-		Details
-		getSwapChainDetails ( const VkPhysicalDevice &physicalDevice );
+			/// Проверить подходит ли очередь физического устройства для отправки команд отображения на данной поверхности
+			/// \param physicalDevice Физическое устройство
+			/// \param queueId идентификатор очереди
+			/// \return Результат проверки
+			bool
+			checkPresent (
+					const VkPhysicalDevice &physicalDevice,
+					const int &queueId
+			);
 
-		/// Получить текущий дескриптор поверхности
-		/// \return Дескриптор
-		[[nodiscard]] const VkSurfaceKHR &
-		getSurface () const;
+			/// Проверить поддержку цепочки смены кадров
+			/// \param physicalDevice Физичесий интерфейс
+			/// \return Результат проверки
+			Details
+			getSwapChainDetails ( const VkPhysicalDevice &physicalDevice );
+
+			/// Получить текущий дескриптор поверхности
+			/// \return Дескриптор
+			[[nodiscard]] const VkSurfaceKHR &
+			getSurface () const;
 
 		private:
-		/// Экземпляр Vulkan
-		Instance *instance;
+			/// Экземпляр Vulkan
+			Instance *instance;
 
-		/// Поверхность отображения
-		VkSurfaceKHR surface;
+			/// Поверхность отображения
+			VkSurfaceKHR surface;
 	};
 }// namespace vk
 #endif//TOOLS_VK_SURFACE_H

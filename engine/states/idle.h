@@ -9,18 +9,18 @@
 
 namespace engine
 {
-    class Idle
-            : public State
-        {
-        public:
-            void
-            mouseMoveEvent ( const glfw::MouseEvent & event ) override;
+	class Idle
+			: public State
+	{
+		public:
+			void
+			mouseMoveEvent ( const glfw::MouseEvent &event ) override;
 
-            void
-            mousePressEvent ( const glfw::MouseEvent & event ) override;
+			void
+			mousePressEvent ( const glfw::MouseEvent &event ) override;
 
-            void
-            mouseReleaseEvent ( const glfw::MouseEvent & event ) override;
-        };
+			void
+			mouseReleaseEvent ( const glfw::MouseEvent &event ) override;
+	};
 };
 #endif //ENGINE_STATES_IDLE_H

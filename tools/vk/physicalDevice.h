@@ -16,59 +16,61 @@ namespace vk
 	class PhysicalDevice
 	{
 		public:
-		/// Параметры очередей на устройстве
-		struct QueueFamilyIndices {
-			/// Графическое семейство
-			std::optional< uint32_t > graphicsFamily;
-			/// Семейство презентации изображений
-			std::optional< uint32_t > presentFamily;
-
-			/// Функция проверки установленности всех индексов в структуре
-			/// \return Результат проверки
-			[[nodiscard]] bool
-			isComplete () const
+			/// Параметры очередей на устройстве
+			struct QueueFamilyIndices
 			{
-				return graphicsFamily.has_value () && presentFamily.has_value ();
-			}
-		};
-		/// Конструктор
-		/// \param instance Экземпляр Vulakan
-		explicit PhysicalDevice ( Instance *instance );
+				/// Графическое семейство
+				std::optional < uint32_t > graphicsFamily;
+				/// Семейство презентации изображений
+				std::optional < uint32_t > presentFamily;
 
-		/// Получить индексы семейств очередей
-		/// \return Структура индексов
-		[[nodiscard]] const QueueFamilyIndices &
-		getIndices () const;
+				/// Функция проверки установленности всех индексов в структуре
+				/// \return Результат проверки
+				[[nodiscard]] bool
+				isComplete () const
+				{
+					return graphicsFamily.has_value () && presentFamily.has_value ();
+				}
+			};
 
-		/// Получить выбранное физическое устройство
-		/// \return Физическое устройство
-		[[nodiscard]] const VkPhysicalDevice &
-		getPhysicalDevice () const;
+			/// Конструктор
+			/// \param instance Экземпляр Vulakan
+			explicit PhysicalDevice ( Instance *instance );
+
+			/// Получить индексы семейств очередей
+			/// \return Структура индексов
+			[[nodiscard]] const QueueFamilyIndices &
+			getIndices () const;
+
+			/// Получить выбранное физическое устройство
+			/// \return Физическое устройство
+			[[nodiscard]] const VkPhysicalDevice &
+			getPhysicalDevice () const;
 
 		private:
-		/// Функция поиска графического физического устройства(GPU)
-		/// \return физическое устройство
-		VkPhysicalDevice
-		findDevice ();
+			/// Функция поиска графического физического устройства(GPU)
+			/// \return физическое устройство
+			VkPhysicalDevice
+			findDevice ();
 
-		/// Найти индексы семейств очередей на GPU
-		void
-		findQueueIndices ();
+			/// Найти индексы семейств очередей на GPU
+			void
+			findQueueIndices ();
 
-		/// Проверить поддерживает ли устройство заданные расширения
-		/// \param device Физическое устройство
-		/// \return результат проверки
-		bool
-		checkExtensionSupport ( const VkPhysicalDevice &device );
+			/// Проверить поддерживает ли устройство заданные расширения
+			/// \param device Физическое устройство
+			/// \return результат проверки
+			bool
+			checkExtensionSupport ( const VkPhysicalDevice &device );
 
-		/// Экземпляр Vulkan
-		Instance *instance;
+			/// Экземпляр Vulkan
+			Instance *instance;
 
-		/// Индексы семейств очередей на видеокарте
-		QueueFamilyIndices indices;
+			/// Индексы семейств очередей на видеокарте
+			QueueFamilyIndices indices;
 
-		/// Используемое физическое устройство
-		VkPhysicalDevice physicalDevice { VK_NULL_HANDLE };
+			/// Используемое физическое устройство
+			VkPhysicalDevice physicalDevice { VK_NULL_HANDLE };
 	};
 }// namespace vk
 #endif//TOOLS_VK_PHYSICALDEVICE_H

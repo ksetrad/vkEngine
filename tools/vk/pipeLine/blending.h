@@ -13,20 +13,21 @@ namespace vk::pipeline
 	class Blending
 	{
 		public:
-		/// Конструктор
-		/// \param isEnable признак включения смешивания
-		explicit Blending (
-		        const bool &isEnable );
+			/// Конструктор
+			/// \param isEnable признак включения смешивания
+			explicit Blending (
+					const bool &isEnable
+			);
 
-		/// Получить указатель на структуру
-		/// \return указатель
-		VkPipelineColorBlendStateCreateInfo *
-		getInfo ();
+			/// Получить указатель на структуру
+			/// \return указатель
+			VkPipelineColorBlendStateCreateInfo *
+			getInfo ();
 
 		private:
-		VkPipelineColorBlendAttachmentState colorBlendAttachment {};
-		/// Структура свойств
-		VkPipelineColorBlendStateCreateInfo createInfo {};
+			VkPipelineColorBlendAttachmentState colorBlendAttachment { };
+			/// Структура свойств
+			VkPipelineColorBlendStateCreateInfo createInfo { };
 	};
 }// namespace vk::pipeline
 #endif//TOOLS_VK_PIPELINE_BLENDING_H

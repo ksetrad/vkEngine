@@ -7,10 +7,11 @@
 using namespace vk;
 
 Queue::Queue (
-        LogicalDevice *logicalDevice,
-        PhysicalDevice *physicalDevice,
-        const Queue::Type &type ) :
-    type ( type )
+		LogicalDevice *logicalDevice,
+		PhysicalDevice *physicalDevice,
+		const Queue::Type &type
+) :
+		type ( type )
 {
 	switch ( type )
 	{

@@ -10,7 +10,7 @@ using namespace vk;
 Instance::Instance ( GLFWwindow *window )
 {
 	/// Инофрмация по приложению
-	VkApplicationInfo appInfo {};
+	VkApplicationInfo appInfo { };
 	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 	/// Название и версия приложения
 	appInfo.pApplicationName = Configuration::vulkan ().appName.c_str ();
@@ -22,7 +22,7 @@ Instance::Instance ( GLFWwindow *window )
 	appInfo.apiVersion = VK_API_VERSION_1_0;
 
 	/// Настраиваем структуру для инициализации Vulkan
-	VkInstanceCreateInfo createInfo {};
+	VkInstanceCreateInfo createInfo { };
 	createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	/// Устанавливаем параметры приложения
 	createInfo.pApplicationInfo = &appInfo;
@@ -32,7 +32,7 @@ Instance::Instance ( GLFWwindow *window )
 	const char **glfwExtensions;
 	glfwExtensions = glfwGetRequiredInstanceExtensions ( &glfwExtensionCount );
 	/// Формируем массив расширений
-	std::vector< const char * > extensions ( glfwExtensions, glfwExtensions + glfwExtensionCount );
+	std::vector < const char * > extensions ( glfwExtensions, glfwExtensions + glfwExtensionCount );
 #ifdef VULKAN_DEBUG
 	/// Если режим DEBUG добавляем соответствующее расширение
 	extensions.push_back ( VK_EXT_DEBUG_UTILS_EXTENSION_NAME );

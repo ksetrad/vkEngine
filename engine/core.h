@@ -20,87 +20,89 @@
 #include <engine/states/state.h>
 #include <map>
 #include <memory>
+
 namespace engine
 {
 	class Core : public glfw::Handler
 	{
 		public:
-		Core ();
+			Core ();
 
-		virtual ~Core ();
+			virtual ~Core ();
 
-		void
-		mainLoop ();
+			void
+			mainLoop ();
 
-		uint32_t
-		getImage ( vk::Semaphore *pWaitSemaphore );
+			uint32_t
+			getImage ( vk::Semaphore *pWaitSemaphore );
 
-		void
-		updateUniform ( const int &id );
+			void
+			updateUniform ( const int &id );
 
-		void
-		switchMouseEvent (
-		        const glfw::MouseEvent &event,
-		        const engine::StateType &state );
+			void
+			switchMouseEvent (
+					const glfw::MouseEvent &event,
+					const engine::StateType &state
+			);
 
-		void
-		selectState ( const StateType &type );
+			void
+			selectState ( const StateType &type );
 
 		protected:
-		void
-		mouseMoveEvent ( const glfw::MouseEvent &event ) override;
+			void
+			mouseMoveEvent ( const glfw::MouseEvent &event ) override;
 
-		void
-		mousePressEvent ( const glfw::MouseEvent &event ) override;
+			void
+			mousePressEvent ( const glfw::MouseEvent &event ) override;
 
-		void
-		mouseReleaseEvent ( const glfw::MouseEvent &event ) override;
+			void
+			mouseReleaseEvent ( const glfw::MouseEvent &event ) override;
 
 		private:
-		vk::Core *core;
+			vk::Core *core;
 
-		MainRenderPass *mainRenderPass;
+			MainRenderPass *mainRenderPass;
 
-		vk::PipeLine *mainPipeLine;
+			vk::PipeLine *mainPipeLine;
 
-		CommandPool *commandPool;
+			CommandPool *commandPool;
 
-		vk::DescriptorsPool *descriptorsPool;
+			vk::DescriptorsPool *descriptorsPool;
 
-		vk::FrameBuffer *frameBuffers;
+			vk::FrameBuffer *frameBuffers;
 
-		ModelFactory *modelFactory;
+			ModelFactory *modelFactory;
 
-		Environment *environment;
+			Environment *environment;
 
-		/// Набор глобальных буферов
-		vk::UniformBufferSet *bufferSet;
+			/// Набор глобальных буферов
+			vk::UniformBufferSet *bufferSet;
 
-		/// Заборы кадров буферизации
-		std::vector< vk::Fence * > inFlightFences;
+			/// Заборы кадров буферизации
+			std::vector < vk::Fence * > inFlightFences;
 
-		/// Указатели на заборы кадров буферизации для используемых в данных момент изображений цепочки
-		std::vector< vk::Fence * > imagesInFlight;
+			/// Указатели на заборы кадров буферизации для используемых в данных момент изображений цепочки
+			std::vector < vk::Fence * > imagesInFlight;
 
-		/// Семафоры
-		std::vector< vk::Semaphore * > renderFinishedSemaphores;
+			/// Семафоры
+			std::vector < vk::Semaphore * > renderFinishedSemaphores;
 
-		std::vector< vk::Semaphore * > imageAvailableSemaphores;
+			std::vector < vk::Semaphore * > imageAvailableSemaphores;
 
-		/// Максимальное число кадров в полете
-		int frame_number { 3 };
+			/// Максимальное число кадров в полете
+			int frame_number { 3 };
 
-		/// Номер текущего кадра
-		int currentFrameId { 0 };
+			/// Номер текущего кадра
+			int currentFrameId { 0 };
 
-		/// Uniforms
-		engine::Uniform uniform;
+			/// Uniforms
+			engine::Uniform uniform;
 
-		engine::Camera camera;
+			engine::Camera camera;
 
-        State* currentState;
+			State *currentState;
 
-		std::map< StateType,  std::unique_ptr < State > > states;
+			std::map < StateType, std::unique_ptr < State > > states;
 	};
 }// namespace engine
 #endif//ENGINE_CORE_H

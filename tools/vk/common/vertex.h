@@ -12,7 +12,8 @@
 namespace vk
 {
 	/// Структура вершины
-	struct Vertex {
+	struct Vertex
+	{
 		/// Вершинная координата
 		glm::vec3 p;
 
@@ -24,10 +25,10 @@ namespace vk
 
 		/// Получить описание атрибутов в шейдере для входного буфера вершин
 		/// \return Структура описание
-		static std::array< VkVertexInputAttributeDescription, 3 >
+		static std::array < VkVertexInputAttributeDescription, 3 >
 		getAttributeDescriptions ()
 		{
-			std::array< VkVertexInputAttributeDescription, 3 > attributeDescriptions {};
+			std::array < VkVertexInputAttributeDescription, 3 > attributeDescriptions { };
 
 			attributeDescriptions[ 0 ].binding = 0;
 			attributeDescriptions[ 0 ].location = 0;
@@ -52,7 +53,7 @@ namespace vk
 		static VkVertexInputBindingDescription
 		getBindingDescription ()
 		{
-			VkVertexInputBindingDescription bindingDescription {};
+			VkVertexInputBindingDescription bindingDescription { };
 			/// Индекс привязки
 			bindingDescription.binding = 0;
 			/// Смещение между вершинами в массиве

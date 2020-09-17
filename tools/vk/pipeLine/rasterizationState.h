@@ -13,18 +13,18 @@ namespace vk::pipeline
 	class RasterizationState
 	{
 		public:
-		/// Конструктор
-		/// \param swapChain цепочка смены кадров
-		explicit RasterizationState ();
+			/// Конструктор
+			/// \param swapChain цепочка смены кадров
+			explicit RasterizationState ();
 
-		/// Получить указатель на структуру параметров
-		/// \return указатель
-		VkPipelineRasterizationStateCreateInfo *
-		getInfo ();
+			/// Получить указатель на структуру параметров
+			/// \return указатель
+			VkPipelineRasterizationStateCreateInfo *
+			getInfo ();
 
 		private:
-		/// Структура параметров
-		VkPipelineRasterizationStateCreateInfo rasterizationStateCreateInfo {};
+			/// Структура параметров
+			VkPipelineRasterizationStateCreateInfo rasterizationStateCreateInfo { };
 	};
 }// namespace vk::pipeline
 #endif//TOOLS_VK_PIPELINE_RASTERIZATIONSTATE_H

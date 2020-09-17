@@ -9,10 +9,10 @@
 
 namespace engine
 {
-    class Turn
-            : public State
-        {
+	class Turn
+			: public State
+	{
 
-        };
+	};
 }
 #endif //ENGINE_STATES_TURN_H

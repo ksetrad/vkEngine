@@ -12,10 +12,11 @@ using namespace vk;
 
 VkBool32
 ValidationLayers::debugCallback (
-        VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-        VkDebugUtilsMessageTypeFlagsEXT messageType,
-        const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
-        void *pUserData )
+		VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+		VkDebugUtilsMessageTypeFlagsEXT messageType,
+		const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
+		void *pUserData
+)
 {
 	if ( ( messageType &
 	       ( VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT ) ) )
@@ -38,7 +39,7 @@ ValidationLayers::debugCallback (
 	return VK_FALSE;
 }
 
-const std::vector< const char * > &
+const std::vector < const char * > &
 ValidationLayers::getValidationLayers () const
 {
 	return validationLayers;
@@ -52,7 +53,7 @@ ValidationLayers::checkLayers ()
 	/// Функция вычисления
 	vkEnumerateInstanceLayerProperties ( &layerCount, nullptr );
 	/// Формируем массив из доступных слоев проверки
-	std::vector< VkLayerProperties > availableLayers ( layerCount );
+	std::vector < VkLayerProperties > availableLayers ( layerCount );
 	vkEnumerateInstanceLayerProperties ( &layerCount, availableLayers.data () );
 
 	/// Проверям наличие каждого из запрошенных нами уровней, в доступных слоях проверки
@@ -83,37 +84,37 @@ ValidationLayers::checkLayers ()
 VkDebugUtilsMessengerCreateInfoEXT
 ValidationLayers::constructDebugInfo ()
 {
-	VkDebugUtilsMessengerCreateInfoEXT createInfo = {};
+	VkDebugUtilsMessengerCreateInfoEXT createInfo = { };
 	createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 	createInfo.messageSeverity =
-	        /// Все уровни диагностических сообщений
-	        /// Подровный вывод сообщений загрузчика, слоев, драйверов
-	        VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
-	        /// Иноформационные сообщения
-	        VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
-	        /// Баги и предупреждения
-	        VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
-	        /// Ошибки
-	        VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+			/// Все уровни диагностических сообщений
+			/// Подровный вывод сообщений загрузчика, слоев, драйверов
+			VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
+			/// Иноформационные сообщения
+			VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
+			/// Баги и предупреждения
+			VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
+			/// Ошибки
+			VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
 	createInfo.messageType =
-	        /// Типы событий при которых вызывается отладочный мессенджер (опять же все события)
-	        /// События не связанные со спецификацией
-	        VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
-	        /// Событие приводящее к недопустимому поведению
-	        VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
-	        /// Потенциально не приемлимое использование Vulkan
-	        VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+			/// Типы событий при которых вызывается отладочный мессенджер (опять же все события)
+			/// События не связанные со спецификацией
+			VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
+			/// Событие приводящее к недопустимому поведению
+			VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
+			/// Потенциально не приемлимое использование Vulkan
+			VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 	createInfo.pfnUserCallback = debugCallback;
 	return createInfo;
 }
 
-ValidationLayers::ValidationLayers ( const std::vector< std::string > &validationLayersNames )
+ValidationLayers::ValidationLayers ( const std::vector < std::string > &validationLayersNames )
 {
 	/// Выделяем память под имена слоев
 	validationLayers.resize ( validationLayersNames.size () );
 	/// Заполняем массив имен
-	for ( unsigned int i = 0;
-	      i < validationLayers.size ();
+	for ( unsigned int i = 0 ;
+	      i < validationLayers.size () ;
 	      i++ )
 	{
 		validationLayers[ i ] = validationLayersNames[ i ].c_str ();

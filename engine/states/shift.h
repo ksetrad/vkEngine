@@ -9,9 +9,9 @@
 
 namespace engine
 {
-    class Shift: public State
-        {
+	class Shift : public State
+	{
 
-        };
+	};
 }
 #endif //ENGINE_STATES_SHIFT_H

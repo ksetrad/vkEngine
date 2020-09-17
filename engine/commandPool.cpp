@@ -7,20 +7,25 @@
 using namespace engine;
 
 CommandPool::CommandPool (
-        vk::Core *core,
-        vk::PipeLine *pipeLine,
-        Environment *environment ) :
-    vk::CommandPool ( core ),
-    pipeLine ( pipeLine ), environment ( environment )
+		vk::Core *core,
+		vk::PipeLine *pipeLine,
+		Environment *environment
+) :
+		vk::CommandPool ( core ),
+		pipeLine ( pipeLine ), environment ( environment )
 {
 }
 
 void
-CommandPool::setCommandBufferContent ( const VkCommandBuffer &commandBuffer, const VkDescriptorSet *descriptorSet )
+CommandPool::setCommandBufferContent (
+		const VkCommandBuffer &commandBuffer,
+		const VkDescriptorSet *descriptorSet
+)
 {
 	vkCmdBindPipeline ( commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeLine->getPipeLine () );
 
-	vkCmdBindDescriptorSets ( commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeLine->getLayout ()->getLayout (), 0, 1,
+	vkCmdBindDescriptorSets ( commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeLine->getLayout ()->getLayout (), 0,
+	                          1,
 	                          descriptorSet, 0, nullptr );
 
 	/// Отрисовываем все модели в окружении
@@ -34,19 +39,21 @@ CommandPool::setCommandBufferContent ( const VkCommandBuffer &commandBuffer, con
 
 void
 CommandPool::bindBuffer (
-        const vk::BufferObject &buffer,
-        VkCommandBuffer const &commandBuffer )
+		const vk::BufferObject &buffer,
+		VkCommandBuffer const &commandBuffer
+)
 {
 	switch ( buffer.getType () )
 	{
 		case vk::BufferObject::INDEX:
 			vkCmdBindIndexBuffer ( commandBuffer, buffer.getBuffer (), 0, VK_INDEX_TYPE_UINT32 );
 			break;
-		case vk::BufferObject::VERTEX: {
+		case vk::BufferObject::VERTEX:
+		{
 			VkBuffer vertexBuffers[] = { buffer.getBuffer () };
 			VkDeviceSize offsets[] = { 0 };
 			vkCmdBindVertexBuffers ( commandBuffer, 0, 1, vertexBuffers, offsets );
 		}
-		break;
+			break;
 	}
 }

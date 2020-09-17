@@ -15,22 +15,23 @@ LogicalDevice::getDevice () const
 }
 
 LogicalDevice::LogicalDevice (
-        Instance *instance,
-        PhysicalDevice *physicalDevice ) :
-    instance ( instance ),
-    physicalDevice ( physicalDevice )
+		Instance *instance,
+		PhysicalDevice *physicalDevice
+) :
+		instance ( instance ),
+		physicalDevice ( physicalDevice )
 {
 	/// Формируем набор уникальных индексов семейств очередей физического устройства
-	std::set< uint32_t > uniqueQueueFamilies = { physicalDevice->getIndices ().graphicsFamily.value (),
-	                                             physicalDevice->getIndices ().presentFamily.value () };
+	std::set < uint32_t > uniqueQueueFamilies = { physicalDevice->getIndices ().graphicsFamily.value (),
+	                                              physicalDevice->getIndices ().presentFamily.value () };
 
 	/// Формируем массив структур с информацией об семействах очередей
-	std::vector< VkDeviceQueueCreateInfo > queueCreateInfos;
+	std::vector < VkDeviceQueueCreateInfo > queueCreateInfos;
 	/// Приоритет очереди ( пока у нас только по одному набору очередей - приоритет актуален равным 1)
 	float queuePriority = 1.0f;
 	for ( uint32_t queueFamily : uniqueQueueFamilies )
 	{
-		VkDeviceQueueCreateInfo queueCreateInfo {};
+		VkDeviceQueueCreateInfo queueCreateInfo { };
 		queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
 		queueCreateInfo.queueFamilyIndex = queueFamily;
 		queueCreateInfo.queueCount = 1;
@@ -39,10 +40,10 @@ LogicalDevice::LogicalDevice (
 	}
 
 	/// В данный момент особые возможности физического устройства нас не интересуют
-	VkPhysicalDeviceFeatures deviceFeatures {};
+	VkPhysicalDeviceFeatures deviceFeatures { };
 
 	/// Формируем структуру параметров логического устройства
-	VkDeviceCreateInfo createInfo {};
+	VkDeviceCreateInfo createInfo { };
 	createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 
 	/// Устанавливаем параметры семейств очередей

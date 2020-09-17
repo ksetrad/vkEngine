@@ -8,9 +8,10 @@ using namespace vk;
 
 void
 BufferObject::allocate (
-        unsigned int allocate_size,
-        const void *data,
-        const int &count )
+		unsigned int allocate_size,
+		const void *data,
+		const int &count
+)
 {
 	/// Сохраняем размер буфера
 	m_size = allocate_size;
@@ -44,24 +45,26 @@ BufferObject::allocate (
 }
 
 BufferObject::BufferObject (
-        const BufferObject::Type &type,
-        Core *core ) :
-    core ( core ),
-    type ( type )
+		const BufferObject::Type &type,
+		Core *core
+) :
+		core ( core ),
+		type ( type )
 {
 }
 
 void
 BufferObject::createBuffer (
-        Core *core,
-        VkDeviceSize size,
-        VkBufferUsageFlags usage,
-        VkMemoryPropertyFlags properties,
-        VkBuffer &buffer,
-        VkDeviceMemory &bufferMemory )
+		Core *core,
+		VkDeviceSize size,
+		VkBufferUsageFlags usage,
+		VkMemoryPropertyFlags properties,
+		VkBuffer &buffer,
+		VkDeviceMemory &bufferMemory
+)
 {
 	/// Формируем структуру буфера
-	VkBufferCreateInfo bufferInfo {};
+	VkBufferCreateInfo bufferInfo { };
 	bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 	/// Устанавливаем размер буфера
 	bufferInfo.size = size;
@@ -81,14 +84,15 @@ BufferObject::createBuffer (
 	vkGetBufferMemoryRequirements ( core->getLogicalDevice ()->getDevice (), buffer, &memRequirements );
 
 	/// Формируем структуру для выделения памяти
-	VkMemoryAllocateInfo allocInfo {};
+	VkMemoryAllocateInfo allocInfo { };
 	allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 	allocInfo.allocationSize = memRequirements.size;
 	/// Определяем индекс требуемой памяти
 	allocInfo.memoryTypeIndex = findMemoryType ( core, memRequirements.memoryTypeBits, properties );
 
 	/// Выделяем память под буфер
-	if ( vkAllocateMemory ( core->getLogicalDevice ()->getDevice (), &allocInfo, nullptr, &bufferMemory ) != VK_SUCCESS )
+	if ( vkAllocateMemory ( core->getLogicalDevice ()->getDevice (), &allocInfo, nullptr, &bufferMemory ) !=
+	     VK_SUCCESS )
 	{
 		throw vulkan_exception ( "failed to allocate buffer memory!" );
 	}
@@ -99,19 +103,22 @@ BufferObject::createBuffer (
 
 uint32_t
 BufferObject::findMemoryType (
-        Core *core,
-        uint32_t typeFilter,
-        VkMemoryPropertyFlags properties )
+		Core *core,
+		uint32_t typeFilter,
+		VkMemoryPropertyFlags properties
+)
 {
 	/// Получаем параметры памяти выбранного физического устройства
 	VkPhysicalDeviceMemoryProperties memProperties;
 	vkGetPhysicalDeviceMemoryProperties ( core->getPhysicalDevice ()->getPhysicalDevice (), &memProperties );
 
-	for ( uint32_t i = 0; i < memProperties.memoryTypeCount; i++ )
+	for ( uint32_t i = 0 ;
+	      i < memProperties.memoryTypeCount ;
+	      i++ )
 	{
 		/// В typeFilter каждый бит отвечает за конкретный тип памяти, следовательно перебираются биты по одному (1 << i) и проверяется включен ли бит в фильтре
 		/// Плюс проверяем флаги
-		if ( ( typeFilter & ( 1 << i ) ) && ( memProperties.memoryTypes[ i ].propertyFlags & properties ) == properties )
+		if ( ( typeFilter & ( 1<<i ) ) && ( memProperties.memoryTypes[ i ].propertyFlags & properties ) == properties )
 		{
 			return i;
 		}

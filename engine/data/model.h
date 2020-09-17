@@ -13,15 +13,17 @@
 
 namespace engine
 {
-	struct Model {
+	struct Model
+	{
 		/// Конструктор
 		/// \param core ядро
 		/// \param vertexes вершины
 		/// \param indices индексы
 		Model (
-		        vk::Core *core,
-		        const std::vector< vk::Vertex > &vertexes,
-		        const std::vector< unsigned int > &indices );
+				vk::Core *core,
+				const std::vector < vk::Vertex > &vertexes,
+				const std::vector < unsigned int > &indices
+		);
 
 		~Model ();
 
