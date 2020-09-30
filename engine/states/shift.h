@@ -11,7 +11,27 @@ namespace engine
 {
 	class Shift : public State
 	{
+		public:
+			explicit
+			Shift ( Scene * scene );
 
+			void
+			mouseMoveEvent ( const glfw::MouseEvent & event ) override;
+
+			void
+			mousePressEvent ( const glfw::MouseEvent & event ) override;
+
+			void
+			mouseReleaseEvent ( const glfw::MouseEvent & event ) override;
+
+			void
+			switchMouseEvent (
+					const glfw::MouseEvent & event,
+					const StateType & root
+			) override;
+
+		private:
+			glm::vec2 prevPos;
 	};
 }
 #endif //ENGINE_STATES_SHIFT_H

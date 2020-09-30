@@ -13,6 +13,9 @@ namespace engine
 			: public State
 	{
 		public:
+			explicit
+			Idle ( Scene * scene );
+
 			void
 			mouseMoveEvent ( const glfw::MouseEvent &event ) override;
 

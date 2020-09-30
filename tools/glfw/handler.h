@@ -17,47 +17,84 @@ namespace glfw
 			Handler (
 					int width,
 					int height,
-					const std::string &title
+					const std::string & title
 			);
 
 
 			void
-			mousePress (
-					GLFWwindow *window,
+			mouse_callBack (
+					GLFWwindow * window,
 					int button,
 					int action,
 					int mods
 			);
 
 			void
+			key_callBack (
+					GLFWwindow * window,
+					int key,
+					int scancode,
+					int action,
+					int mods
+			);
+
+			void
+			scroll_callBack (
+					GLFWwindow * window,
+					double xoffset,
+					double yoffset
+			);
+
+			void
 			mouseMove (
-					GLFWwindow *window,
+					GLFWwindow * window,
 					double xpos,
 					double ypos
 			);
 
 		protected:
 			virtual void
-			mouseMoveEvent ( const MouseEvent &event )
+			mouseMoveEvent ( const MouseEvent & event )
 			{
 			}
 
 			virtual void
-			mousePressEvent ( const MouseEvent &event )
+			mousePressEvent ( const MouseEvent & event )
 			{
 			}
 
 			virtual void
-			mouseReleaseEvent ( const MouseEvent &event )
+			mouseReleaseEvent ( const MouseEvent & event )
 			{
 			}
 
 			virtual void
-			mouseWheelEvent ( const MouseEvent &event )
+			mouseWheelEvent ( const MouseWheelEvent & event )
 			{
 			}
 
-			GLFWwindow *m_window;
+			virtual void
+			keyPressEvent ( const KeyEvent & event )
+			{
+			}
+
+			virtual void
+			keyReleaseEvent ( const KeyEvent & event )
+			{
+			}
+
+			virtual void
+			keyRepeatEvent ( const KeyEvent & event )
+			{
+			}
+
+			virtual void
+			mouseWheelEvent ( const KeyEvent & event )
+			{
+			}
+
+
+			GLFWwindow * m_window;
 
 		private:
 			glm::vec2 currentPos;

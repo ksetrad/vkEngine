@@ -17,27 +17,43 @@ namespace glfw
 		public:
 			static void
 			mouseButtonCallBack (
-					GLFWwindow *window,
+					GLFWwindow * window,
 					int button,
 					int action,
 					int mods
 			);
 
 			static void
-			mouseMove (
-					GLFWwindow *window,
+			keyButtonCallBack (
+					GLFWwindow * window,
+					int key,
+					int scancode,
+					int action,
+					int mods
+			);
+
+			static void
+			mouseMoveCallBack (
+					GLFWwindow * window,
 					double xpos,
 					double ypos
+			);
+
+			static void
+			scrollCallBack (
+					GLFWwindow * window,
+					double xoffset,
+					double yoffset
 			);
 
 			static Interceptor *
 			instance ();
 
 			static void
-			initialize ( Handler *handler );
+			initialize ( Handler * handler );
 
 		private:
-			Handler *handler;
+			Handler * handler;
 	};
 }// namespace glfw
 #endif//TOOLS_GLFW_INTERCEPTOR_H

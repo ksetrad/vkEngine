@@ -3,10 +3,13 @@
 //
 #include <iostream>
 
-#include "engine/core.h"
+#include "engine/scene.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "engine/states/idle.h"
+#include "engine/states/shift.h"
+#include "engine/states/turn.h"
 
 #include "tools/configuration.h"
 #include "tools/vk/uniformBufferSet.h"
@@ -15,7 +18,7 @@
 using namespace engine;
 using namespace vk::pipeline;
 
-Core::Core () :
+Scene::Scene () :
 		glfw::Handler ( Configuration::display ().resolution.width, Configuration::display ().resolution.height,
 		                Configuration::vulkan ().appName ),
 		core ( new vk::Core ( m_window ) ),
@@ -23,7 +26,7 @@ Core::Core () :
 		mainPipeLine ( new vk::PipeLine ( core->getLogicalDevice () ) )
 {
 	/// Формируем конвеер
-	std::vector < ShaderModule * > stages;
+	std::vector <ShaderModule *> stages;
 	stages.emplace_back (
 			new ShaderModule ( "./shaders/shader.vert.spv", core->getLogicalDevice (), ShaderModule::Vertex ) );
 	stages.emplace_back (
@@ -69,9 +72,19 @@ Core::Core () :
 	}
 	/// Размер выбирается равным числу кадров в цепочке, значенияя не устанаавливаются
 	imagesInFlight.resize ( core->getSwapChain ()->getImagesView ().size (), nullptr );
+
+	/// Формируем массив состояний
+	states.emplace ( IDLE, new Idle ( this ) );
+	states.emplace ( SHIFT, new Shift ( this ) );
+	states.emplace ( TURN, new Turn ( this ) );
+	/// Устанавливаем в качеств активного состояния - состояние ожидания
+	currentState = states.at ( IDLE ).get ();
+
+	/// Сохраняем разрешение экрана
+	resolution = { Configuration::display ().resolution.width, Configuration::display ().resolution.height };
 }
 
-Core::~Core ()
+Scene::~Scene ()
 {
 	delete frameBuffers;
 	delete commandPool;
@@ -98,7 +111,7 @@ Core::~Core ()
 }
 
 void
-Core::mainLoop ()
+Scene::mainLoop ()
 {
 	int nbFrames = 0;
 	double lastTime = glfwGetTime ();
@@ -112,14 +125,13 @@ Core::mainLoop ()
 		auto index = getImage ( imageAvailableSemaphores[ currentFrameId ] );
 
 		/// Обновляем uniform буфер для текущих проходов рендеринга
-		/// TODO updateUniform
+		updateUniform ( index );
 
 		/// Ждем освобождения изображения если для кадра с индексом установлен забор
 		if ( imagesInFlight[ index ] != nullptr )
 		{
 			imagesInFlight[ index ]->wait ();
 		}
-		updateUniform ( index );
 
 		/// Используем для данного изображения забор от нашего кадра
 		imagesInFlight[ index ] = inFlightFences[ currentFrameId ];
@@ -192,7 +204,7 @@ Core::mainLoop ()
 }
 
 uint32_t
-Core::getImage ( vk::Semaphore *pWaitSemaphore )
+Scene::getImage ( vk::Semaphore * pWaitSemaphore )
 {
 	/// Индекс изображения в цепочке подкачки которое подует использовано для рендеринга
 	uint32_t imageIndex;
@@ -204,7 +216,7 @@ Core::getImage ( vk::Semaphore *pWaitSemaphore )
 	{
 		/// Если поверхность изменилась (ресайз) то нужно перестроить все начиная с цепочки подкачки
 		///TODO recreateSwapChain();
-		throw std::runtime_error ( "swap chain recize!" );
+		throw vulkan_exception ( "swap chain recize!" );
 	}
 	else if ( result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR )
 	{
@@ -214,8 +226,9 @@ Core::getImage ( vk::Semaphore *pWaitSemaphore )
 }
 
 void
-Core::updateUniform ( const int &id )
+Scene::updateUniform ( const int & id )
 {
+	std::lock_guard <std::mutex> lock ( update );
 	Uniform m_ubo { };
 	m_ubo.model = glm::mat4 ( 1 );
 	m_ubo.view = camera.getView ();
@@ -231,37 +244,123 @@ Core::updateUniform ( const int &id )
 	m_ubo.proj = glm::perspective ( glm::radians ( 45.0f ), core->getSwapChain ()->getExtent ().width /
 	                                                        ( float ) core->getSwapChain ()->getExtent ().height,
 	                                0.1f, 10000.0f );
+//
+//	float k = Configuration::display ().resolution.height / float ( Configuration::display ().resolution.width );
+//	m_ubo.proj = glm::ortho ( -5.f, 5.f, -k * 5, k * 5 );
+
 	m_ubo.proj[ 1 ][ 1 ] *= -1;
+//	m_ubo.proj[ 2 ][ 2 ] *= 0;
 
 	bufferSet->write ( id, &m_ubo, sizeof ( Uniform ) );
 }
 
 void
-Core::mouseMoveEvent ( const glfw::MouseEvent &event )
+Scene::mouseMoveEvent ( const glfw::MouseEvent & event )
 {
+	currentState->mouseMoveEvent ( event );
 }
 
 void
-Core::mousePressEvent ( const glfw::MouseEvent &event )
+Scene::mousePressEvent ( const glfw::MouseEvent & event )
 {
+	currentState->mousePressEvent ( event );
 }
 
 void
-Core::mouseReleaseEvent ( const glfw::MouseEvent &event )
+Scene::mouseReleaseEvent ( const glfw::MouseEvent & event )
 {
+	currentState->mouseReleaseEvent ( event );
 }
 
 void
-Core::switchMouseEvent (
-		const glfw::MouseEvent &event,
-		const StateType &state
+Scene::switchMouseEvent (
+		const glfw::MouseEvent & event,
+		const StateType & state
 )
 {
 	currentState->switchMouseEvent ( event, state );
 }
 
 void
-Core::selectState ( const StateType &type )
+Scene::selectState ( const StateType & type )
 {
 	currentState = states.at ( type ).get ();
+}
+
+void
+Scene::keyPressEvent ( const glfw::KeyEvent & event )
+{
+	std::lock_guard <std::mutex> lock ( update );
+	double step = 0.1;
+	switch ( event.button () )
+	{
+		case glfw::KeyEvent::KEY_UP:
+		{
+			auto pos = camera.getShift ();
+			camera.setShift ( { pos.x, pos.y + step, pos.z } );
+			break;
+		}
+		case glfw::KeyEvent::KEY_DOWN:
+		{
+			auto pos = camera.getShift ();
+			camera.setShift ( { pos.x, pos.y - step, pos.z } );
+			break;
+		}
+		case glfw::KeyEvent::KEY_LEFT:
+		{
+			auto pos = camera.getShift ();
+			camera.setShift ( { pos.x - step, pos.y, pos.z } );
+			break;
+		}
+		case glfw::KeyEvent::KEY_RIGHT:
+		{
+			auto pos = camera.getShift ();
+			camera.setShift ( { pos.x + step, pos.y, pos.z } );
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+Scene::keyRepeatEvent ( const glfw::KeyEvent & event )
+{
+	std::lock_guard <std::mutex> lock ( update );
+	double step = 0.05;
+	switch ( event.button () )
+	{
+		case glfw::KeyEvent::KEY_UP:
+		{
+			auto pos = camera.getShift ();
+			camera.setShift ( { pos.x, pos.y + step, pos.z } );
+			break;
+		}
+		case glfw::KeyEvent::KEY_DOWN:
+		{
+			auto pos = camera.getShift ();
+			camera.setShift ( { pos.x, pos.y - step, pos.z } );
+			break;
+		}
+		case glfw::KeyEvent::KEY_LEFT:
+		{
+			auto pos = camera.getShift ();
+			camera.setShift ( { pos.x - step, pos.y, pos.z } );
+			break;
+		}
+		case glfw::KeyEvent::KEY_RIGHT:
+		{
+			auto pos = camera.getShift ();
+			camera.setShift ( { pos.x + step, pos.y, pos.z } );
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+Scene::mouseWheelEvent ( const glfw::MouseWheelEvent & event )
+{
+	camera.setScale ( event.delta () * 4 );
 }

@@ -7,13 +7,15 @@
 using namespace engine;
 
 void
-Camera::setShift ( const glm::vec3 &new_shift )
+Camera::setShift ( const glm::vec3 & new_shift )
 {
-
+	shift.x += new_shift.x * std::cos ( phi ) + new_shift.y * cos ( phi + M_PI_2 );
+	shift.z += new_shift.x * std::sin ( phi ) + new_shift.y * sin ( phi + M_PI_2 );
+	calcView ();
 }
 
 void
-Camera::setDirection ( const glm::vec3 &new_dir )
+Camera::setDirection ( const glm::vec3 & new_dir )
 {
 
 }
@@ -39,24 +41,74 @@ Camera::getView () const
 void
 Camera::calcView ()
 {
-	glm::mat4 transpose ( 1 );
-	glm::mat4 rotation ( 1 );
-	transpose[ 3 ][ 0 ] = shift[ 0 ];
-	transpose[ 3 ][ 1 ] = -shift[ 1 ];
-	transpose[ 3 ][ 2 ] = shift[ 2 ];
 
-	rotation = glm::rotate ( rotation, static_cast<float>(asin ( -direction[ 1 ] )  ), glm::vec3 { 1, 0, 0 } );
-	rotation = glm::rotate ( rotation, static_cast<float>(asin ( direction[ 0 ] )), glm::vec3 { 0, 1, 0 } );
-	view = transpose * rotation;
+	worldTranspose[ 3 ][ 0 ] = shift[ 0 ];
+	worldTranspose[ 3 ][ 1 ] = -shift[ 1 ];
+	worldTranspose[ 3 ][ 2 ] = shift[ 2 ];
+
+	cameraTranspose[ 3 ][ 0 ] = 0;
+	cameraTranspose[ 3 ][ 1 ] = 0;
+	cameraTranspose[ 3 ][ 2 ] = -scale;
+
+	view = cameraTranspose * cameraRotation * worldTranspose;
 }
 
 void
 Camera::setDefault ()
 {
-	direction = glm::normalize ( glm::vec3 ( -0.25, -0.25, 1 ) );
-	shift = glm::vec3 ( 0, 2, -10 );
+	direction = glm::normalize ( glm::vec3 ( -1, 1.5, 0 ) );
+	theta = 0.89;
+	setPhi ( 0 );
+	cameraTranspose = glm::mat4 ( 1 );
+	worldTranspose = glm::mat4 ( 1 );
+	cameraTranspose[ 3 ][ 0 ] = 0;
+	cameraTranspose[ 3 ][ 1 ] = 0;
+	cameraTranspose[ 3 ][ 2 ] = -scale;
+
 	calcView ();
 }
 
-Camera::Camera () { setDefault (); }
+Camera::Camera () : worldTranspose ( 1 ), cameraTranspose ( 1 ) { setDefault (); }
+
+void
+Camera::setPhi ( const float & value )
+{
+	phi += value;
+	direction = { std::cos ( phi ), std::sin ( phi ) * std::cos ( theta ), std::sin ( theta ) };
+	direction = normalize ( direction );
+	cameraRotation = glm::mat4 ( 1 );
+
+	cameraRotation = glm::rotate ( cameraRotation, theta, glm::vec3 { 1, 0, 0 } );
+	cameraRotation = glm::rotate ( cameraRotation, phi, glm::vec3 { 0, 1, 0 } );
+	calcView ();
+}
+
+void
+Camera::setScale ( const float & delta_scale )
+{
+
+	if ( delta_scale > 0 )
+	{
+		if ( scale + delta_scale <= 80 )
+		{
+			scale += delta_scale;
+		}
+		else
+		{
+			scale = 80;
+		}
+	}
+	else
+	{
+		if ( scale + delta_scale >= 10 )
+		{
+			scale += delta_scale;
+		}
+		else
+		{
+			scale = 10;
+		}
+	}
+	calcView();
+}
 

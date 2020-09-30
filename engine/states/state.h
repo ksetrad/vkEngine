@@ -17,13 +17,13 @@ namespace engine
 		SHIFT
 	};
 
-	class Core;
+	class Scene;
 
 	class State
 	{
 		public:
 			explicit
-			State ( Core *scene )
+			State ( Scene *scene )
 					: scene ( scene ) {}
 
 			/// Событие сдвига мыши в сцене
@@ -67,7 +67,7 @@ namespace engine
 
 		protected:
 			/// Игровая сцена
-			Core *scene;
+			Scene *scene;
 
 			/// Тип вызвавшего состояния
 			StateType rootType { IDLE };

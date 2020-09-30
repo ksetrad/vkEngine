@@ -3,7 +3,7 @@
 //
 
 #include "engine/states/idle.h"
-#include "engine/core.h"
+#include "engine/scene.h"
 
 using namespace engine;
 
@@ -34,3 +34,5 @@ void
 Idle::mouseReleaseEvent ( const glfw::MouseEvent &event )
 {
 }
+
+Idle::Idle ( Scene * scene ) : State ( scene ) {}

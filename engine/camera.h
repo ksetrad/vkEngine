@@ -15,10 +15,10 @@ namespace engine
 			Camera ();
 
 			void
-			setShift ( const glm::vec3 &new_shift );
+			setShift ( const glm::vec3 & new_shift );
 
 			void
-			setDirection ( const glm::vec3 &new_dir );
+			setDirection ( const glm::vec3 & new_dir );
 
 			[[nodiscard]] const glm::vec3 &
 			getShift () const;
@@ -30,17 +30,35 @@ namespace engine
 			getView () const;
 
 			void
+			setPhi ( const float & value );
+
+			void
 			setDefault ();
+
+			void
+			setScale(const float& delta_scale);
 
 		private:
 			void
 			calcView ();
+
+			glm::mat4 worldTranspose;
+
+			glm::mat4 cameraTranspose;
+
+			glm::mat4 cameraRotation;
 
 			glm::vec3 shift;
 
 			glm::vec3 direction;
 
 			glm::mat4 view;
+
+			float phi { 0 };
+
+			float theta { 0 };
+
+			float scale { 40 };
 	};
 }// namespace engine
 #endif//ENGINE_CAMERA_H

@@ -30,11 +30,11 @@ add_custom_target(
         DEPENDS ${SPIRV_BINARY_FILES}
 )
 
-add_dependencies(caravaner2 shaders)
+add_dependencies(testGL shaders)
 
-add_custom_command(TARGET caravaner2 POST_BUILD
+add_custom_command(TARGET testGL POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/shaders/"
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${PROJECT_BINARY_DIR}/shaders"
-        "$<TARGET_FILE_DIR:caravaner2>/shaders"
+        "$<TARGET_FILE_DIR:testGL>/shaders"
         )

@@ -2,7 +2,7 @@
 // Created by Владимир on 26.08.2020.
 //
 
-#include "engine/core.h"
+#include "engine/scene.h"
 #include <tools/logger.h>
 
 int
@@ -14,7 +14,7 @@ main (
 	Logger::addComponent ( "FULL", "FULL", Logger::info, true );
 	Logger::setVerbosity ( Logger::error );
 #endif
-	engine::Core core;
+	engine::Scene core;
 	core.mainLoop ();
 	return 0;
 }
