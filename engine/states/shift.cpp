@@ -19,7 +19,7 @@ Shift::mouseMoveEvent ( const glfw::MouseEvent & event )
 	std::lock_guard <std::mutex> lockGuard ( scene->update );
 	auto delta_x = ( newPoint.x - prevPos.x ) * 1.f / scene->resolution.x;
 	auto delta_y = ( newPoint.y - prevPos.y ) * 1.f / scene->resolution.y;
-	scene->camera.setShift ( { 128 * delta_x, 128 * delta_y, 0 } );
+	scene->camera.setDisplayCoordShift ( { 128 * delta_x, 128 * delta_y, 0 } );
 	prevPos.x = newPoint.x;
 	prevPos.y = newPoint.y;
 }

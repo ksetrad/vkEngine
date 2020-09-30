@@ -297,25 +297,25 @@ Scene::keyPressEvent ( const glfw::KeyEvent & event )
 		case glfw::KeyEvent::KEY_UP:
 		{
 			auto pos = camera.getShift ();
-			camera.setShift ( { pos.x, pos.y + step, pos.z } );
+			camera.setDisplayCoordShift ( { pos.x, pos.y + step, pos.z } );
 			break;
 		}
 		case glfw::KeyEvent::KEY_DOWN:
 		{
 			auto pos = camera.getShift ();
-			camera.setShift ( { pos.x, pos.y - step, pos.z } );
+			camera.setDisplayCoordShift ( { pos.x, pos.y - step, pos.z } );
 			break;
 		}
 		case glfw::KeyEvent::KEY_LEFT:
 		{
 			auto pos = camera.getShift ();
-			camera.setShift ( { pos.x - step, pos.y, pos.z } );
+			camera.setDisplayCoordShift ( { pos.x - step, pos.y, pos.z } );
 			break;
 		}
 		case glfw::KeyEvent::KEY_RIGHT:
 		{
 			auto pos = camera.getShift ();
-			camera.setShift ( { pos.x + step, pos.y, pos.z } );
+			camera.setDisplayCoordShift ( { pos.x + step, pos.y, pos.z } );
 			break;
 		}
 		default:
@@ -333,25 +333,25 @@ Scene::keyRepeatEvent ( const glfw::KeyEvent & event )
 		case glfw::KeyEvent::KEY_UP:
 		{
 			auto pos = camera.getShift ();
-			camera.setShift ( { pos.x, pos.y + step, pos.z } );
+			camera.setDisplayCoordShift ( { pos.x, pos.y + step, pos.z } );
 			break;
 		}
 		case glfw::KeyEvent::KEY_DOWN:
 		{
 			auto pos = camera.getShift ();
-			camera.setShift ( { pos.x, pos.y - step, pos.z } );
+			camera.setDisplayCoordShift ( { pos.x, pos.y - step, pos.z } );
 			break;
 		}
 		case glfw::KeyEvent::KEY_LEFT:
 		{
 			auto pos = camera.getShift ();
-			camera.setShift ( { pos.x - step, pos.y, pos.z } );
+			camera.setDisplayCoordShift ( { pos.x - step, pos.y, pos.z } );
 			break;
 		}
 		case glfw::KeyEvent::KEY_RIGHT:
 		{
 			auto pos = camera.getShift ();
-			camera.setShift ( { pos.x + step, pos.y, pos.z } );
+			camera.setDisplayCoordShift ( { pos.x + step, pos.y, pos.z } );
 			break;
 		}
 		default:
@@ -362,5 +362,6 @@ Scene::keyRepeatEvent ( const glfw::KeyEvent & event )
 void
 Scene::mouseWheelEvent ( const glfw::MouseWheelEvent & event )
 {
+	std::lock_guard <std::mutex> lock ( update );
 	camera.setScale ( event.delta () * 4 );
 }

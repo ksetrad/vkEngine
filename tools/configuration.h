@@ -21,18 +21,18 @@ class Configuration
 			std::string engineName;
 
 			/// Массив Уровней валидации
-			std::vector < std::string > validationLayers;
+			std::vector <std::string> validationLayers;
 
 			/// Массив используемых расшираений
-			std::vector < std::string > deviceExtension;
+			std::vector <std::string> deviceExtension;
 
 			/// Сформировать массив си-строк имен уровней валидации
 			/// \return Массив
-			[[nodiscard]] std::vector < const char * >
+			[[nodiscard]] std::vector <const char *>
 			getValidationLayersArr () const
 			{
-				std::vector < const char * > result;
-				for ( const auto &str : validationLayers )
+				std::vector <const char *> result;
+				for ( const auto & str : validationLayers )
 				{
 					result.push_back ( str.c_str () );
 				}
@@ -41,11 +41,11 @@ class Configuration
 
 			/// Сформировать массив си-строк имен расширений
 			/// \return Массив
-			[[nodiscard]] std::vector < const char * >
+			[[nodiscard]] std::vector <const char *>
 			getDeviceExtensions () const
 			{
-				std::vector < const char * > result;
-				for ( const auto &str : deviceExtension )
+				std::vector <const char *> result;
+				for ( const auto & str : deviceExtension )
 				{
 					result.push_back ( str.c_str () );
 				}
@@ -64,6 +64,21 @@ class Configuration
 				/// Высота
 				int height;
 			} resolution;
+		};
+
+		/// Параметры камеры
+		struct Camera
+		{
+			/// Наклон камеры
+			float theta;
+
+			struct
+			{
+				/// Минимальный масштаб
+				float min;
+				/// Максимальный масштаб
+				float max;
+			} scale;
 		};
 
 		/// Конфигурации движка
@@ -91,6 +106,11 @@ class Configuration
 		static const Engine &
 		engine ();
 
+		/// Параметры камеры
+		/// \return параметры движка
+		static const Camera &
+		camera ();
+
 	private:
 		/// Конструктор()
 		Configuration ();
@@ -116,6 +136,9 @@ class Configuration
 
 		/// Конфигурация движка
 		Engine m_engine;
+
+		/// Конфигурация камеры
+		Camera m_camera;
 };
 
 #endif//TOOLS_CONFIGURATION_H

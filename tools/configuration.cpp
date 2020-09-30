@@ -9,7 +9,7 @@
 Configuration *
 Configuration::instance ()
 {
-	static std::unique_ptr < Configuration > instance { nullptr };
+	static std::unique_ptr <Configuration> instance { nullptr };
 	if ( instance == nullptr )
 	{
 		instance.reset ( new Configuration () );
@@ -69,6 +69,10 @@ Configuration::read ()
 	{
 		m_vulkan.deviceExtension.emplace_back ( VK_KHR_SWAPCHAIN_EXTENSION_NAME );
 	}
+
+	m_camera.scale.min = root[ "Camera" ][ "scale" ][ "min" ].value_or ( 10.f );
+	m_camera.scale.max = root[ "Camera" ][ "scale" ][ "max" ].value_or ( 80.f );
+	m_camera.theta = root[ "Camera" ][ "incline" ].value_or ( 0.89f );
 }
 
 void
@@ -79,27 +83,40 @@ Configuration::write ()
 	toml::table display;
 	toml::table resolution;
 	toml::table engine;
+	toml::table camera;
+	toml::table scale;
+	/// Записываем параметры дисплея
 	resolution.insert ( "width", m_display.resolution.width );
 	resolution.insert ( "height", m_display.resolution.height );
 	display.insert ( "Resolution", resolution );
 	root.insert_or_assign ( "Display", display );
+	/// Записываем параметры движка
 	engine.insert ( "models directory", m_engine.modelDirPath );
 	root.insert_or_assign ( "Engine", engine );
+	/// Записываем параметры ядра
 	core.insert ( "appName", m_vulkan.appName );
 	core.insert ( "engineName", m_vulkan.engineName );
 	toml::array validationLayers;
-	for ( const auto &layer : m_vulkan.validationLayers )
+	for ( const auto & layer : m_vulkan.validationLayers )
 	{
 		validationLayers.push_back ( layer );
 	}
 	core.insert ( "validation layers", validationLayers );
 	toml::array deviceExtension;
-	for ( const auto &extension : m_vulkan.deviceExtension )
+	for ( const auto & extension : m_vulkan.deviceExtension )
 	{
 		deviceExtension.push_back ( extension );
 	}
 	core.insert ( "device extension", deviceExtension );
 	root.insert_or_assign ( "Core", core );
+	/// Записываем параметры камеры
+	camera.insert ( "incline", m_camera.theta );
+	scale.insert ( "max", m_camera.scale.max );
+	scale.insert ( "min", m_camera.scale.min );
+	camera.insert ( "scale", scale );
+	root.insert ( "Camera", camera );
+
+	/// Записываем в файл
 	std::ofstream fout ( "./configuration.toml" );
 	fout<<root<<std::endl;
 	fout.close ();
@@ -120,4 +137,10 @@ const Configuration::Engine &
 Configuration::engine ()
 {
 	return instance ()->m_engine;
+}
+
+const Configuration::Camera &
+Configuration::camera ()
+{
+	return instance ()->m_camera;
 }
