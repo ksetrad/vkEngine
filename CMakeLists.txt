@@ -7,7 +7,7 @@ find_package(Vulkan REQUIRED)
 find_package(glm REQUIRED)
 
 if (WIN32)
-    find_package(GLFW REQUIRED)
+    find_package(GLFW3 REQUIRED)
 endif()
 
 set(project_dir ${CMAKE_SOURCE_DIR})
