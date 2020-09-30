@@ -14,7 +14,7 @@ glfw::Interceptor::mouseButtonCallBack (
 		int mods
 )
 {
-	instance ()->handler->mouse_callBack ( window, button, action, mods );
+	instance ()->handler->mouse_callBack (  button, action, mods );
 }
 
 void
@@ -41,7 +41,7 @@ glfw::Interceptor::mouseMoveCallBack (
 		double ypos
 )
 {
-	instance ()->handler->mouseMove ( window, xpos, ypos );
+	instance ()->handler->mouseMove ( xpos, ypos );
 }
 
 void
@@ -53,7 +53,7 @@ glfw::Interceptor::keyButtonCallBack (
 		int mods
 )
 {
-	instance ()->handler->key_callBack ( window, key, scancode, action, mods );
+	instance ()->handler->key_callBack (  key, scancode, action, mods );
 }
 
 void
@@ -63,5 +63,5 @@ glfw::Interceptor::scrollCallBack (
 		double yoffset
 )
 {
-	instance ()->handler->scroll_callBack ( window, xoffset, yoffset );
+	instance ()->handler->scroll_callBack (  xoffset, yoffset );
 }

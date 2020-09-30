@@ -12,9 +12,15 @@ namespace glfw
 {
 	class Handler;
 
+	/// Синглтон перехвата событий glwf
 	class Interceptor
 	{
 		public:
+			/// \brief Перехват события нажатия мыши
+			/// \param window Активное окно
+			/// \param button кнопка
+			/// \param action событие
+			/// \param mods мод
 			static void
 			mouseButtonCallBack (
 					GLFWwindow * window,
@@ -23,6 +29,12 @@ namespace glfw
 					int mods
 			);
 
+			/// \brief Перехват события нажатия клавиши клавиатуры
+			/// \param window Активное окно
+			/// \param key клавиша
+			/// \param scancode TODO платформозависимая хрень, которая означает, что на разных платформах одна и таже кнопка может иметь разный код
+			/// \param action Событие
+			/// \param mods мод
 			static void
 			keyButtonCallBack (
 					GLFWwindow * window,
@@ -32,6 +44,10 @@ namespace glfw
 					int mods
 			);
 
+			/// \brief Перехватчик смещения мыши
+			/// \param window Активное окно
+			/// \param xpos Х координата
+			/// \param ypos Y координата
 			static void
 			mouseMoveCallBack (
 					GLFWwindow * window,
@@ -39,6 +55,10 @@ namespace glfw
 					double ypos
 			);
 
+			/// \brief Перехватчик события скроллинга
+			/// \param window Активное окно
+			/// \param xoffset смещение по Х
+			/// \param yoffset смещение по Y (только оно и используется)
 			static void
 			scrollCallBack (
 					GLFWwindow * window,
@@ -46,13 +66,18 @@ namespace glfw
 					double yoffset
 			);
 
+			/// \brief Получить синглтон
+			/// \return синглтон
 			static Interceptor *
 			instance ();
 
+			/// \brief Инициализация обработчиком
+			/// \param handler обработчик
 			static void
 			initialize ( Handler * handler );
 
 		private:
+			/// Текущий обработчик
 			Handler * handler;
 	};
 }// namespace glfw
